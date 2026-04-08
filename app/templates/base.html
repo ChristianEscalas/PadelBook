@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Padelbook | {% block titleHead %} {% endblock %}</title>
+  {% block script %} {% endblock %}
+</head>
+<body>
+  <header>
+    <div>
+      <img src="{% static 'images/logo.svg' %}" alt="Logo">
+      <h5>PADELBOOK</h5>
+    </div>
+
+    <div>
+      <nav>
+        {% block nav %} {% endblock %}
+      </nav>
+      <button type="button" herf="/contact">CONTACTO</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="notification-container"></div>
+    {% block content %} {% endblock %}
+  </main>
+
+  <footer>
+    <div>
+      <a href="#">Copyright &copy</a>
+      <p>PadelBook - 2026</p>
+    </div>
+  </footer>
+</body>
+</html>

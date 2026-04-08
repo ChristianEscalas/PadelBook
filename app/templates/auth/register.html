@@ -1,0 +1,82 @@
+{% load static %}
+{% extends "../base.html" %}
+
+{% block titleHead %}
+  Register
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'js/auth/register.js' %}"></script>
+{% endblock %}
+
+{% block nav %}
+  <ul>
+    <li><a href="#inicio">INICIO</a></li>
+    <li><a href="comoFunciona">COMO FUNCIONA</a></li>
+    <li><a href="/login">LOGIN</a></li>
+    <li><a href="/register">REGISTRO</a></li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+  <h1>Registro</h1>
+
+  <form action="/register" id="form" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="username">Nombre de usuario *</label>
+    <input type="text" id="username" name="username" placeholder="Nombre de usuario" required>
+
+    <label for="email">Email *</label>
+    <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
+
+    <label for="password">Contraseña *</label>
+    <input type="password" id="password" name="password" placeholder="Contraseña" required>
+
+    <label for="password2">Confirma la contraseña *</label>
+    <input type="password" id="password2" name="password2" placeholder="Contraseña" required>
+
+    <label for="mobile">Teléfono *</label>
+    <input type="tel" id="mobile" name="mobile" placeholder="Teléfono" required>
+
+    <label for="address">Dirección</label>
+    <input type="text" id="address" name="address" placeholder="Dirección" required>
+
+    <label for="age">Edad *</label>
+    <input type="number" id="age" name="age" placeholder="Edad" required>
+
+    <label for="firstname">Nombre *</label>
+    <input type="text" id="firstname" name="firstname" placeholder="Nombre" required>
+
+    <label for="lastname">Apellidos</label>
+    <input type="text" id="lastname" name="lastname" placeholder="Apellidos" required>
+
+    <label for="category">Categoría *</label>
+    <select id="category" name="category" required>
+      <option value="">Elige tu categoría</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+    </select>
+
+    <label for="photo">Foto de perfil *</label>
+    <input type="file" id="photo" name="photo" accept="image/*" required>
+
+    <label for="rol">Jugador o propietario? *</label>
+    <select id="rol" name="rol" required>
+      <option value="">Elige tu rol</option>
+      <option value="player">Jugador</option>
+      <option value="owner">Propietario</option>
+    </select>
+
+    <p>Todos los campos marcados con * son obligatorios</p>
+
+    <button type="submit">Crear cuenta</button>
+    <button type="button" href="página anterior">Cancelar</button>
+
+    <button type="button" href="/login">Ya tienes cuenta? Inicia sesión</button>
+  </form>
+{% endblock %}
