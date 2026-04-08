@@ -31,6 +31,8 @@ from app.routes.views import views_bp
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(views_bp)
 
+csrf.exempt(auth_bp)
+
 # Importación de los orm
 from app.models.users import User
 from app.models.clubs import Club

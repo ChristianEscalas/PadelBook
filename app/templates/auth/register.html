@@ -10,7 +10,7 @@
 
 {% block nav %}
   <ul>
-    <li><a href="#inicio">INICIO</a></li>
+    <li><a href="/">INICIO</a></li>
     <li><a href="comoFunciona">COMO FUNCIONA</a></li>
     <li><a href="/login">LOGIN</a></li>
     <li><a href="/register">REGISTRO</a></li>
@@ -20,9 +20,7 @@
 {% block content %}
   <h1>Registro</h1>
 
-  <form action="/register" id="form" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
+  <form id="form" enctype="multipart/form-data">
     <label for="username">Nombre de usuario *</label>
     <input type="text" id="username" name="username" placeholder="Nombre de usuario" required>
 
