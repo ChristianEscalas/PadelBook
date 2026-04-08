@@ -1,12 +1,11 @@
-{% load static %}
 {% extends "../base.html" %}
 
 {% block titleHead %}
-  Register
+  Crear cuenta
 {% endblock %}
 
 {% block script %}
-  <script src="{% static 'js/auth/register.js' %}"></script>
+  <script src="{{url_for('static', filename='js/auth/register.js')}}"></script>
 {% endblock %}
 
 {% block nav %}
