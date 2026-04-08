@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
 import os
 
 # Carga de variables de entorno
@@ -15,6 +16,16 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{os.getenv('DB_
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+# Configuración de JWT
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+jwt = JWTManager(app)
+
+# Importación y registro de blueprints
+from app.routes.auth import auth_bp
+
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
+
+# Importación de los orm
 from app.models.users import User
 from app.models.clubs import Club
 from app.models.courts import Court

@@ -1,26 +1,64 @@
 from app import db
 from app.models.users import User
-from app.enums import UserRole
 from app.utils.security import new_password_hash, check_password
+from flask import Blueprint, jsonify, request
+from flask_jwt_extended import create_access_token
 
+# Blueprint
+auth_bp = Blueprint('auth', __name__)
+
+@auth_bp.route('/register', methods=['POST'])
 def register():
-  new_user = User(username = "usuario4", email = "usuario4@gmail.com", password_hash = new_password_hash("usuario4"), mobile = "123456789", age = 20, firstname = "Joan", lastname = "Martínez Riera", rol = UserRole.player, photo = "app/static/images/users/descarga.jpg")
-  user_email = User.query.filter_by(email  = new_user.email).first()
-  user_username = User.query.filter_by(username = new_user.username).first()
+  # obtenemos datos del formulario
+  data = request.get_json()
+  required_fields = ['username', 'email', 'password', 'mobile', 'age', 'firstname', 'rol', 'category', 'photo']
   
-  if user_email is None and user_username is None:
+  # comprovamos que vengan los datos necesarios
+  if not data or not all(field in data for field in required_fields):
+    return jsonify({"error": "Faltan datos obligatorios"}), 400 
+  
+  # comprovamos que no existe un usuario con el mismo email o username
+  user_email = User.query.filter_by(email  = data['email']).first()
+  user_username = User.query.filter_by(username = data['username']).first()
+  if user_email is not None or user_username is not None:
+    return jsonify({"error": "usuario ya registrado"}), 409
+  
+  try:
+    # si no existe creamos nuevo usuario y lo añadimos a la base de datos
+    new_user = User(
+      username = data['username'],
+      email = data['email'],
+      password_hash = new_password_hash(data['password']),
+      mobile = data['mobile'],
+      address = data.get('address'),
+      age = data['age'],
+      firstname = data['firstname'],
+      lastname = data.get('lastname'),
+      category = data['category'],
+      rol = data['rol'],
+      photo = data['photo']
+    )
+    
     db.session.add(new_user)
     db.session.commit()
-    print(f"Usuario {new_user.username} registrado correctamente.")
-  elif user_username is not None:
-    print(f"Nombre de usuario {new_user.username} ya registrado, prueba otro.")
-  elif user_email is not None:
-    print(f"Email {new_user.email} ya registrado, prueba otro")
-  
+    return jsonify({"message": "usuario registrado", "user_id": new_user.id}), 201
+  except Exception as ex:
+    db.session.rollback()
+    return jsonify({"error": str(ex)}), 500
 
-def login(email_to_check = "nologuin@gmail.com", password_to_check = "nologuin"):
-  user = User.query.filter_by(email = email_to_check).first()
-  if user is None or not check_password(password_to_check, user.password_hash):
-    print("Email o contraseña incorrectos")
-  else:
-    print("Bienvenido")
+@auth_bp.route('/login', methods=['POST'])
+def login():
+  # obtenemos datos del formulario
+  data = request.get_json()
+  
+  # comprovamos que vengan los datos necesarios
+  if not data or 'username' not in data or 'password' not in data:
+    return jsonify({"message": "Faltan datos obligatorios"}), 400
+  
+  # comprovamos que existe un usuario con el mismo email
+  user = User.query.filter_by(username = data['username']).first()
+  if user is None or not check_password(data['password'], user.password_hash):
+    return jsonify({"error": "Datos incorrectos"}), 401
+  
+  access_token = create_access_token(identity=str(user.id), additional_claims={"rol": user.rol.value})
+  return jsonify({"access_token": access_token}), 200
