@@ -19,7 +19,7 @@ async function register(form) {
     }
 
     const photo = formData.get("photo");
-    if (!phot || photo.size === 0) {
+    if (!photo || photo.size === 0) {
       showNotification("Debes subir una foto de perfil", "error");
       return;
     }
