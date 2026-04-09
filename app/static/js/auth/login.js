@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   cancelButton.addEventListener("click", () => {
     window.history.back();
   });
+
   const registerButton = document.getElementById("registerButton");
   registerButton.addEventListener("click", () => {
     window.location.href = "/register";

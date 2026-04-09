@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
+from flask_wtf.csrf import CSRFProtect
 import os
 
 # Carga de variables de entorno
@@ -11,7 +12,10 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-# Configuración y conexióna la base de datos
+# Instancia de protección CSRF
+csrf = CSRFProtect(app)
+
+# Configuración y conexión a la base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -26,6 +30,8 @@ from app.routes.views import views_bp
 
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(views_bp)
+
+csrf.exempt(auth_bp)
 
 # Importación de los orm
 from app.models.users import User
