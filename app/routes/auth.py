@@ -3,6 +3,7 @@ from app.models.users import User
 from app.utils.security import new_password_hash, check_password
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token
+import os, uuid
 
 # Blueprint
 auth_bp = Blueprint('auth', __name__)
@@ -10,20 +11,26 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/register', methods=['POST'])
 def register():
   # obtenemos datos del formulario
-  data = request.get_json()
-  required_fields = ['username', 'email', 'password', 'mobile', 'age', 'firstname', 'rol', 'category', 'photo']
+  data = request.form
+  photo = request.files.get("photo")
+  
+  required_fields = ['username', 'email', 'password', 'mobile', 'age', 'firstname', 'rol', 'category']
   
   # comprovamos que vengan los datos necesarios
-  if not data or not all(field in data for field in required_fields):
+  if not data or not all(field in data for field in required_fields) or not photo:
     return jsonify({"error": "Faltan datos obligatorios"}), 400 
   
   # comprovamos que no existe un usuario con el mismo email o username
   user_email = User.query.filter_by(email  = data['email']).first()
   user_username = User.query.filter_by(username = data['username']).first()
-  if user_email is not None or user_username is not None:
+  if user_email or user_username:
     return jsonify({"error": "usuario ya registrado"}), 409
   
   try:
+    # miramos en que carpeta se va a guardar la foto del usuario
+    if data["rol"] == "player":
+      extension = photo.filename.split('.')[-1]
+        filename = f"{data['username']}_{int(time.time())}.{extension}"
     # si no existe creamos nuevo usuario y lo añadimos a la base de datos
     new_user = User(
       username = data['username'],
