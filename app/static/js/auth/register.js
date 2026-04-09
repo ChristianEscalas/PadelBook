@@ -1,4 +1,4 @@
-import { showNotification } from "../main";
+import { showNotification } from "../main.js";
 
 async function register(form) {
   form.addEventListener("submit", async (event) => {
