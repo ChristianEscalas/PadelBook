@@ -6,6 +6,14 @@
   <title>Padelbook | {% block titleHead %} {% endblock %}</title>
   <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
   {% block script %} {% endblock %}
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const contactButton = document.getElementById("contactButton");
+      contactButton.addEventListener("click", () => {
+        window.location.href = "/contacto";
+      });
+    });
+  </script>
 </head>
 <body>
   <header>
