@@ -8,7 +8,7 @@ import time, os
 # Blueprint
 auth_bp = Blueprint('auth', __name__)
 
-@auth_bp.route('/register', methods=['POST'])
+@auth_bp.route('/registrar', methods=['POST'])
 def register():
   # obtenemos datos del formulario
   data = request.form
