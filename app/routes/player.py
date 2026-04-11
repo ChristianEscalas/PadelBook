@@ -292,3 +292,45 @@ def unfollow(user_id = 1, user_to_unfollow_id = 1):
   db.session.delete(existing_following)
   db.session.commit()
   print(f"Has dejado de seguir a {user_to_unfollow.firstname}")
+
+# carga los municipios            
+@player_bp.route('/municipios', methods=['GET'])
+def get_municipality():
+  municipalities = db.session.query(Club.municipality).distinct().order_by(Club.municipality).all()
+  
+  result = []
+  for municipality in municipalities:
+    result = municipality[0]
+
+  return jsonify(result), 200
+
+# carga los tipos de pista 
+@player_bp.route('/tipo', methods=['GET'])
+def get_types():
+  types = []
+  for t in CourtType:
+    types = t.value 
+  
+  return jsonify(types), 200
+
+@player_bp.route('/cubierta', methods=['GET'])
+def get_cover():
+    return jsonify(["true", "false"]), 200
+
+# carga los tipos de pared
+@player_bp.route('/pared', methods=['GET'])
+def get_walls():
+  walls = []
+  for p in WallType:
+    walls = p.value
+  
+  return jsonify(walls), 200
+
+# carga los tipos de superficie
+@player_bp.route('/superficie', methods=['GET'])
+def get_surfaces():
+  surfaces = []
+  for s in SurfaceType:
+    surfaces = [s.value]
+  
+  return jsonify(surfaces), 200
