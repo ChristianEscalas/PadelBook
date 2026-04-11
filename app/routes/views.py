@@ -13,3 +13,7 @@ def register_page():
 @views_bp.route('/')
 def index():
     return render_template('index.html')
+
+@views_bp.route('/contacto')
+def contact_page():
+    return render_template('contact.html')
