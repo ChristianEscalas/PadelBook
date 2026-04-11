@@ -22,7 +22,17 @@ async function login(form) {
 
       if (response.ok) {
         localStorage.setItem("access_token", result.access_token);
-        showNotification("¡Bienvenido!", "success");
+
+        const payload = JSON.parse(atob(result.access_token.split(".")[1]));
+        const rol = payload.rol;
+
+        if (rol === "player") {
+          window.location.href = "/reservar";
+        } else if (rol === "owner") {
+          window.location.href = "/clubes";
+        } else {
+          console.log("Rol desconocido", rol);
+        }
       } else {
         showNotification("Nombre de usuario o contraseña incorretos", "error");
       }
