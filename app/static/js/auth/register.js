@@ -34,8 +34,12 @@ async function register(form) {
       if (respone.ok) {
         window.location.href = "/login";
         showNotification("Usuario creado correctamente", "success");
+      } else if (respone.status === 409) {
+        showNotification("El usuario o email ya está registrado", "error");
+      } else if (respone.status === 400) {
+        showNotification("Faltan datos obligatorios", "error");
       } else {
-        showNotification("Error al registrarse, revisa todos los campos y vuelve a probar", "error");
+        showNotification(result.error || "Error inesperado", "error");
       }
     } catch (error) {
       console.log("Error: ", error);
@@ -50,10 +54,5 @@ document.addEventListener("DOMContentLoaded", () => {
   const cancelButton = document.getElementById("cancelButton");
   cancelButton.addEventListener("click", () => {
     window.history.back();
-  });
-
-  const loginButton = document.getElementById("loginButton");
-  loginButton.addEventListener("click", () => {
-    window.location.href = "/login";
   });
 });

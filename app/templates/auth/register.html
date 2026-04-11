@@ -11,69 +11,99 @@
 {% block nav %}
   <ul>
     <li><a href="/">INICIO</a></li>
-    <li><a href="comoFunciona">COMO FUNCIONA</a></li>
+    <li><a href="/">COMO FUNCIONA</a></li>
     <li><a href="/login">LOGIN</a></li>
     <li><a href="/register">REGISTRO</a></li>
   </ul>
 {% endblock %}
 
 {% block content %}
-  <h1>Registro</h1>
+  <div id="registro">
+    <h1>Registro</h1>
+      <div id="form-contenedor">
 
-  <form id="form" enctype="multipart/form-data">
-    <label for="username">Nombre de usuario *</label>
-    <input type="text" id="username" name="username" placeholder="Nombre de usuario" required>
+        <form id="form" enctype="multipart/form-data">
+          <div class="campo">
+            <label for="username">Nombre de usuario *</label>
+            <input type="text" id="username" name="username" placeholder="Nombre de usuario" required>
+          </div>
+          
+          <div class="campo">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
+          </div>
+          
+          <div class="campo">
+            <label for="password">Contraseña *</label>
+            <input type="password" id="password" name="password" placeholder="Contraseña" required>
+          </div>
+          
+          <div class="campo">
+            <label for="password2">Confirma la contraseña *</label>
+            <input type="password" id="password2" name="password2" placeholder="Contraseña" required>
+          </div>
+          
+          <div class="campo">
+            <label for="firstname">Nombre *</label>
+            <input type="text" id="firstname" name="firstname" placeholder="Nombre" required>
+          </div>
 
-    <label for="email">Email *</label>
-    <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
+          <div class="campo">
+            <label for="lastname">Apellidos</label>
+            <input type="text" id="lastname" name="lastname" placeholder="Apellidos">
+          </div>
 
-    <label for="password">Contraseña *</label>
-    <input type="password" id="password" name="password" placeholder="Contraseña" required>
+          <div class="campo">
+            <label for="age">Edad *</label>
+            <input type="number" id="age" name="age" placeholder="Edad" required>
+          </div>
 
-    <label for="password2">Confirma la contraseña *</label>
-    <input type="password" id="password2" name="password2" placeholder="Contraseña" required>
-
-    <label for="mobile">Teléfono *</label>
-    <input type="tel" id="mobile" name="mobile" placeholder="Teléfono" required>
-
-    <label for="address">Dirección</label>
-    <input type="text" id="address" name="address" placeholder="Dirección">
-
-    <label for="age">Edad *</label>
-    <input type="number" id="age" name="age" placeholder="Edad" required>
-
-    <label for="firstname">Nombre *</label>
-    <input type="text" id="firstname" name="firstname" placeholder="Nombre" required>
-
-    <label for="lastname">Apellidos</label>
-    <input type="text" id="lastname" name="lastname" placeholder="Apellidos">
-
-    <label for="category">Categoría *</label>
-    <select id="category" name="category" required>
-      <option value="">Elige tu categoría</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-    </select>
-
-    <label for="photo">Foto de perfil *</label>
-    <input type="file" id="photo" name="photo" accept="image/*" required>
-
-    <label for="rol">Jugador o propietario? *</label>
-    <select id="rol" name="rol" required>
-      <option value="">Elige tu rol</option>
-      <option value="player">Jugador</option>
-      <option value="owner">Propietario</option>
-    </select>
-
-    <p>Todos los campos marcados con * son obligatorios</p>
-
-    <button type="submit">Crear cuenta</button>
-    <button type="button" id="cancelButton">Cancelar</button>
-
-    <button type="button" id="loginButton">Ya tienes cuenta? Inicia sesión</button>
-  </form>
+          <div class="campo">
+            <label for="mobile">Teléfono *</label>
+            <input type="tel" id="mobile" name="mobile" placeholder="Teléfono" required>
+          </div>
+          
+          <div class="campo">
+            <label for="address">Dirección</label>
+            <input type="text" id="address" name="address" placeholder="Dirección">
+          </div>
+          
+          <div class="campo">
+            <label for="photo">Foto de perfil *</label>
+            <input type="file" id="photo" name="photo" accept="image/*" required>
+          </div>
+          
+          <div class="campo">
+            <label for="category">Categoría *</label>
+            <select id="category" name="category" required>
+              <option value="">Elige tu categoría</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </div>
+          
+          <div class="campo">
+            <label for="rol">Jugador o propietario? *</label>
+            <select id="rol" name="rol" required>
+              <option value="">Elige tu rol</option>
+              <option value="player">Jugador</option>
+              <option value="owner">Propietario</option>
+            </select>
+          </div>
+      
+          <p>Todos los campos marcados con * son obligatorios</p>
+          
+          <div id="botones">
+            <button type="submit" id="loginButton">Crear cuenta</button>
+            <button type="button" id="cancelButton">Cancelar</button>
+          </div>
+      
+          <a href="/login" id="registerButton">Ya tienes cuenta? Inicia sesión</a>
+        </form>
+      </div>
+  </div>
 {% endblock %}
