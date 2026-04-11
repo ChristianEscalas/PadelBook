@@ -1,7 +1,7 @@
 import { showNotification } from "../main.js";
 
 export async function loadMunicipalities() {
-  const response = await fetch("http://192.168.0.100:5000/api/municipios", {
+  const response = await fetch("http://192.168.0.100:5000/api/player/municipios", {
     headers: { Accept: "application/json" },
   });
 
@@ -20,7 +20,7 @@ export async function loadMunicipalities() {
 }
 
 export async function loadType() {
-  const response = await fetch("http://192.168.0.100:5000/api/tipo", {
+  const response = await fetch("http://192.168.0.100:5000/api/player/tipo", {
     headers: { Accept: "application/json" },
   });
 
@@ -39,7 +39,7 @@ export async function loadType() {
 }
 
 export async function loadCovert() {
-  const response = await fetch("http://192.168.0.100:5000/api/cubierta", {
+  const response = await fetch("http://192.168.0.100:5000/api/player/cubierta", {
     headers: { Accept: "application/json" },
   });
 
@@ -58,7 +58,7 @@ export async function loadCovert() {
 }
 
 export async function loadWall() {
-  const response = await fetch("http://192.168.0.100:5000/api/pared", {
+  const response = await fetch("http://192.168.0.100:5000/api/player/pared", {
     headers: { Accept: "application/json" },
   });
 
@@ -77,7 +77,7 @@ export async function loadWall() {
 }
 
 export async function loadSurface() {
-  const response = await fetch("http://192.168.0.100:5000/api/superficie", {
+  const response = await fetch("http://192.168.0.100:5000/api/player/superficie", {
     headers: { Accept: "application/json" },
   });
 
