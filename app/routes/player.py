@@ -1,3 +1,4 @@
+from sqlalchemy import and_
 from app import db
 from datetime import datetime, timedelta
 from app.models.reservations import Reservation
@@ -6,56 +7,88 @@ from app.models.courts import Court
 from app.models.users import User
 from app.models.clubs import Club
 from app.models.followers import Follower
-from app.enums import StatusGame, Team, WinnerTeam
+from app.enums import CourtType, StatusGame, SurfaceType, Team, WallType, WinnerTeam
+from flask import Blueprint, jsonify, request
+from flask_jwt_extended import verify_jwt_in_request, get_jwt
 
-def create_reservation():
-  user_id = 1
-  user = User.query.filter_by(id = user_id).first()
-  if user.rol.value != "player":
-    print("El usuario no es jugador")
-    return
-  
-  club_id = 2
-  existing_club = Club.query.filter_by(id = club_id).first()
-  if existing_club is None:
-    print("No existe el club")
-    return
-  
-  start_date = datetime(2026, 3, 17, 13, 00)
-  hour_start_date = start_date.time()
-  end_date = start_date + timedelta(minutes= existing_club.game_duration)
-  hour_end_date = end_date.time()
-  
-  if start_date < datetime.now():
-    print("No es posible reservar para una fecha anterior a la de hoy")
-    return
-  
-  if hour_start_date < existing_club.open_hour or hour_end_date > existing_club.close_hour:
-    print(f"Horario inválido. El club abre de {existing_club.open_hour} a {existing_club.close_hour}")
-    return
-  
-  new_reservation = Reservation(court_id = 1, creator_id = user.id, start_date = start_date, end_date = end_date)
-  existing_court = Court.query.filter_by(id = new_reservation.court_id, club_id = club_id).first()
-  if existing_court is None:
-    print("No existe la pista")
-    return
-  
-  existing_reservations = Reservation.query.filter_by(court_id = existing_court.id).all()
-  existing_reservation = None
-  for reserva in existing_reservations:
-    if new_reservation.start_date < reserva.end_date and new_reservation.end_date > reserva.start_date and reserva.court_id == new_reservation.court_id:
-      existing_reservation = reserva
-  
-  if existing_reservation is None:
-    db.session.add(new_reservation)
-    db.session.flush()
-    print(f"Reserva creada para el {new_reservation.start_date} en la pista {existing_court.number_court} en el club {existing_club.club_name}")
-    
-    new_reservation_player = ReservationPlayer(user_id = user_id, reservation_id = new_reservation.id, team = Team.a, is_creator = True)
-    db.session.add(new_reservation_player)
-    db.session.commit()
+player_bp = Blueprint('player', __name__)
+
+@player_bp.route('/reservar', methods=['GET'])
+def reservate():
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
+
+  # filtros de búsqueda
+  dia = request.args.get('dia')
+  hora = request.args.get('hora')
+  municipality = request.args.get('municipio')
+  duration = request.args.get('duracion')
+  court_type = request.args.get('tipo')
+  covered = request.args.get('cubierta')
+  wall = request.args.get('pared')
+  surface = request.args.get('superficie')
+
+  if not dia or not hora:
+    start = datetime.now()
   else:
-    print("Franja horaria no disponible")
+    start = datetime.strptime(f"{dia} {hora}", "%Y-%m-%d %H:%M")
+
+  if not duration:
+    duration = 60
+  else:
+    duration = int(duration)
+  
+  end = start + timedelta(minutes=duration)
+
+  # query principal
+  query = Court.query.join(Club).filter(Court.active == True, Club.active == True)  # noqa: E712
+
+  # filtros dinámicos
+  if municipality:
+    query = query.filter(Club.municipality == municipality)
+
+  if court_type:
+    query = query.filter(Court.court_type == CourtType(court_type))
+
+  if covered:
+    query = query.filter(Court.covered == (covered == "true"))
+
+  if wall:
+    query = query.filter(Court.wall == WallType(wall))
+
+  if surface:
+    query = query.filter(Court.surface == SurfaceType(surface))
+
+  # quitar pistas ocupadas
+  subquery = db.session.query(Reservation.court_id).filter(and_(Reservation.start_date < end, Reservation.end_date > start))
+
+  query = query.filter(~Court.id.in_(subquery))
+  query = query.order_by(Club.club_name)
+  # ejecutar query
+  courts_available = query.all()
+
+  # clubes únicos
+  clubs = {}
+  for court in courts_available:
+    club = court.club
+    clubs[club.id] = club
+
+  result = []
+  for club in clubs.values():
+    result.append({
+      "id": club.id,
+      "name": club.club_name,
+      "address": club.address,
+      "municipality": club.municipality,
+      "photo": club.photo
+    })
+
+  return jsonify(result), 200
 
 def join_reservation(user_id = 7, reservation_id = 3, selected_team = Team.b):
   user = User.query.filter_by(id = user_id).first()

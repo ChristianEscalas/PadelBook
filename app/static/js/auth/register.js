@@ -25,7 +25,7 @@ async function register(form) {
     }
 
     try {
-      const respone = await fetch("http://192.168.0.100:5000/api/auth/register", {
+      const respone = await fetch("http://192.168.0.100:5000/api/auth/registrar", {
         method: "POST",
         body: formData,
       });

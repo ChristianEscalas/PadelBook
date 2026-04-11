@@ -27,9 +27,11 @@ jwt = JWTManager(app)
 # Importación y registro de blueprints
 from app.routes.auth import auth_bp
 from app.routes.contact import contact_bp
+from app.routes.player import player_bp
 from app.routes.views import views_bp
 
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
+app.register_blueprint(player_bp, url_prefix='/api/player')
 app.register_blueprint(contact_bp)
 app.register_blueprint(views_bp)
 
