@@ -14,6 +14,18 @@ main {
   background-color: #E6F3FF;
 }
 
+#contactButton,
+#reservaButton {
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#contactButton:hover,
+#reservaButton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
 
 h1 {
   margin: 0px;
@@ -60,10 +72,17 @@ h1 {
 }
 
 #nav nav ul li a {
+  display: inline-block;
   text-decoration: none;
   font-size: 25px;
   color: #595959;
   font-weight: 600;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+#nav nav ul li a:hover {
+  color: #AEEA00;
+  transform: translateY(-5px);
 }
 
 #contactButton {
@@ -332,4 +351,87 @@ footer div {
 #registro #form a {
   color: #305BAB;
   text-align: center;
+}
+
+/* CONTACTO */
+
+#contacto {
+  padding: 50px;
+}
+
+#contacto #form-contenedor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+#texto-contacto, #contacto #form {
+  flex: 1;               
+  max-width: 400px;      
+}
+
+#contacto #form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #FFFFFF;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid gray;
+}
+
+#contacto #form label {
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+#contacto #form input {
+  background-color: #F2F2F2;
+  padding: 15px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  border: 1px solid gray;
+}
+
+#contacto #form textarea {
+  background-color: #F2F2F2;
+  padding: 15px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  height: 100px;
+}
+#form #botones {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+
+#botones button {
+  margin-top: 10px;
+  margin-bottom: 25px;
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#botones button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#loginButton {
+  background-color: #305BAB;
+}
+
+#cancelButton {
+  background-color: #FF6464;
 }
