@@ -15,11 +15,11 @@
 
 {% block content %}
   <section id="inicio">
-    <div>
+    <div class="columna">
       <h1>Reserva tu pista de padel en segundos</h1>
       <button type="button">RESERVA</button>
     </div>
-    <div>
+    <div class="columna">
       <img src="{{url_for('static', filename='images/fotoPadelBook.jpg')}}" alt="Foto PadelBook"></img>
     </div>
   </section>
@@ -31,19 +31,19 @@
 
     <div id="tarjetas">
       <div class="tarjeta">
-        <p>1</p>
+        <p class="orden">1</p>
         <h3>Busca tu club</h3>
         <p>Elige el club en el que quieras hacer la reserva o la que te quieras unir</p>
       </div>
 
       <div class="tarjeta">
-        <p>2</p>
+        <p class="orden">2</p>
         <h3>Elige la hora</h3>
         <p>Selecciona a que hora quieres jugar</p>
       </div>
 
       <div class="tarjeta">
-        <p>3</p>
+        <p class="orden">3</p>
         <h3>¡Juega!</h3>
         <p>Disfruta del partido con tus amigos o haciendo nuevos</p>
       </div>
