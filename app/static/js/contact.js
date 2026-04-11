@@ -20,7 +20,7 @@ async function contact(form) {
 
     const contactMessage = { name: name, email: email, message: message };
     try {
-      const response = await fetch("http://192.168.0.100:5000/api/contact", {
+      const response = await fetch("http://192.168.0.100:5000/api/contacto", {
         method: "POST",
         headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify(contactMessage),
