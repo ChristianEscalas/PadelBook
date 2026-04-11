@@ -4,6 +4,17 @@
   Inicio
 {% endblock %}
 
+{% block script %}
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const reservaButton = document.getElementById("reservaButton");
+      reservaButton.addEventListener("click", () => {
+        window.location.href = "/login";
+      });
+    });
+  </script>
+{% endblock %}
+
 {% block nav %}
   <ul>
     <li><a href="#inicio">INICIO</a></li>
