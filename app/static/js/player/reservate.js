@@ -16,6 +16,13 @@ async function sendForm(form) {
         },
       });
 
+      if (response.status === 401) {
+        localStorage.removeItem("access_token");
+        showNotification("Sesión expirada, vuelve a iniciar sesión.", "error");
+        window.location.href = "/login";
+        return;
+      }
+
       if (!response.ok) {
         showNotification("Error al buscar reservas", "error");
         return;
