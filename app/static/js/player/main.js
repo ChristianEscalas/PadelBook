@@ -14,7 +14,7 @@ export async function loadMunicipalities() {
   const select = document.getElementById("municipio");
 
   result.forEach((municipality) => {
-    let option = `<option value=${municipality}>${municipality}</option>`;
+    let option = `<option value="${municipality}">${municipality}</option>`;
     select.innerHTML += option;
   });
 }
@@ -34,10 +34,10 @@ export async function loadType() {
 
   result.forEach((type) => {
     if (type === "individual") {
-      let option = `<option value=${type}>Individual</option>`;
+      let option = `<option value="${type}">Individual</option>`;
       select.innerHTML += option;
     } else {
-      let option = `<option value=${type}>Dobles</option>`;
+      let option = `<option value="${type}">Dobles</option>`;
       select.innerHTML += option;
     }
   });
@@ -58,10 +58,10 @@ export async function loadCovert() {
 
   result.forEach((cover) => {
     if (cover === "true") {
-      let option = `<option value=${cover}>Si</option>`;
+      let option = `<option value="${cover}">Si</option>`;
       select.innerHTML += option;
     } else {
-      let option = `<option value=${cover}>No</option>`;
+      let option = `<option value="${cover}">No</option>`;
       select.innerHTML += option;
     }
   });
@@ -82,10 +82,10 @@ export async function loadWall() {
 
   result.forEach((wall) => {
     if (wall === "glass") {
-      let option = `<option value=${wall}>Cristal</option>`;
+      let option = `<option value="${wall}">Cristal</option>`;
       select.innerHTML += option;
     } else {
-      let option = `<option value=${wall}>Hormigón</option>`;
+      let option = `<option value="${wall}">Hormigón</option>`;
       select.innerHTML += option;
     }
   });
@@ -106,10 +106,10 @@ export async function loadSurface() {
 
   result.forEach((surface) => {
     if (surface === "grass") {
-      let option = `<option value=${surface}>Césped</option>`;
+      let option = `<option value="${surface}">Césped</option>`;
       select.innerHTML += option;
     } else {
-      let option = `<option value=${surface}>Hormigón</option>`;
+      let option = `<option value="${surface}">Hormigón</option>`;
       select.innerHTML += option;
     }
   });
