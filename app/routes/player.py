@@ -33,10 +33,13 @@ def reservate():
   wall = request.args.get('pared')
   surface = request.args.get('superficie')
 
-  if not dia or not hora:
-    start = datetime.now()
-  else:
+  if dia and hora:
     start = datetime.strptime(f"{dia} {hora}", "%Y-%m-%d %H:%M")
+    
+    if start < datetime.now():
+        return jsonify({"error": "No se puede reservar para una fecha anterior a hoy."}), 400
+  else:
+    start = datetime.now()
 
   if not duration:
     duration = 60
