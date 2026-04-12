@@ -55,7 +55,7 @@ def reservate():
   if court_type:
     query = query.filter(Court.court_type == CourtType(court_type))
 
-  if covered:
+  if covered is not None:
     query = query.filter(Court.covered == (covered == "true"))
 
   if wall:
@@ -82,9 +82,11 @@ def reservate():
   for club in clubs.values():
     result.append({
       "id": club.id,
-      "name": club.club_name,
+      "club_name": club.club_name,
       "address": club.address,
-      "municipality": club.municipality,
+      "open_hour": club.open_hour,
+      "close_hour": club.close_hour,
+      "game_duration": club.game_duration,
       "photo": club.photo
     })
 
