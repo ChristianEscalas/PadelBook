@@ -48,9 +48,17 @@ def reservate():
   
   end = start + timedelta(minutes=duration)
 
+  if end.date() != start.date():
+    return jsonify({"error": "La reserva no puede superar la medianoche."}), 400
+  
+  start_time = start.time()
+  end_time = end.time()
+  
   # query principal
   query = Court.query.join(Club).filter(Court.active == True, Club.active == True)  # noqa: E712
 
+  query = query.filter(Club.open_hour <= start_time, Club.close_hour >= end_time)
+  
   # filtros dinámicos
   if municipality:
     query = query.filter(Club.municipality == municipality)
