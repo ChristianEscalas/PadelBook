@@ -33,8 +33,13 @@ export async function loadType() {
   const select = document.getElementById("tipo");
 
   result.forEach((type) => {
-    let option = `<option value=${type}>${type}</option>`;
-    select.innerHTML += option;
+    if (type === "individual") {
+      let option = `<option value=${type}>Individual</option>`;
+      select.innerHTML += option;
+    } else {
+      let option = `<option value=${type}>Dobles</option>`;
+      select.innerHTML += option;
+    }
   });
 }
 
@@ -52,8 +57,13 @@ export async function loadCovert() {
   const select = document.getElementById("cubierta");
 
   result.forEach((cover) => {
-    let option = `<option value=${cover}>${cover}</option>`;
-    select.innerHTML += option;
+    if (cover === "true") {
+      let option = `<option value=${cover}>Si</option>`;
+      select.innerHTML += option;
+    } else {
+      let option = `<option value=${cover}>No</option>`;
+      select.innerHTML += option;
+    }
   });
 }
 
@@ -71,8 +81,13 @@ export async function loadWall() {
   const select = document.getElementById("pared");
 
   result.forEach((wall) => {
-    let option = `<option value=${wall}>${wall}</option>`;
-    select.innerHTML += option;
+    if (wall === "glass") {
+      let option = `<option value=${wall}>Cristal</option>`;
+      select.innerHTML += option;
+    } else {
+      let option = `<option value=${wall}>Hormigón</option>`;
+      select.innerHTML += option;
+    }
   });
 }
 
@@ -90,7 +105,12 @@ export async function loadSurface() {
   const select = document.getElementById("superficie");
 
   result.forEach((surface) => {
-    let option = `<option value=${surface}>${surface}</option>`;
-    select.innerHTML += option;
+    if (surface === "grass") {
+      let option = `<option value=${surface}>Césped</option>`;
+      select.innerHTML += option;
+    } else {
+      let option = `<option value=${surface}>Hormigón</option>`;
+      select.innerHTML += option;
+    }
   });
 }

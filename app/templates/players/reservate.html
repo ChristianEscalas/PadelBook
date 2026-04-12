@@ -4,6 +4,10 @@
 Reservar
 {% endblock %}
 
+{%block script %}
+  <script src="{{url_for('static', filename='js/player/reservate.js')}}" type="module"></script>
+{% endblock %}
+
 {% block content %}
   <div id="reservar">
     <h1>Haz tu reserva</h1>
@@ -34,8 +38,6 @@ Reservar
       <label for="cubierta">Cubierta:</label>
       <select id="cubierta" name="cubierta">
         <option value="">Todas</option>
-        <option value="true">Sí</option>
-        <option value="false">No</option>
       </select>
 
       <label for="pared">Pared:</label>
@@ -52,6 +54,6 @@ Reservar
 
     </form>
 
-    <div id="reservasDisponibles"></div>
+    <div id="clubesDisponibles"></div>
   </div>
 {% endblock %}
