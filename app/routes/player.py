@@ -39,7 +39,7 @@ def reservate():
     if start < datetime.now():
         return jsonify({"error": "No se puede reservar para una fecha anterior a hoy."}), 400
   else:
-    start = datetime.now()
+    return jsonify({"error": "No has indicado día y hora de reserva."}), 400
 
   if not duration:
     duration = 60

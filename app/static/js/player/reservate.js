@@ -23,6 +23,12 @@ async function sendForm(form) {
         return;
       }
 
+      if (response.status === 400) {
+        const errorData = await response.json();
+        showNotification(errorData.error, "error");
+        return;
+      }
+
       if (!response.ok) {
         showNotification("Error al buscar reservas", "error");
         return;
@@ -58,6 +64,11 @@ async function sendForm(form) {
               </div>
             </div>
           </div>`;
+
+        const confirmReservationButton = document.querySelector(".boton-reservar");
+        confirmReservationButton.addEventListener("click", () => {
+          window.location.href = `/confirmar_reserva?club_id=${club.id}`;
+        });
       });
     } catch (error) {
       console.error(error);
