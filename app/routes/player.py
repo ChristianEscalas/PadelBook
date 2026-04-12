@@ -302,7 +302,7 @@ def get_municipality():
   
   result = []
   for municipality in municipalities:
-    result = municipality[0]
+    result.append(municipality[0])
 
   return jsonify(result), 200
 
@@ -310,8 +310,8 @@ def get_municipality():
 @player_bp.route('/tipo', methods=['GET'])
 def get_types():
   types = []
-  for t in CourtType:
-    types = t.value 
+  for court_type in CourtType:
+    types.append(court_type.value )
   
   return jsonify(types), 200
 
@@ -323,8 +323,8 @@ def get_cover():
 @player_bp.route('/pared', methods=['GET'])
 def get_walls():
   walls = []
-  for p in WallType:
-    walls = p.value
+  for wall_type in WallType:
+    walls.append(wall_type.value)
   
   return jsonify(walls), 200
 
@@ -332,7 +332,7 @@ def get_walls():
 @player_bp.route('/superficie', methods=['GET'])
 def get_surfaces():
   surfaces = []
-  for s in SurfaceType:
-    surfaces = [s.value]
+  for surface in SurfaceType:
+    surfaces.append(surface.value)
   
   return jsonify(surfaces), 200
