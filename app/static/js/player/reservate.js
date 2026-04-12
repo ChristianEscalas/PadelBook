@@ -64,6 +64,11 @@ async function sendForm(form) {
               </div>
             </div>
           </div>`;
+
+        const confirmReservationButton = document.querySelector(".boton-reservar");
+        confirmReservationButton.addEventListener("click", () => {
+          window.location.href = `/confirmar_reserva?club_id=${club.id}`;
+        });
       });
     } catch (error) {
       console.error(error);
