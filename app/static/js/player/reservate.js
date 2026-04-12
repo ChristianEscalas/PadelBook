@@ -23,6 +23,12 @@ async function sendForm(form) {
         return;
       }
 
+      if (response.status === 400) {
+        const errorData = await response.json();
+        showNotification(errorData.error, "error");
+        return;
+      }
+
       if (!response.ok) {
         showNotification("Error al buscar reservas", "error");
         return;
