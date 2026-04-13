@@ -191,6 +191,66 @@ def create_reservation():
   
   return jsonify({"message": "Reserva creada correctamente"}), 201
 
+@player_bp.route('/reservar/preview', methods=['GET'])
+def preview_reservation():
+  verify_jwt_in_request()
+
+  club_id = request.args.get("club_id")
+  day = request.args.get("dia")
+  hour = request.args.get("hora")
+  duration = request.args.get("duracion")
+
+  court_type = request.args.get("tipo")
+  covered = request.args.get("cubierta")
+  wall = request.args.get("pared")
+  surface = request.args.get("superficie")
+
+  if not club_id or not day or not hour:
+    return jsonify({"error": "Faltan datos"}), 400
+
+  if not duration:
+    duration = 60
+  else:
+    duration = int(duration)
+
+  start = datetime.strptime(f"{day} {hour}", "%Y-%m-%d %H:%M")
+  end = start + timedelta(minutes=duration)
+
+  club = Club.query.get(club_id)
+
+  query = Court.query.filter(Court.club_id == club_id, Court.active == True)
+
+    # filtros
+  if court_type:
+    query = query.filter(Court.court_type == CourtType(court_type))
+
+  if covered:
+    query = query.filter(Court.covered == (covered == "true"))
+
+  if wall:
+    query = query.filter(Court.wall == WallType(wall))
+
+  if surface:
+      query = query.filter(Court.surface == SurfaceType(surface))
+
+  # disponibilidad
+  subquery = db.session.query(Reservation.court_id).filter(and_(Reservation.start_date < end, Reservation.end_date > start))
+
+  query = query.filter(~Court.id.in_(subquery)).order_by(Court.number_court)
+  court = query.first()
+
+  if not court:
+    return jsonify({"error": "No hay pistas disponibles"}), 400
+
+  return jsonify({
+    "club": club.club_name,
+    "address": club.address,
+    "court_number": court.number_court,
+    "start": start.strftime("%Y-%m-%d %H:%M"),
+    "end": end.strftime("%Y-%m-%d %H:%M"),
+    "duration": duration
+  }), 200
+    
 def join_reservation(user_id = 7, reservation_id = 3, selected_team = Team.b):
   user = User.query.filter_by(id = user_id).first()
   

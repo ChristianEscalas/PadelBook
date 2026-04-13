@@ -1,7 +1,11 @@
-{% extends 'base_player.html' %}
+{% extends 'players/base_player.html' %}
 
 {% block titleHead %}
   Confirmar reserva
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/player/confirm_reservation.js') }}" type="module"></script>
 {% endblock %}
 
 {% block content %}
