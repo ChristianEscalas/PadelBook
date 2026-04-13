@@ -13,45 +13,62 @@ Reservar
     <h1>Haz tu reserva</h1>
     <form id="reservarForm">
 
-      <label for="dia">Día:</label>
-      <input type="date" id="dia" name="dia" value="{{ today }}" required>
+      <div class="campo">
+        <label for="dia">Día:</label>
+        <input type="date" id="dia" name="dia" value="{{ today }}" required>
+      </div>
 
-      <label for="hora">Hora:</label>
-      <input type="time" id="hora" name="hora" step="1800" required>
+      <div class="campo">
+        <label for="hora">Hora:</label>
+        <input type="time" id="hora" name="hora" step="1800" required>
+      </div>
 
-      <label for="municipio">Municipio:</label>
-      <select id="municipio" name="municipio" required>
-        <option value="">Todos</option>
-      </select>
+      <div class="campo">
+        <label for="municipio">Municipio:</label>
+        <select id="municipio" name="municipio" required>
+          <option value="">Todos</option>
+        </select>
+      </div>
 
-      <label for="duracion">Duración:</label>
-      <select id="duracion" name="duracion" required>
-        <option value="60">60 minutos</option>
-        <option value="90">90 minutos</option>
-      </select>
+      <div class="campo">
+        <label for="duracion">Duración:</label>
+        <select id="duracion" name="duracion" required>
+          <option value="60">60 minutos</option>
+          <option value="90">90 minutos</option>
+        </select>
+      </div>
 
-      <label for="tipo">Tipo:</label>
-      <select id="tipo" name="tipo" required>
-        <option value="">Todos</option>
-      </select>
+      <div class="campo">
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo" required>
+          <option value="">Todos</option>
+        </select>
+      </div>
 
-      <label for="cubierta">Cubierta:</label>
-      <select id="cubierta" name="cubierta" required>
-        <option value="">Todas</option>
-      </select>
+      <div class="campo">
+        <label for="cubierta">Cubierta:</label>
+        <select id="cubierta" name="cubierta" required>
+          <option value="">Todas</option>
+        </select>
+      </div>
 
-      <label for="pared">Pared:</label>
-      <select id="pared" name="pared" required>
-        <option value="">Todas</option>
-      </select>
+      <div class="campo">
+        <label for="pared">Pared:</label>
+        <select id="pared" name="pared" required>
+          <option value="">Todas</option>
+        </select>
+      </div>
 
-      <label for="superficie">Superficie:</label>
-      <select id="superficie" name="superficie" required>
-        <option value="">Todas</option>
-      </select>
+      <div class="campo">
+        <label for="superficie">Superficie:</label>
+        <select id="superficie" name="superficie" required>
+          <option value="">Todas</option>
+        </select>
+      </div>
 
-      <button type="submit" id="filtrarReservas">Buscar</button>
-
+      <div class="campo">
+        <button type="submit" id="filtrarReservas">Buscar</button>
+      </div>
     </form>
 
     <div id="clubesDisponibles"></div>

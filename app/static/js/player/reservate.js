@@ -41,7 +41,7 @@ async function sendForm(form) {
       data.forEach((club) => {
         clubsDiv.innerHTML += `
           <div class="tarjetaClub">
-            <p>${club.club_name}</p>
+            <h3>${club.club_name}</h3>
             <div class="infoClub">
 
               <div class="fotoclub">
@@ -49,15 +49,15 @@ async function sendForm(form) {
               </div>
 
               <div class="info">
-                <p><span>Dirección:</span></p>
-                <p><span>Horario:</span></p>
-                <p><span>Duración de los partidos:</span></p>
+                <p><strong>Dirección:</strong></p>
+                <p><strong>Horario:</strong></p>
+                <p><strong>Duración de los partidos:</strong></p>
               </div>
 
               <div class="datos">
                 <p>${club.address}</p>
                 <p>De ${club.open_hour} a ${club.close_hour}</p>
-                <p>${club.game_duration}</p>
+                <p>${club.game_duration} minutos</p>
               </div>
 
               <div class="boton-reserva">
