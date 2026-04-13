@@ -9,7 +9,7 @@ from app.models.clubs import Club
 from app.models.followers import Follower
 from app.enums import CourtType, StatusGame, SurfaceType, Team, WallType, WinnerTeam
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import verify_jwt_in_request, get_jwt
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request, get_jwt
 
 player_bp = Blueprint('player', __name__)
 
@@ -102,6 +102,94 @@ def reservate():
     })
 
   return jsonify(result), 200
+
+@player_bp.route('/reservar', methods=['POST'])
+def create_reservation():
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  # datos enviados en el formulario
+  data = request.get_json()
+  club_id = data.get("club_id")
+  day = data.get("dia")
+  hour = data.get("hora")
+  duration = data.get("duracion")
+
+  court_type = data.get("tipo")
+  covered = data.get("cubierta")
+  wall = data.get("pared")
+  surface = data.get("superficie")
+  
+  if not club_id or not day or not hour:
+    return jsonify({"error": "Faltan datos obligatorios"}), 400
+  
+  # se mira si el club existe y está activo
+  club = Club.query.get(club_id)
+  if not club or not club.active:
+    return jsonify({"error": "Club no válido"}), 400
+  
+  # calculo de fecha de inicio y final
+  start = datetime.strptime(f"{day} {hour}", "%Y-%m-%d %H:%M")
+  if start < datetime.now():
+    return jsonify({"error": "No se puede reservar para una fecha anterior a hoy"}), 400
+  
+  if not duration:
+    duration = 60
+  else:
+    duration = int(duration)
+    
+  end = start + timedelta(minutes=int(duration))
+  
+  if end.date() != start.date():
+    return jsonify({"error": "La reserva no puede superar la medianoche"}), 400
+  
+  start_time = start.time()
+  end_time = end.time()
+
+  if not (club.open_hour <= start_time and club.close_hour >= end_time):
+    return jsonify({"error": "El horario está fuera del horario del club"}), 400
+  
+  # buscar las pistas activas del club que cumplan con los filtros
+  query = Court.query.filter(Court.club_id == club_id, Court.active == True)
+  
+  if court_type:
+    query = query.filter(Court.court_type == CourtType(court_type))
+
+  if covered:
+    query = query.filter(Court.covered == (covered == "true"))
+
+  if wall:
+    query = query.filter(Court.wall == WallType(wall))
+
+  if surface:
+    query = query.filter(Court.surface == SurfaceType(surface))
+  
+  # escoger solo las disponibles
+  subquery = db.session.query(Reservation.court_id).filter(and_(Reservation.start_date < end, Reservation.end_date > start))
+
+  query = query.filter(~Court.id.in_(subquery))
+  query = query.order_by(Court.number_court)
+  court = query.first()
+
+  if not court:
+    return jsonify({"error": "No hay pistas disponibles"}), 400
+  
+  # se crea la reserva
+  reservation = Reservation(court_id=court.id, creator_id=get_jwt_identity(), start_date=start, end_date=end, status_game=StatusGame.open)
+  db.session.add(reservation)
+  db.session.commit()
+  
+  # se crea registro de la reserva
+  creator = ReservationPlayer(user_id=get_jwt_identity(), reservation_id=reservation.id, team=Team.a, is_creator=True)
+  db.session.add(creator)
+  db.session.commit()
+  
+  return jsonify({"message": "Reserva creada correctamente"}), 201
 
 def join_reservation(user_id = 7, reservation_id = 3, selected_team = Team.b):
   user = User.query.filter_by(id = user_id).first()

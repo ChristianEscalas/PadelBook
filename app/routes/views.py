@@ -21,3 +21,7 @@ def contact_page():
 @views_bp.route('/reservar')
 def reservation_page():
 	return render_template('/players/reservate.html')
+
+@views_bp.route('/confirmar_reserva')
+def confirm_reservation():
+  return render_template('/players/confirm_reservation.html')
