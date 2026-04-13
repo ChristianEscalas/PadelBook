@@ -9,32 +9,51 @@
 {% endblock %}
 
 {% block content %}
+<div id="confirmar-reserva">
   <h1>Confirmar reserva</h1>
 
-  <div class="tarjetaConfirmacion">
-    <h2 id="club"></h2>
+  <div class="tarjetaClub">
+    <h3 id="club"></h3>
 
-    <div class="contenido">
+    <div class="infoClub">
+      <div class="fotoclub">
+        <img src="" alt="Foto del club">
+      </div>
 
-      <div class="datos">
-        <p>Día: <span id="dia"></span></p>
-        <p>Hora: <span id="hora"></span></p>
-        <p>Duración: <span id="duracion"></span></p>
-        <p>Tipo: <span id="tipo"></span></p>
+      <div class="info">
+        <p><strong>Día:</strong></p>
+        <p><strong>Hora:</strong></p>
+        <p><strong>Duración:</strong></p>
+        <p><strong>Tipo:</strong></p>
       </div>
 
       <div class="datos">
-        <p>Cubierta: <span id="cubierta"></span></p>
-        <p>Pared: <span id="pared"></span></p>
-        <p>Superficie: <span id="superficie"></span></p>
-        <p><strong>Pista nº: <span id="pista"></span></strong></p>
+        <p id="dia"></p>
+        <p id="hora"></p>
+        <p id="duracion"></p>
+        <p id="tipo"></p>
       </div>
 
-      <div class="botones">
+      <div class="info">
+        <p><strong>Cubierta:</strong></p>
+        <p><strong>Pared:</strong></p>
+        <p><strong>Superficie:</strong></p>
+        <p><strong>Pista nº:</strong></p>
+      </div>
+
+      <div class="datos">
+        <p id="cubierta"></p>
+        <p id="pared"></p>
+        <p id="superficie"></p>
+        <p id="pista"></p>
+      </div>
+
+      <div class="boton-reserva">
         <button type="button" id="confirmarBoton">Confirmar</button>
         <button type="button" id="cancelarBoton">Cancelar</button>
       </div>
 
     </div>
   </div>
+</div>
 {% endblock %}

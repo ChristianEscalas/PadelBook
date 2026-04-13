@@ -435,3 +435,177 @@ footer div {
 #cancelButton {
   background-color: #FF6464;
 }
+
+/* RESERVAR */
+
+#reservar {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#reservar #reservarForm {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+#reservar #reservarForm label{
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+#reservar #reservarForm input, select {
+  background-color: #F2F2F2;
+  padding: 5px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  cursor: pointer;
+  margin-bottom: 0px;
+}
+
+#reservar #reservarForm button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: 80px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#reservar #reservarForm button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#reservar #clubesDisponibles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+#reservar .tarjetaClub{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px 25px 9px 25px;
+  width: 800px;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#reservar .tarjetaClub .infoClub {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  gap: 20px;
+}
+
+#reservar .tarjetaClub .infoClub .fotoclub img {
+  width: 150px;
+  height: 150px;
+}
+
+#reservar .tarjetaClub h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#reservar .tarjetaClub .boton-reserva {
+  text-align: center;
+}
+
+#reservar .tarjetaClub button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#reservar .tarjetaClub button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+/* CONFIRMAR RESERVA */
+
+#confirmar-reserva {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#confirmar-reserva .tarjetaClub{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px 25px 9px 25px;
+  width: 800px;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#confirmar-reserva .tarjetaClub .infoClub {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+#confirmar-reserva .tarjetaClub .infoClub .fotoclub img {
+  width: 150px;
+  height: 150px;
+}
+
+#confirmar-reserva .tarjetaClub h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#confirmar-reserva .tarjetaClub .boton-reserva {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}
+
+#confirmar-reserva .tarjetaClub button {
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#confirmar-reserva .tarjetaClub #confirmarBoton {
+  background-color: #305BAB;
+}
+
+#confirmar-reserva .tarjetaClub #cancelarBoton {
+  background-color: #FF6464;
+}
+
+#confirmar-reserva .tarjetaClub #cancelarBoton:hover, #confirmar-reserva .tarjetaClub #confirmarBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}

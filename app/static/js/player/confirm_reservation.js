@@ -7,10 +7,34 @@ async function loadPreview() {
   document.getElementById("dia").innerText = params.get("dia");
   document.getElementById("hora").innerText = params.get("hora");
   document.getElementById("duracion").innerText = params.get("duracion") + " min";
-  document.getElementById("tipo").innerText = params.get("tipo");
-  document.getElementById("cubierta").innerText = params.get("cubierta");
-  document.getElementById("pared").innerText = params.get("pared");
-  document.getElementById("superficie").innerText = params.get("superficie");
+
+  const type = params.get("tipo");
+  if (type === "double") {
+    document.getElementById("tipo").innerText = "Dobles";
+  } else {
+    document.getElementById("tipo").innerText = "Individual";
+  }
+
+  const cover = params.get("cubierta");
+  if (cover === "true") {
+    document.getElementById("cubierta").innerText = "Si";
+  } else {
+    document.getElementById("cubierta").innerText = "No";
+  }
+
+  const wall = params.get("pared");
+  if (wall === "glass") {
+    document.getElementById("pared").innerText = "Cristal";
+  } else {
+    document.getElementById("pared").innerText = "Hormigón";
+  }
+
+  const surface = params.get("superficie");
+  if (surface === "grass") {
+    document.getElementById("superficie").innerText = "Césped";
+  } else {
+    document.getElementById("superficie").innerText = "Hormigón";
+  }
 
   // llamada al backend
   const response = await fetch(`http://192.168.0.100:5000/api/player/reservar/preview?${params.toString()}`, {
