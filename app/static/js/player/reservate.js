@@ -1,6 +1,7 @@
 import { loadCovert, loadMunicipalities, loadSurface, loadType, loadWall } from "./main.js";
 import { showNotification } from "../main.js";
 
+// filtrar clubes disponibles
 async function sendForm(form) {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -64,17 +65,66 @@ async function sendForm(form) {
               </div>
             </div>
           </div>`;
-
-        const confirmReservationButton = document.querySelector(".boton-reservar");
-        confirmReservationButton.addEventListener("click", () => {
-          window.location.href = `/confirmar_reserva?club_id=${club.id}`;
-        });
       });
     } catch (error) {
       console.error(error);
     }
   });
 }
+
+// crear reserva
+async function createReservation(form, clubId) {
+  const formData = new FormData(form);
+  const data = {
+    club_id: clubId,
+    dia: formData.get("dia"),
+    hora: formData.get("hora"),
+    duracion: formData.get("duracion"),
+    tipo: formData.get("tipo"),
+    cubierta: formData.get("cubierta"),
+    pared: formData.get("pared"),
+    superficie: formData.get("superficie"),
+  };
+
+  try {
+    const response = await fetch("/api/player/reservar", {
+      method: "POST",
+      headers: { Accept: "application/json", "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401) {
+      localStorage.removeItem("access_token");
+      showNotification("Sesión expirada, vuelve a iniciar sesión.", "error");
+      window.location.href = "/login";
+      return;
+    }
+
+    if (response.status === 400) {
+      const errorData = await response.json();
+      showNotification(errorData.error, "error");
+      return;
+    }
+
+    if (!response.ok) {
+      showNotification("Error al crear reserva", "error");
+      return;
+    }
+
+    const result = await response.json();
+    showNotification("Reserva creada correctamente", "success");
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("boton-reservar")) {
+    const form = document.getElementById("reservarForm");
+    const clubId = e.target.dataset.id;
+    await createReservation(form, clubId);
+  }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   loadCovert();
