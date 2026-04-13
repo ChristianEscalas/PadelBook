@@ -1,0 +1,36 @@
+{% extends 'base_player.html' %}
+
+{% block titleHead %}
+  Confirmar reserva
+{% endblock %}
+
+{% block content %}
+  <h1>Confirmar reserva</h1>
+
+  <div class="tarjetaConfirmacion">
+    <h2 id="club"></h2>
+
+    <div class="contenido">
+
+      <div class="datos">
+        <p>Día: <span id="dia"></span></p>
+        <p>Hora: <span id="hora"></span></p>
+        <p>Duración: <span id="duracion"></span></p>
+        <p>Tipo: <span id="tipo"></span></p>
+      </div>
+
+      <div class="datos">
+        <p>Cubierta: <span id="cubierta"></span></p>
+        <p>Pared: <span id="pared"></span></p>
+        <p>Superficie: <span id="superficie"></span></p>
+        <p><strong>Pista nº: <span id="pista"></span></strong></p>
+      </div>
+
+      <div class="botones">
+        <button type="button" id="confirmarBoton">Confirmar</button>
+        <button type="button" id="cancelarBoton">Cancelar</button>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

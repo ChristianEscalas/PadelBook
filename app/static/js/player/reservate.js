@@ -10,7 +10,7 @@ async function sendForm(form) {
     const searchParams = new URLSearchParams(formData);
 
     try {
-      const response = await fetch(`/api/player/reservar?${searchParams.toString()}`, {
+      const response = await fetch(`http://192.168.0.100:5000/api/player/reservar?${searchParams.toString()}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
           Accept: "application/json",
@@ -87,7 +87,7 @@ async function createReservation(form, clubId) {
   };
 
   try {
-    const response = await fetch("/api/player/reservar", {
+    const response = await fetch("http://192.168.0.100:5000/api/player/reservar", {
       method: "POST",
       headers: { Accept: "application/json", "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
       body: JSON.stringify(data),
