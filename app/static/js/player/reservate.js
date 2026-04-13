@@ -122,7 +122,10 @@ document.addEventListener("click", async (e) => {
   if (e.target.classList.contains("boton-reservar")) {
     const form = document.getElementById("reservarForm");
     const clubId = e.target.dataset.id;
-    await createReservation(form, clubId);
+    const formData = new FormData(form);
+    const params = new URLSearchParams(formData);
+
+    window.location.href = `/confirmar_reserva?club_id=${clubId}&${params.toString()}`;
   }
 });
 
