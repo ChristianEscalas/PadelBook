@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block titleHead %}
+  Contacto
+{% endblock %}
+
+{% block script %}
+  <script src="{{url_for('static', filename='js/contact.js')}}" type="module"></script>
+{% endblock %}
+
+{% block nav %}
+  <ul>
+    <li><a href="/">INICIO</a></li>
+    <li><a href="/">COMO FUNCIONA</a></li>
+    <li><a href="/login">LOGIN</a></li>
+    <li><a href="/register">REGISTRO</a></li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+  <div id="contacto">
+    <h1>Contacta con nosotros</h1>
+    <div id="form-contenedor">
+      <div id="texto-contacto">
+        <p>¿Tienes alguna duda o necesitas ayuda? Escríbenos, estamos aquí para echarte una mano 😊</p>
+        <p>En PadelBook queremos que reservar pista o encontrar partido sea rápido y sin complicaciones...</p>
+        <p>Rellena el formulario y te respondemos lo antes posible.</p>
+        <p>¡Gracias por usar PadelBook! 🎾</p>
+      </div>
+      
+      <form id="form">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" placeholder="Nombre" required>
+    
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        
+        <label for="message">Mensaje</label>
+        <textarea id="message" name="message" placeholder="Mensaje" required></textarea>
+
+          <div id="botones">
+            <button type="submit" id="loginButton">Enviar</button>
+            <button type="button" id="cancelButton">Cancelar</button>
+          </div>
+  
+      </form>
+    </div>
+  </div>
+{% endblock %}

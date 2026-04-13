@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block titleHead %}
+  Inicio
+{% endblock %}
+
+{% block script %}
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const reservaButton = document.getElementById("reservaButton");
+      reservaButton.addEventListener("click", () => {
+        window.location.href = "/login";
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block nav %}
+  <ul>
+    <li><a href="#inicio">INICIO</a></li>
+    <li><a href="#comoFunciona">COMO FUNCIONA</a></li>
+    <li><a href="/login">LOGIN</a></li>
+    <li><a href="/register">REGISTRO</a></li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+  <section id="inicio">
+    <div class="columna">
+      <h1>Reserva tu pista de padel en segundos</h1>
+      <button type="button" id="reservaButton">RESERVA</button>
+    </div>
+    <div class="columna">
+      <img src="{{url_for('static', filename='images/fotoPadelBook.jpg')}}" alt="Foto PadelBook"></img>
+    </div>
+  </section>
+
+  <section id="comoFunciona">
+    <div>
+      <h2>Como funciona?</h2>
+    </div>
+
+    <div id="tarjetas">
+      <div class="tarjeta">
+        <p class="orden">1</p>
+        <h3>Busca tu club</h3>
+        <p>Elige el club en el que quieras hacer la reserva o la que te quieras unir</p>
+      </div>
+
+      <div class="tarjeta">
+        <p class="orden">2</p>
+        <h3>Elige la hora</h3>
+        <p>Selecciona a que hora quieres jugar</p>
+      </div>
+
+      <div class="tarjeta">
+        <p class="orden">3</p>
+        <h3>¡Juega!</h3>
+        <p>Disfruta del partido con tus amigos o haciendo nuevos</p>
+      </div>
+    </div>
+  </section>
+{% endblock %}

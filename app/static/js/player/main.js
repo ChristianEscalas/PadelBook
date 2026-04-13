@@ -1,0 +1,116 @@
+import { showNotification } from "../main.js";
+
+export async function loadMunicipalities() {
+  const response = await fetch("http://192.168.0.100:5000/api/player/municipios", {
+    headers: { Accept: "application/json" },
+  });
+
+  if (!response.ok) {
+    showNotification("Error cargando municipios", "error");
+    return;
+  }
+
+  const result = await response.json();
+  const select = document.getElementById("municipio");
+
+  result.forEach((municipality) => {
+    let option = `<option value="${municipality}">${municipality}</option>`;
+    select.innerHTML += option;
+  });
+}
+
+export async function loadType() {
+  const response = await fetch("http://192.168.0.100:5000/api/player/tipo", {
+    headers: { Accept: "application/json" },
+  });
+
+  if (!response.ok) {
+    showNotification("Error cargando tipos de pista", "error");
+    return;
+  }
+
+  const result = await response.json();
+  const select = document.getElementById("tipo");
+
+  result.forEach((type) => {
+    if (type === "individual") {
+      let option = `<option value="${type}">Individual</option>`;
+      select.innerHTML += option;
+    } else {
+      let option = `<option value="${type}">Dobles</option>`;
+      select.innerHTML += option;
+    }
+  });
+}
+
+export async function loadCovert() {
+  const response = await fetch("http://192.168.0.100:5000/api/player/cubierta", {
+    headers: { Accept: "application/json" },
+  });
+
+  if (!response.ok) {
+    showNotification("Error cargando tipos de cubierta", "error");
+    return;
+  }
+
+  const result = await response.json();
+  const select = document.getElementById("cubierta");
+
+  result.forEach((cover) => {
+    if (cover === "true") {
+      let option = `<option value="${cover}">Si</option>`;
+      select.innerHTML += option;
+    } else {
+      let option = `<option value="${cover}">No</option>`;
+      select.innerHTML += option;
+    }
+  });
+}
+
+export async function loadWall() {
+  const response = await fetch("http://192.168.0.100:5000/api/player/pared", {
+    headers: { Accept: "application/json" },
+  });
+
+  if (!response.ok) {
+    showNotification("Error cargando tipos de pared", "error");
+    return;
+  }
+
+  const result = await response.json();
+  const select = document.getElementById("pared");
+
+  result.forEach((wall) => {
+    if (wall === "glass") {
+      let option = `<option value="${wall}">Cristal</option>`;
+      select.innerHTML += option;
+    } else {
+      let option = `<option value="${wall}">Hormigón</option>`;
+      select.innerHTML += option;
+    }
+  });
+}
+
+export async function loadSurface() {
+  const response = await fetch("http://192.168.0.100:5000/api/player/superficie", {
+    headers: { Accept: "application/json" },
+  });
+
+  if (!response.ok) {
+    showNotification("Error cargando tipos de superficie", "error");
+    return;
+  }
+
+  const result = await response.json();
+  const select = document.getElementById("superficie");
+
+  result.forEach((surface) => {
+    if (surface === "grass") {
+      let option = `<option value="${surface}">Césped</option>`;
+      select.innerHTML += option;
+    } else {
+      let option = `<option value="${surface}">Hormigón</option>`;
+      select.innerHTML += option;
+    }
+  });
+}

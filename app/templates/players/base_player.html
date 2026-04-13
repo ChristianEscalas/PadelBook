@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Padelbook | {% block titleHead %} {% endblock %}</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+  {% block script %} {% endblock %}
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const contactButton = document.getElementById("contactButton");
+      contactButton.addEventListener("click", () => {
+        window.location.href = "/contacto";
+      });
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <div id="header">
+      <div id="logoImg">
+        <img src="{{url_for('static', filename='images/logo.svg')}}" alt="Logo">
+        <h5>PADELBOOK</h5>
+      </div>
+
+      <div id="nav">
+        <nav>
+          <ul>
+            <li><a href="/reservar">RESERVAR</a></li>
+            <li><a href="/reservas">MIS RESERVAS</a></li>
+            <li><a href="/partidos">BUSCAR PARTIDO</a></li>
+            <li><a href="/perfil">MI PERFIL</a></li>
+            <li><a href="/ranking">RANKING</a></li>
+          </ul>
+        </nav>
+      </div>
+      <button type="button" id="contactButton" herf="/contact">CONTACTO</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="notification-container"></div>
+    {% block content %} {% endblock %}
+  </main>
+
+  <footer>
+    <div>
+      <a href="#">Copyright &copy</a>
+      <p>PadelBook - 2026</p>
+    </div>
+  </footer>
+</body>
+</html>
