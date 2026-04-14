@@ -61,8 +61,8 @@ async function loadReservations() {
           </div>
 
           <div class="boton-reserva">
-            <button type="button" id="detallesBoton">Detalles</button>
-            <button type="button" id="cancelarBoton">Cancelar</button>
+            <button type="button" class="detallesBoton" data-id="${reservation.id}">Detalles</button>
+            <button type="button" class="cancelarBoton" data-id="${reservation.id}">Cancelar</button>
           </div>
         </div>
       </div>`;
@@ -71,6 +71,13 @@ async function loadReservations() {
     console.error(error);
   }
 }
+
+document.addEventListener("click", async (event) => {
+  if (event.target.classList.contains("detallesBoton")) {
+    const reservationId = event.target.dataset.id;
+    window.location.href = `/reserva/${reservationId}`;
+  }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   loadReservations();
