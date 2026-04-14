@@ -281,17 +281,53 @@ def get_reservations():
     court = reservation.court
     club = reservation.court.club
     
+    court_type = ""
+    if court.court_type.value == "double":
+      court_type = "Doble"
+    else:
+      court_type = "Individual"
+    
+    cover = ""
+    if court.covered:
+      cover = "Sí"
+    else:
+      cover = "No"
+    
+    wall = ""
+    if court.wall.value == "glass":
+      wall = "Cristal"
+    else:
+      wall = "Hormigón"
+    
+    surface = ""
+    if court.surface.value == "grass":
+      surface = "Césped"
+    else:
+      surface = "Hormigón"
+    
+    status = ""
+    if reservation.status_game.value == "open":
+      status = "Abierta"
+    elif reservation.status_game.value == "complete":
+      status = "Completa"
+    elif reservation.status_game.value == "canceled":
+      status = "Cancelada"
+    elif reservation.status_game.value == "pending_result":
+      status = "Pendiente de resultado"
+    else:
+      status = "Finalizada"
+    
     result.append({
       "id": reservation.id,
       "club_name": club.club_name,
       "date": reservation.start_date.strftime("%d/%m/%Y - %H:%M"),
       "number_court": court.number_court,
       "duration": club.game_duration,
-      "type": court.court_type.value,
-      "cover": court.covered,
-      "wall": court.wall.value,
-      "surface": court.surface.value,
-      "status": reservation.status_game.value,
+      "type": court_type,
+      "cover": cover,
+      "wall": wall,
+      "surface": surface,
+      "status": status,
       "photo": club.photo
     })
     
