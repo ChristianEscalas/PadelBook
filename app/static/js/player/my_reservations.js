@@ -1,0 +1,77 @@
+import { showNotification } from "../main.js";
+
+async function loadReservations() {
+  try {
+    const response = await fetch("http://192.168.0.100:5000/api/player/mis_reservas", {
+      headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
+    });
+
+    if (response.status === 401) {
+      localStorage.removeItem("access_token");
+      showNotification("Sesión expirada, vuelve a iniciar sesión.", "error");
+      window.location.href = "/login";
+      return;
+    }
+
+    if (!response.ok) {
+      showNotification("Error al cargar las reservas", "error");
+      return;
+    }
+
+    const data = await response.json();
+    const divTarjetas = document.getElementById("tarjetas-reserva");
+
+    divTarjetas.innerHTML = "";
+    data.forEach((reservation) => {
+      divTarjetas.innerHTML += `
+      <div class="tarjetaClub">
+        <h3>${reservation.club_name}</h3>
+        <div class="infoClub">
+        
+          <div class="fotoclub">
+            <img src="${club.photo}" alt="Foto del club">
+          </div>
+          
+          <div class="info">
+            <p><strong>Fecha:</strong></p>
+            <p><strong>Pista nº:</strong></p>
+            <p><strong>Duración:</strong></p>
+            <p><strong>Tipo:</strong></p>
+          </div>
+
+          <div class="datos">
+            <p>${reservation.date}</p>
+            <p>${reservation.number_court}</p>
+            <p>${reservation.duration} minutos</p>
+            <p>${reservation.type}</p>
+          </div>
+
+          <div class="info">
+            <p><strong>Cubierta:</strong></p>
+            <p><strong>Pared:</strong></p>
+            <p><strong>Superfície:</strong></p>
+            <p><strong>Estado:</strong></p>
+          </div>
+
+          <div class="datos">
+            <p>${reservation.cover}</p>
+            <p>${reservation.wall}</p>
+            <p>${reservation.surface}</p>
+            <p>${reservation.status}</p>
+          </div>
+
+          <div class="boton-reserva">
+            <button type="button" id="detallesBoton">Detalles</button>
+            <button type="button" id="cancelarBoton">Cancelar</button>
+          </div>
+        </div>
+      </div>`;
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadReservations();
+});
