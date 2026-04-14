@@ -305,14 +305,25 @@ def get_reservations():
     else:
       surface = "Hormigón"
     
+    status_game = reservation.status_game
+    if status_game not in [StatusGame.canceled, StatusGame.finalized]:
+
+      if len(reservation.players) == 4:
+        status_game = StatusGame.complete
+      else:
+        status_game = StatusGame.open
+
+      if status_game == StatusGame.complete and reservation.start_date <= datetime.now():
+        status_game = StatusGame.pending_result
+    
     status = ""
-    if reservation.status_game.value == "open":
+    if status_game.value == "open":
       status = "Abierta"
-    elif reservation.status_game.value == "complete":
+    elif status_game.value == "complete":
       status = "Completa"
-    elif reservation.status_game.value == "canceled":
+    elif status_game.value == "canceled":
       status = "Cancelada"
-    elif reservation.status_game.value == "pending_result":
+    elif status_game.value == "pending_result":
       status = "Pendiente de resultado"
     else:
       status = "Finalizada"
