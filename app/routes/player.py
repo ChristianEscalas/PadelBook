@@ -193,8 +193,14 @@ def create_reservation():
 
 @player_bp.route('/reservar/preview', methods=['GET'])
 def preview_reservation():
+  # comprobar si el usuario ha hecho login
   verify_jwt_in_request()
 
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
+  
   club_id = request.args.get("club_id")
   day = request.args.get("dia")
   hour = request.args.get("hora")
@@ -250,7 +256,46 @@ def preview_reservation():
     "end": end.strftime("%Y-%m-%d %H:%M"),
     "duration": duration
   }), 200
+
+@player_bp.route('/mis_reservas', methods=['GET'])
+def get_reservations():
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  # id del usuario
+  user_id = get_jwt_identity()
+  
+  # reservas del usuario
+  reservations = Reservation.query.join(ReservationPlayer).filter(ReservationPlayer.user_id == user_id)(Reservation.start_date.desc()).all()
+  
+  if not reservations:
+    return jsonify([]), 200
+  
+  result = []
+  for reservation in reservations:
+    court = reservation.court
+    club = reservation.court.club
     
+    result.append({
+      "id": reservation.id,
+      "club_name": club.club_name,
+      "date": reservation.start_date.strftime("%d/%m/%Y - %H:%M"),
+      "number_court": court.number_court,
+      "duration": club.game_duration,
+      "type": court.court_type.value,
+      "cover": court.covered,
+      "wall": court.wall.value,
+      "surface": court.surface.value,
+      "status": reservation.status_game.value
+    })
+    
+  return jsonify(result), 200
+
 def join_reservation(user_id = 7, reservation_id = 3, selected_team = Team.b):
   user = User.query.filter_by(id = user_id).first()
   
