@@ -271,7 +271,7 @@ def get_reservations():
   user_id = get_jwt_identity()
   
   # reservas del usuario
-  reservations = Reservation.query.join(ReservationPlayer).filter(ReservationPlayer.user_id == user_id)(Reservation.start_date.desc()).all()
+  reservations = Reservation.query.join(ReservationPlayer).filter(ReservationPlayer.user_id == user_id).order_by(Reservation.start_date.desc()).all()
   
   if not reservations:
     return jsonify([]), 200
