@@ -24,9 +24,10 @@ async function loadReservation() {
       .join("");
   };
 
+  const result = data.result === null ? "0-0" : data.result;
   let info = `
   <div id="tarjeta-detalle">
-    <h3>"${data.club}"</h3>
+    <h3>${data.club}</h3>
 
     <div id="info-reserva">
       <div id="foto-club">
@@ -34,14 +35,9 @@ async function loadReservation() {
       </div>
 
       <div id="detalles-reserva">
-        <div id="datos"> <!-- Corregido div="datos" por id="datos" -->
-          <p><strong>Fecha:</strong></p>
-          <p><strong>Resultado:</strong></p>
-        </div>
-
-        <div id="info">
-          <p>${data.date}</p>
-          <p>${data.result}</p>
+        <div id="datos">
+          <p><strong>Fecha: </strong>${data.date}</p>
+          <p><strong>Resultado: </strong>${result}</p>
         </div>
 
         <div id="equipos">
@@ -66,7 +62,7 @@ async function loadReservation() {
     </div>
   </div>`;
 
-  document.getElementById("detalles-reserva").innerHTML = info;
+  document.getElementById("detalles-reserva").innerHTML += info;
 
   const token = localStorage.getItem("access_token");
   if (token) {
