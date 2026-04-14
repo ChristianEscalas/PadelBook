@@ -29,3 +29,7 @@ def confirm_reservation():
 @views_bp.route('/mis_reservas')
 def show_reservations():
   return render_template('/players/my_reservations.html')
+
+@views_bp.route('/reserva/<int:id>')
+def reservation_detail_page(id):
+  return render_template('players/reservation_detail.html')
