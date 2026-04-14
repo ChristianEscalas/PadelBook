@@ -664,15 +664,127 @@ footer div {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-#mis-reservas .tarjetaClub #detallesBoton {
+#mis-reservas .tarjetaClub .detallesBoton {
   background-color: #305BAB;
 }
 
-#mis-reservas .tarjetaClub #cancelarBoton {
+#mis-reservas .tarjetaClub .cancelarBoton {
   background-color: #FF6464;
 }
 
-#mis-reservas .tarjetaClub #cancelarBoton:hover, #mis-reservas .tarjetaClub #detallesBoton:hover {
+#mis-reservas .tarjetaClub .cancelarBoton:hover, #mis-reservas .tarjetaClub .detallesBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+/* DETALLE DE LA RESERVA */
+
+#detalles-reserva {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#detalles-reserva #tarjeta-detalle{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px 25px 9px 25px;
+  width: 800px;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #fotoclub img {
+  width: 150px;
+  height: 150px;
+}
+
+#detalles-reserva #tarjeta-detalle h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#detalles-reserva #tarjeta-detalle #datos {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 20px;
+  align-items: center;
+}
+
+#detalles-reserva #tarjeta-detalle #botones{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #detalle-reserva {
+  text-align: center;
+}
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos {
+  grid-column: span 2;
+  margin-top: 15px;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 12px;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas .pareja {
+  display: flex;
+  gap: 20px;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas .pareja .jugador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas .pareja .jugador img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+}
+
+#detalles-reserva #tarjeta-detalle button {
+  padding: 10px;
+  width: 150px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  margin: 0px;
+}
+
+#detalles-reserva #tarjeta-detalle #confirmarBoton {
+  background-color: #5cf094;
+}
+
+#detalles-reserva #tarjeta-detalle #botonVolver {
+  background-color: #305BAB;
+}
+
+#detalles-reserva #tarjeta-detalle #botonVolver:hover, #detalles-reserva #tarjeta-detalle #confirmarBoton:hover {
   background-color: #AEEA00;
   color: black;
   transform: translateY(-5px);
