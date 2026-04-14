@@ -344,6 +344,41 @@ def get_reservations():
     
   return jsonify(result), 200
 
+@player_bp.route('/reservas/<int:id>', methods=['GET'])
+def get_reservation_detail(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
+
+  reservation = Reservation.query.get(id)
+
+  if not reservation:
+    return jsonify({"error": "Reserva no encontrada"}), 404
+
+  players = []
+  for player in reservation.players:
+    players.append({
+      "id": player.user.id,
+      "name": player.user.firstname,
+      "photo": player.user.photo,
+      "team": player.team.value,
+      "is_creator": player.is_creator
+    })
+
+  return jsonify({
+    "id": reservation.id,
+    "club": reservation.court.club.club_name,
+    "photo": reservation.court.club.photo,
+    "date": reservation.start_date.strftime("%d/%m/%Y - %H:%M"),
+    "result": reservation.result,
+    "players": players,
+    "creator_id": reservation.creator_id
+  }), 200
+
 def join_reservation(user_id = 7, reservation_id = 3, selected_team = Team.b):
   user = User.query.filter_by(id = user_id).first()
   
