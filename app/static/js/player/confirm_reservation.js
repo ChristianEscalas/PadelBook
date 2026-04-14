@@ -75,7 +75,7 @@ async function confirmReservation() {
   showNotification("Reserva creada correctamente", "success");
 
   setTimeout(() => {
-    window.location.href = "/mis-reservas";
+    window.location.href = "/mis_reservas";
   }, 1000);
 }
 

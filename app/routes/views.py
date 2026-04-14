@@ -25,3 +25,7 @@ def reservation_page():
 @views_bp.route('/confirmar_reserva')
 def confirm_reservation():
   return render_template('/players/confirm_reservation.html')
+
+@views_bp.route('/mis_reservas')
+def show_reservations():
+  return render_template('/players/my_reservations.html')
