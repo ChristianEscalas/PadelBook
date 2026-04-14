@@ -34,7 +34,7 @@ async function loadReservation() {
         <img src="${data.photo}" alt="Foto del club">
       </div>
 
-      <div id="detalles-reserva">
+      <div id="detalle-reserva">
         <div id="datos">
           <p><strong>Fecha: </strong>${data.date}</p>
           <p><strong>Resultado: </strong>${result}</p>
@@ -68,12 +68,17 @@ async function loadReservation() {
   if (token) {
     const userId = JSON.parse(atob(token.split(".")[1])).sub;
     const isCreator = data.creator_id == userId;
-    const isTeamBFirst = equipoB.length > 0 && equipoB[0].id == userId;
+    const isTeamBFirst = teamB.length > 0 && teamB[0].id == userId;
 
     if (data.result === null && (isCreator || isTeamBFirst)) {
       document.getElementById("confirmarBoton").style.display = "block";
     }
   }
+
+  const returnButton = document.getElementById("botonVolver");
+  returnButton.addEventListener("click", () => {
+    window.history.back();
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
