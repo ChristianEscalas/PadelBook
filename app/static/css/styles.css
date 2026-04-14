@@ -609,3 +609,71 @@ footer div {
   color: black;
   transform: translateY(-5px);
 }
+
+/* MIS RESERVAS */
+
+#mis-reservas {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mis-reservas .tarjetaClub{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px 25px 9px 25px;
+  width: 800px;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#mis-reservas .tarjetaClub .infoClub {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+#mis-reservas .tarjetaClub .infoClub .fotoclub img {
+  width: 150px;
+  height: 150px;
+}
+
+#mis-reservas .tarjetaClub h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#mis-reservas .tarjetaClub .boton-reserva {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}
+
+#mis-reservas .tarjetaClub button {
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#mis-reservas .tarjetaClub #detallesBoton {
+  background-color: #305BAB;
+}
+
+#mis-reservas .tarjetaClub #cancelarBoton {
+  background-color: #FF6464;
+}
+
+#mis-reservas .tarjetaClub #cancelarBoton:hover, #mis-reservas .tarjetaClub #detallesBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
