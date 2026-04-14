@@ -29,7 +29,7 @@ async function loadReservations() {
         <div class="infoClub">
         
           <div class="fotoclub">
-            <img src="${club.photo}" alt="Foto del club">
+            <img src="${reservation.photo}" alt="Foto del club">
           </div>
           
           <div class="info">

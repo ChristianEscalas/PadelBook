@@ -291,7 +291,8 @@ def get_reservations():
       "cover": court.covered,
       "wall": court.wall.value,
       "surface": court.surface.value,
-      "status": reservation.status_game.value
+      "status": reservation.status_game.value,
+      "photo": club.photo
     })
     
   return jsonify(result), 200
