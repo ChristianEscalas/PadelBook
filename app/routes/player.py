@@ -381,7 +381,12 @@ def get_reservation_detail(id):
     "status": reservation.status_game.value,
     "players": players,
     "creator_id": reservation.creator_id,
-    "court_number": reservation.court.number_court
+    "court_number": reservation.court.number_court,
+    "type": reservation.court.court_type.value,
+    "cover": reservation.court.covered,
+    "wall": reservation.court.wall.value,
+    "surface": reservation.court.surface.value,
+    "duration": reservation.court.club.game_duration,
   }), 200
 
 @player_bp.route('/reserva/cancelar/<int:id>', methods=['POST'])
@@ -508,13 +513,21 @@ def join_reservation_route(id):
   # comprobar si el usuario ha hecho login
   verify_jwt_in_request()
 
-  # Comprobar el rol del usuario
+  # Comprobar el rol del usuario (del primer código)
   claims = get_jwt()
   if claims.get("rol") != "player":
     return jsonify({"error": "No autorizado"}), 403
 
   user_id = get_jwt_identity()
-
+    
+  data = request.get_json()
+  selected_team = data.get("team")
+    
+  try:
+    selected_team = Team(selected_team)
+  except:
+    return jsonify({"error": "Equipo inválido"}), 400
+    
   user = User.query.get(user_id)
   if not user:
     return jsonify({"error": "Usuario no existe"}), 404
@@ -530,7 +543,6 @@ def join_reservation_route(id):
     return jsonify({"error": "La reserva no está abierta"}), 400
 
   already_in = ReservationPlayer.query.filter_by(reservation_id=id, user_id=user_id).first()
-
   if already_in:
     return jsonify({"error": "Ya estás apuntado a este partido"}), 400
 
@@ -538,17 +550,14 @@ def join_reservation_route(id):
     return jsonify({"error": "No hay huecos disponibles"}), 400
 
   team_count = ReservationPlayer.query.filter_by(reservation_id=id, team=selected_team).count()
-
   if team_count >= 2:
     return jsonify({"error": f"El equipo {selected_team.value} ya está completo"}), 400
 
   player = ReservationPlayer(user_id=user_id, reservation_id=id, team=selected_team, is_creator=False)
-
   db.session.add(player)
 
   if len(reservation.players) + 1 == 4:
     reservation.status_game = StatusGame.complete
-
   db.session.commit()
 
   return jsonify({"message": "Te has unido al partido"}), 200
