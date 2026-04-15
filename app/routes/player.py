@@ -274,7 +274,7 @@ def get_reservations():
   user_id = get_jwt_identity()
   
   # reservas del usuario
-  reservations = Reservation.query.join(ReservationPlayer).filter(ReservationPlayer.user_id == user_id).order_by(Reservation.start_date.desc()).all()
+  reservations = Reservation.query.join(ReservationPlayer).filter(ReservationPlayer.user_id == user_id, Reservation.status_game != StatusGame.canceled).order_by(Reservation.start_date.desc()).all()
   
   if not reservations:
     return jsonify([]), 200
@@ -415,7 +415,7 @@ def cancel_reservation(id):
   reservation.status_game = StatusGame.canceled
   db.session.commit()
   
-  return jsonify({"message": "Reserva eliminada"}), 200
+  return jsonify({"message": "Reserva cancelada"}), 200
   
 def join_reservation(user_id = 7, reservation_id = 3, selected_team = Team.b):
   user = User.query.filter_by(id = user_id).first()
