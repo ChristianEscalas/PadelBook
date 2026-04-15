@@ -503,6 +503,56 @@ def search_matches():
 
   return jsonify(result), 200
 
+@player_bp.route('/reservas/unirse/<int:id>', methods=['POST'])
+def join_reservation_route(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
+
+  user_id = get_jwt_identity()
+
+  user = User.query.get(user_id)
+  if not user:
+    return jsonify({"error": "Usuario no existe"}), 404
+
+  reservation = Reservation.query.get(id)
+  if not reservation:
+    return jsonify({"error": "Reserva no existe"}), 404
+
+  if reservation.creator_id == user_id:
+    return jsonify({"error": "No puedes unirte a tu propia reserva"}), 400
+
+  if reservation.status_game != StatusGame.open:
+    return jsonify({"error": "La reserva no está abierta"}), 400
+
+  already_in = ReservationPlayer.query.filter_by(reservation_id=id, user_id=user_id).first()
+
+  if already_in:
+    return jsonify({"error": "Ya estás apuntado a este partido"}), 400
+
+  if len(reservation.players) >= 4:
+    return jsonify({"error": "No hay huecos disponibles"}), 400
+
+  team_count = ReservationPlayer.query.filter_by(reservation_id=id, team=selected_team).count()
+
+  if team_count >= 2:
+    return jsonify({"error": f"El equipo {selected_team.value} ya está completo"}), 400
+
+  player = ReservationPlayer(user_id=user_id, reservation_id=id, team=selected_team, is_creator=False)
+
+  db.session.add(player)
+
+  if len(reservation.players) + 1 == 4:
+    reservation.status_game = StatusGame.complete
+
+  db.session.commit()
+
+  return jsonify({"message": "Te has unido al partido"}), 200
+
 def join_reservation(user_id = 7, reservation_id = 3, selected_team = Team.b):
   user = User.query.filter_by(id = user_id).first()
   
