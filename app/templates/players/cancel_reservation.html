@@ -9,10 +9,10 @@
 {% endblock %}
 
 {% block content %}
-  <div class="cancelar-reserva">
+  <div id="cancelar-reserva">
     <h1>Cancelar reserva</h1>
     <div id="tarjetaCancelar">
-      <h2 id="club"></h2>
+      <h3 id="club"></h3>
         
       <div class="info-reserva">
         <div class="fotoclub">
@@ -20,23 +20,16 @@
         </div>
 
         <div class="info">
-          <p><strong>Fecha:</strong></p>
-          <p><strong>Pista nº:</strong></p>
+          <p>
+            <strong>Fecha: </strong><span id="fecha"></span> &nbsp;
+            <strong>Pista nº: </strong><span id="pista"></span>
+          </p>
         </div>
 
-        <div id="datos">
-          <p id="fecha"></p>
-          <p id="pista"></p>
+        <div class="botones">
+          <button type="button" id="cancelarBoton">Cancelar reserva</button>
+          <button type="button" id="volverBoton">Volver</button>
         </div>
-      </div>
-
-      <div class="warning">
-        <p>⚠️ ¿Estás seguro de que quieres cancelar esta reserva?</p>
-      </div>
-
-      <div class="botones">
-        <button type="button" id="cancelarBoton">Cancelar reserva</button>
-        <button type="button" id="volverBtn">Volver</button>
       </div>
     </div>
   </div>
