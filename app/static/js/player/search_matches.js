@@ -72,23 +72,11 @@ async function sendForm(form) {
   });
 }
 
-document.addEventListener("click", async (event) => {
+document.addEventListener("click", (event) => {
   if (event.target.classList.contains("boton-reservar")) {
     const id = event.target.dataset.id;
 
-    const response = await fetch(`/api/player/reservas/unirse/${id}`, {
-      method: "POST",
-      headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      showNotification(error.error, "error");
-      return;
-    }
-
-    showNotification("Te has unido al partido", "success");
-    button.innerText = "Unido";
+    window.location.href = `/unirse_reserva?id=${id}`;
   }
 });
 

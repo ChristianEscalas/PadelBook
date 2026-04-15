@@ -1,0 +1,52 @@
+{% extends 'players/base_player.html' %}
+
+{% block titleHead %}
+  Unirse a partido
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/player/join_reservation.js') }}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+  <div id="unirse-partido">
+    <h1>Unirse a partido</h1>
+    
+    <div class="tarjetaConfirmacion">
+      <h2 id="club"></h2>
+    
+      <div class="partido">
+    
+        <div class="datos">
+          <p>Día: <span id="dia"></span></p>
+          <p>Hora: <span id="hora"></span></p>
+          <p>Duración: <span id="duracion"></span></p>
+          <p>Tipo: <span id="tipo"></span></p>
+        </div>
+    
+        <div class="datos">
+          <p>Cubierta: <span id="cubierta"></span></p>
+          <p>Pared: <span id="pared"></span></p>
+          <p>Superficie: <span id="superficie"></span></p>
+        </div>
+    
+        <div class="equipos">
+          <div>
+            <h3>Equipo A</h3>
+            <div id="teamA"></div>
+          </div>
+    
+          <div>
+            <h3>Equipo B</h3>
+            <div id="teamB"></div>
+          </div>
+        </div>
+    
+        <div class="botones">
+          <button id="confirmarBoton">Unirse</button>
+          <button id="cancelarBoton">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
