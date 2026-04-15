@@ -57,7 +57,7 @@ async function sendForm(form) {
               <div class="datos">
                 <p>${reservation.address}</p>
                 <p>De ${reservation.date}</p>
-                <p>${reservation.number_court} minutos</p>
+                <p>${reservation.number_court}</p>
               </div>
 
               <div class="boton-reserva">

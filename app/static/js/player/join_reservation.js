@@ -14,12 +14,36 @@ async function loadReservation() {
 
   document.getElementById("club").innerText = data.club;
   document.getElementById("dia").innerText = data.date;
-  document.getElementById("hora").innerText = data.hour;
-  document.getElementById("duracion").innerText = data.duration + " min";
-  document.getElementById("tipo").innerText = data.type;
-  document.getElementById("cubierta").innerText = data.cover ? "Sí" : "No";
-  document.getElementById("pared").innerText = data.wall;
-  document.getElementById("superficie").innerText = data.surface;
+  document.getElementById("duracion").innerText = data.duration + " minutos";
+  document.getElementById("fotoClub").innerHTML = `<img src="${data.photo} alt="${data.club}">`;
+
+  const type = data.type;
+  if (type === "double") {
+    document.getElementById("tipo").innerText = "Dobles";
+  } else {
+    document.getElementById("tipo").innerText = "Individual";
+  }
+
+  const cover = data.cover;
+  if (cover === true) {
+    document.getElementById("cubierta").innerText = "Si";
+  } else {
+    document.getElementById("cubierta").innerText = "No";
+  }
+
+  const wall = data.wall;
+  if (wall === "glass") {
+    document.getElementById("pared").innerText = "Cristal";
+  } else {
+    document.getElementById("pared").innerText = "Hormigón";
+  }
+
+  const surface = data.surface;
+  if (surface === "grass") {
+    document.getElementById("superficie").innerText = "Césped";
+  } else {
+    document.getElementById("superficie").innerText = "Hormigón";
+  }
 
   const teamA = document.getElementById("teamA");
   const teamB = document.getElementById("teamB");
@@ -32,11 +56,19 @@ async function loadReservation() {
 
   renderTeam(teamA, playersA, "a");
   renderTeam(teamB, playersB, "b");
+
+  document.getElementById("teamA").insertAdjacentHTML("beforebegin", `<p>${playersA.length}/2</p>`);
+  document.getElementById("teamB").insertAdjacentHTML("beforebegin", `<p>${playersA.length}/2</p>`);
 }
 
 function renderTeam(container, players, team) {
   players.forEach((p) => {
-    container.innerHTML += `<div>${p.name}</div>`;
+    container.innerHTML += `
+      <div class="jugador">
+        <img src="${p.photo}" alt="${p.name}">
+        <p>${p.name}</p>
+      </div>
+    `;
   });
 
   for (let i = players.length; i < 2; i++) {
