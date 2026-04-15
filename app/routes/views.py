@@ -33,3 +33,7 @@ def show_reservations():
 @views_bp.route('/reserva/<int:id>')
 def reservation_detail_page(id):
   return render_template('players/reservation_detail.html')
+
+@views_bp.route('/reserva/cancelar/<int:id>')
+def cancel_page(id):
+  return render_template('players/cancel_reservation.html')
