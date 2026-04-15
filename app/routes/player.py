@@ -380,7 +380,8 @@ def get_reservation_detail(id):
     "result": reservation.result,
     "status": reservation.status_game.value,
     "players": players,
-    "creator_id": reservation.creator_id
+    "creator_id": reservation.creator_id,
+    "court_number": reservation.court.number_court
   }), 200
 
 @player_bp.route('/reserva/cancelar/<int:id>', methods=['POST'])
@@ -398,10 +399,10 @@ def cancel_reservation(id):
     return jsonify({"error": "Reserva no encontrada"}), 404
   
   user_id = get_jwt_identity()
-  if reservation.creator_id != user_id:
+  if reservation.creator_id != int(user_id):
     return jsonify({"error": "No eres el creador de la reserva"}), 403
   
-  status_game = reservation.status_game.value
+  status_game = reservation.status_game
   if status_game in [StatusGame.finalized, StatusGame.pending_result]:
     return jsonify({"error": "No se puede cancelar una reserva finalizada o pendiente de resultado"}), 409
   
@@ -414,7 +415,7 @@ def cancel_reservation(id):
   reservation.status_game = StatusGame.canceled
   db.session.commit()
   
-  return jsonify({"message": "Reserva cancelada"}), 200
+  return jsonify({"message": "Reserva eliminada"}), 200
   
 def join_reservation(user_id = 7, reservation_id = 3, selected_team = Team.b):
   user = User.query.filter_by(id = user_id).first()

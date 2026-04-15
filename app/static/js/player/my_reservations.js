@@ -77,6 +77,11 @@ document.addEventListener("click", async (event) => {
     const reservationId = event.target.dataset.id;
     window.location.href = `/reserva/${reservationId}`;
   }
+
+  if (event.target.classList.contains("cancelarBoton")) {
+    const cancelId = event.target.dataset.id;
+    window.location.href = `/reserva/cancelar/${cancelId}`;
+  }
 });
 
 document.addEventListener("DOMContentLoaded", () => {
