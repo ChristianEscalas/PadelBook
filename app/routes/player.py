@@ -416,7 +416,93 @@ def cancel_reservation(id):
   db.session.commit()
   
   return jsonify({"message": "Reserva cancelada"}), 200
-  
+
+@player_bp.route('/buscar_partidos', methods=['GET'])
+def search_matches():
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
+
+  user_id = get_jwt_identity()
+
+  # filtros
+  dia = request.args.get('dia')
+  hora = request.args.get('hora')
+  municipality = request.args.get('municipio')
+  duration = request.args.get('duracion')
+  court_type = request.args.get('tipo')
+  covered = request.args.get('cubierta')
+  wall = request.args.get('pared')
+  surface = request.args.get('superficie')
+
+  if dia and hora:
+    start = datetime.strptime(f"{dia} {hora}", "%Y-%m-%d %H:%M")
+
+    if start < datetime.now():
+      return jsonify({"error": "No se puede buscar partidos en una fecha pasada."}), 400
+  else:
+    return jsonify({"error": "Faltan día y hora"}), 400
+
+  if not duration:
+    duration = 60
+  else:
+    duration = int(duration)
+
+  end = start + timedelta(minutes=duration)
+
+  if end.date() != start.date():
+    return jsonify({"error": "La reserva no puede superar la medianoche."}), 400
+
+  query = Reservation.query.join(Court).join(Club)
+
+  query = query.filter(Reservation.status_game == StatusGame.open, Reservation.creator_id != user_id)
+
+  if municipality:
+    query = query.filter(Club.municipality == municipality)
+
+  if duration:
+    query = query.filter(Club.game_duration == duration)
+
+  if court_type:
+    query = query.filter(Court.court_type == CourtType(court_type))
+
+  if covered:
+    query = query.filter(Court.covered == (covered == "true"))
+
+  if wall:
+    query = query.filter(Court.wall == WallType(wall))
+
+  if surface:
+    query = query.filter(Court.surface == SurfaceType(surface))
+
+  query = query.filter(Reservation.start_date == start, Reservation.end_date == end)
+  query = query.order_by(Club.club_name)
+  reservations = query.all()
+
+  result = []
+  for reservation in reservations:
+    court = reservation.court
+    club = court.club
+
+    result.append({
+      "id": reservation.id,
+      "club_name": club.club_name,
+      "address": club.address,
+      "date": reservation.start_date.strftime("%d/%m/%Y - %H:%M"),
+      "number_court": court.number_court,
+      "type": court.court_type.value,
+      "cover": court.covered,
+      "wall": court.wall.value,
+      "surface": court.surface.value,
+      "photo": club.photo
+    })
+
+  return jsonify(result), 200
+
 def join_reservation(user_id = 7, reservation_id = 3, selected_team = Team.b):
   user = User.query.filter_by(id = user_id).first()
   
