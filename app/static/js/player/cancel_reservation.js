@@ -37,7 +37,7 @@ async function cancelReservation() {
   }
 
   if (response.ok) {
-    showNotification("Reserva cancelada correctamente", "success");
+    showNotification(result.message, "success");
 
     setTimeout(() => {
       window.location.href = "/mis_reservas";
