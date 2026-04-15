@@ -41,3 +41,7 @@ def cancel_page(id):
 @views_bp.route('/buscar_partidos')
 def search_matches_page():
   return render_template('players/search_matches.html')
+
+@views_bp.route('/unirse_reserva')
+def join_reservation_page():
+  return render_template('players/join_reservation.html')
