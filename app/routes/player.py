@@ -465,7 +465,10 @@ def search_matches():
   query = Reservation.query.join(Court).join(Club)
 
   query = query.filter(Reservation.status_game == StatusGame.open, Reservation.creator_id != user_id)
-
+  subquery = db.session.query(ReservationPlayer.reservation_id).filter(ReservationPlayer.user_id == user_id)
+  
+  query = query.filter(~Reservation.id.in_(subquery))
+  
   if municipality:
     query = query.filter(Club.municipality == municipality)
 

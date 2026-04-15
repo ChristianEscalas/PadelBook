@@ -53,6 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const registerButton = document.getElementById("registerButton");
   registerButton.addEventListener("click", () => {
-    window.location.href = "/register";
+    window.location.href = "/registrar";
   });
 });
