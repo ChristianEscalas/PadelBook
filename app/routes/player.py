@@ -63,6 +63,9 @@ def reservate():
   if municipality:
     query = query.filter(Club.municipality == municipality)
 
+  if duration:
+    query = query.filter(Club.game_duration == duration)
+  
   if court_type:
     query = query.filter(Court.court_type == CourtType(court_type))
 
