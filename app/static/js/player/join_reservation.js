@@ -14,12 +14,35 @@ async function loadReservation() {
 
   document.getElementById("club").innerText = data.club;
   document.getElementById("dia").innerText = data.date;
-  document.getElementById("hora").innerText = data.hour;
-  document.getElementById("duracion").innerText = data.duration + " min";
-  document.getElementById("tipo").innerText = data.type;
-  document.getElementById("cubierta").innerText = data.cover ? "Sí" : "No";
-  document.getElementById("pared").innerText = data.wall;
-  document.getElementById("superficie").innerText = data.surface;
+  document.getElementById("duracion").innerText = data.duration + " minutos";
+
+  const type = data.type;
+  if (type === "double") {
+    document.getElementById("tipo").innerText = "Dobles";
+  } else {
+    document.getElementById("tipo").innerText = "Individual";
+  }
+
+  const cover = data.cover;
+  if (cover === true) {
+    document.getElementById("cubierta").innerText = "Si";
+  } else {
+    document.getElementById("cubierta").innerText = "No";
+  }
+
+  const wall = data.wall;
+  if (wall === "glass") {
+    document.getElementById("pared").innerText = "Cristal";
+  } else {
+    document.getElementById("pared").innerText = "Hormigón";
+  }
+
+  const surface = data.surface;
+  if (surface === "grass") {
+    document.getElementById("superficie").innerText = "Césped";
+  } else {
+    document.getElementById("superficie").innerText = "Hormigón";
+  }
 
   const teamA = document.getElementById("teamA");
   const teamB = document.getElementById("teamB");
