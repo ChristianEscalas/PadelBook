@@ -381,7 +381,12 @@ def get_reservation_detail(id):
     "status": reservation.status_game.value,
     "players": players,
     "creator_id": reservation.creator_id,
-    "court_number": reservation.court.number_court
+    "court_number": reservation.court.number_court,
+    "type": reservation.court.court_type.value,
+    "cover": reservation.court.covered,
+    "wall": reservation.court.wall.value,
+    "surface": reservation.court.surface.value,
+    "duration": reservation.court.club.game_duration,
   }), 200
 
 @player_bp.route('/reserva/cancelar/<int:id>', methods=['POST'])
