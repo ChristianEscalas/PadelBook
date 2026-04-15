@@ -1,0 +1,76 @@
+{% extends 'players/base_player.html' %}
+
+{% block titleHead %}
+Reservar
+{% endblock %}
+
+{%block script %}
+  <script src="{{url_for('static', filename='js/player/search_matches.js')}}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+  <div id="reservar">
+    <h1>Partidos disponibles</h1>
+    <form id="reservarForm">
+
+      <div class="campo">
+        <label for="dia">Día:</label>
+        <input type="date" id="dia" name="dia" value="{{ today }}" required>
+      </div>
+
+      <div class="campo">
+        <label for="hora">Hora:</label>
+        <input type="time" id="hora" name="hora" step="1800" required>
+      </div>
+
+      <div class="campo">
+        <label for="municipio">Municipio:</label>
+        <select id="municipio" name="municipio" required>
+          <option value="">Todos</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="duracion">Duración:</label>
+        <select id="duracion" name="duracion" required>
+          <option value="60">60 minutos</option>
+          <option value="90">90 minutos</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo" required>
+          <option value="">Todos</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="cubierta">Cubierta:</label>
+        <select id="cubierta" name="cubierta" required>
+          <option value="">Todas</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="pared">Pared:</label>
+        <select id="pared" name="pared" required>
+          <option value="">Todas</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="superficie">Superficie:</label>
+        <select id="superficie" name="superficie" required>
+          <option value="">Todas</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <button type="submit" id="filtrarReservas">Buscar</button>
+      </div>
+    </form>
+
+    <div id="clubesDisponibles"></div>
+  </div>
+{% endblock %}
