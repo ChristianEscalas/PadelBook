@@ -744,12 +744,13 @@ footer div {
   justify-content: space-around;
   background-color: #f9f9f9;
   padding: 15px;
+  gap: 20px;
   border-radius: 12px;
 }
 
 #detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas .pareja {
   display: flex;
-  gap: 20px;
+  gap: 5px;
 }
 
 #detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas .pareja .jugador {

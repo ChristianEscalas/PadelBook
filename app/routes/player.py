@@ -342,7 +342,8 @@ def get_reservations():
       "wall": wall,
       "surface": surface,
       "status": status,
-      "photo": club.photo
+      "photo": club.photo,
+      "is_creator": reservation.creator_id == user_id
     })
     
   return jsonify(result), 200
