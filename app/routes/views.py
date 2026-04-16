@@ -45,3 +45,11 @@ def search_matches_page():
 @views_bp.route('/unirse_reserva')
 def join_reservation_page():
   return render_template('players/join_reservation.html')
+
+@views_bp.route('/perfil')
+def profile_page():
+  return render_template('users/profile.html')
+
+@views_bp.route('/editar_perfil')
+def edit_profile_page():
+  return render_template('auth/register.html', edit_mode=True)
