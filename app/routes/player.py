@@ -566,41 +566,51 @@ def join_reservation_route(id):
 
   return jsonify({"message": "Te has unido al partido"}), 200
 
-def join_reservation(user_id = 7, reservation_id = 3, selected_team = Team.b):
-  user = User.query.filter_by(id = user_id).first()
-  
-  if user is None:
-    print("No existe el usuario")
-    return
-  
-  if user.rol.value != "player":
-    print("El usuario no es jugador")
-    return
-  
-  reservation = Reservation.query.filter_by(id = reservation_id).first()
-  if reservation is None:
-    print("La reserva no existe")
-    return
-  
-  already_in = ReservationPlayer.query.filter_by(reservation_id=reservation_id, user_id=user_id).first()
-  if already_in is not None:
-    print("Ya estás apuntado a este partido")
-    return
-  
-  number_players_reservation = len(reservation.players)
-  if number_players_reservation >= 4:
-    print("No es posible unirse al partido, no hay huecos libres")
-    return
-  
-  team_count = ReservationPlayer.query.filter_by(reservation_id=reservation_id, team=selected_team).count()
-  if team_count >= 2:
-    print(f"El equipo {selected_team.name} ya está completo")
-    return
-  
-  new__player = ReservationPlayer(user_id = user_id, reservation_id = reservation_id, team = selected_team)
-  db.session.add(new__player)
+@player_bp.route('/reservas/salirse/<int:id>', methods=['POST'])
+def leave_reservation_route(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario (del primer código)
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
+
+  user_id = get_jwt_identity()
+
+  user = User.query.get(user_id)
+  if not user:
+    return jsonify({"error": "Usuario no existe"}), 404
+
+  player_in_reservation = ReservationPlayer.query.filter_by(user_id=user_id, reservation_id=id).first()
+
+  if not player_in_reservation:
+    return jsonify({"error": "No estás apuntado a este partido"}), 400
+
+  if player_in_reservation.is_creator:
+    return jsonify({"error": "Eres el creador. Debes cancelar la reserva"}), 400
+
+  reservation = Reservation.query.get(id)
+  if not reservation:
+    return jsonify({"error": "La reserva no existe"}), 404
+
+  if reservation.status_game in [StatusGame.pending_result, StatusGame.finalized]:
+    return jsonify({"error": "No puedes salirte de un partido en curso o finalizado"}), 400
+
+  if reservation.status_game == StatusGame.canceled:
+    return jsonify({"error": "La reserva está cancelada"}), 400
+
+  if datetime.now() + timedelta(hours=3) > reservation.start_date:
+    return jsonify({"error": "No puedes salirte a falta de menos de 3 horas"}), 400
+
+  db.session.delete(player_in_reservation)
+
+  if reservation.status_game == StatusGame.complete:
+    reservation.status_game = StatusGame.open
+
   db.session.commit()
-  print(f"Te has unido al equipo {selected_team.name}")
+
+  return jsonify({"message": "Te has salido del partido", "team": player_in_reservation.team.value}), 200
 
 def cancel_reservation(user_id = 1, reservation_id = 1):
   user = User.query.filter_by(id = user_id).first()
