@@ -668,11 +668,11 @@ footer div {
   background-color: #305BAB;
 }
 
-#mis-reservas .tarjetaClub .cancelarBoton {
+#mis-reservas .tarjetaClub .cancelarBoton, #mis-reservas .tarjetaClub .salirBoton {
   background-color: #FF6464;
 }
 
-#mis-reservas .tarjetaClub .cancelarBoton:hover, #mis-reservas .tarjetaClub .detallesBoton:hover {
+#mis-reservas .tarjetaClub .cancelarBoton:hover, #mis-reservas .tarjetaClub .detallesBoton:hover, #mis-reservas .tarjetaClub .salirBoton:hover {
   background-color: #AEEA00;
   color: black;
   transform: translateY(-5px);

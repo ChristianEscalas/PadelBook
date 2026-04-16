@@ -49,7 +49,7 @@ async function loadReservations() {
           <div class="info">
             <p><strong>Cubierta:</strong></p>
             <p><strong>Pared:</strong></p>
-            <p><strong>Superfície:</strong></p>
+            <p><strong>Superficie:</strong></p>
             <p><strong>Estado:</strong></p>
           </div>
 
@@ -61,8 +61,12 @@ async function loadReservations() {
           </div>
 
           <div class="boton-reserva">
-            <button type="button" class="detallesBoton" data-id="${reservation.id}">Detalles</button>
-            <button type="button" class="cancelarBoton" data-id="${reservation.id}">Cancelar</button>
+            <button type="button" class="detallesBoton" data-id="${reservation.id}">
+              Detalles
+            </button>
+
+            ${reservation.is_creator ? `<button type="button" class="cancelarBoton" data-id="${reservation.id}">Cancelar</button>` : `<button type="button" class="salirBoton" data-id="${reservation.id}">Desapuntarse</button>`}
+
           </div>
         </div>
       </div>`;
@@ -81,6 +85,32 @@ document.addEventListener("click", async (event) => {
   if (event.target.classList.contains("cancelarBoton")) {
     const cancelId = event.target.dataset.id;
     window.location.href = `/reserva/cancelar/${cancelId}`;
+  }
+
+  if (event.target.classList.contains("salirBoton")) {
+    const id = event.target.dataset.id;
+
+    const response = await fetch(`/api/player/reservas/salirse/${id}`, {
+      method: "POST",
+      headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
+    });
+
+    if (response.status === 401) {
+      localStorage.removeItem("access_token");
+      showNotification("Sesión expirada", "error");
+      window.location.href = "/login";
+      return;
+    }
+
+    if (!response.ok) {
+      const error = await response.json();
+      showNotification(error.error, "error");
+      return;
+    }
+
+    showNotification("Te has salido del partido", "success");
+
+    loadReservations();
   }
 });
 
