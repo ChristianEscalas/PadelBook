@@ -1,3 +1,6 @@
+import os
+from time import time
+
 from werkzeug.security import generate_password_hash
 
 from app import db
@@ -42,7 +45,8 @@ def update_profile():
   if not user:
     return jsonify({"error": "No existe el usuario"}), 404
   
-  data = request.get_json()
+  data = request.form
+  photo = request.files.get("photo")
   
   # comprovamos que no existe un usuario con el mismo email o username que no sea el usuario logueado
   if data.get("email"):
@@ -57,18 +61,35 @@ def update_profile():
     if existing_username:
       return jsonify({"error": "Username ya en uso"}), 409
   
-  user.username = data.get("username")
-  user.email = data.get("email")
-  user.mobile = data.get("mobile")
-  user.address = data.get("address")
-  user.age = data.get("age")
-  user.firstname = data.get("firstname")
-  user.lastname = data.get("lastname")
-  user.category = data.get("category")
-  user.photo = data.get("photo")
+  user.username = data.get("username", user.username)
+  user.email = data.get("email", user.email)
+  user.mobile = data.get("mobile", user.mobile)
+  user.address = data.get("address", user.address)
+  user.age = data.get("age", user.age)
+  user.firstname = data.get("firstname", user.firstname)
+  user.lastname = data.get("lastname", user.lastname)
+  user.category = data.get("category", user.category)
+  
+  if photo and photo.filename:
+    folder = "images/users"
+    extension = photo.filename.split('.')[-1]
+    
+    username = data.get("username", user.username)
+    filename = f"{username}_{int(time.time())}.{extension}"
+    
+    save_path = os.path.join('app', 'static', folder)
+    
+    if not os.path.exists(save_path):
+      os.makedirs(save_path)
+
+    file_path = os.path.join(save_path, filename)
+    photo.save(file_path)
+    
+    user.photo = f"{folder}/{filename}"
   
   if data.get("password"):
     user.password_hash = generate_password_hash(data.get("password"))
     
   db.session.commit()
-  return jsonify({"message": "Perfil actualizado"})
+
+  return jsonify({"message": "Perfil actualizado"}), 200
