@@ -343,6 +343,9 @@ footer div {
 #loginButton {
   background-color: #305BAB;
 }
+#guardar {
+  background-color: #5cf094;
+}
 
 #cancelButton {
   background-color: #FF6464;
@@ -1019,4 +1022,74 @@ footer div {
 
 .slot.selected {
   border: 2px solid #AEEA00;
+}
+
+/* MI PERFIL */
+
+#perfil {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 80vh;
+  box-sizing: border-box;
+}
+
+#perfil #fotoNombre {
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+  align-items: center;
+}
+
+#perfil #fotoNombre h1 {
+  margin: 0px;
+}
+
+#perfil .tarjetaPerfil{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 600px;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#perfil .tarjetaPerfil .infoPerfil {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  align-items: center;
+  gap: 10px;
+}
+
+#perfil #fotoNombre img {
+  width: 150px;
+  height: 150px;
+}
+
+#perfil .tarjetaPerfil .botonesPerfil {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+#perfil .tarjetaPerfil button {
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  background-color: #305BAB;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#perfil .tarjetaPerfil button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
 }
