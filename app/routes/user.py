@@ -31,7 +31,8 @@ def get_profile():
     "firstname": user.firstname,
     "lastname": user.lastname,
     "category": user.category.value,
-    "photo": user.photo
+    "photo": user.photo,
+    "rol": user.rol.value
   })
 
 @user_bp.route('/perfil', methods=['PUT'])
