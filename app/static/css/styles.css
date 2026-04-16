@@ -871,3 +871,151 @@ footer div {
   color: black;
   transform: translateY(-5px);
 }
+
+/* UNIRSE A RESERVA */
+
+#unirse-partido {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#unirse-partido #tarjetaConfirmacion {
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 700px;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#unirse-partido #tarjetaConfirmacion .partido {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+#unirse-partido #tarjetaConfirmacion .partido #columnaUnirse {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  margin-top: 20px;
+  width: 450px;
+  gap: 10px;
+}
+#unirse-partido #tarjetaConfirmacion .partido .datos {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+}
+
+#unirse-partido #tarjetaConfirmacion .partido .datos p {
+  margin: 0px;
+}
+#unirse-partido #tarjetaConfirmacion .partido .equipos {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+#unirse-partido #tarjetaConfirmacion .partido .equipos .equipo p, h4 {
+  text-align: center;
+}
+#unirse-partido #tarjetaConfirmacion .info-reserva .info p {
+  margin: 0;
+}
+
+#unirse-partido #tarjetaConfirmacion .info-reserva .fotoclub img {
+  width: 150px;
+  height: 150px;
+}
+
+#unirse-partido #tarjetaConfirmacion h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#unirse-partido #tarjetaConfirmacion .botones {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+#unirse-partido #tarjetaConfirmacion button {
+  padding: 10px;
+  width: 150px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#unirse-partido #tarjetaConfirmacion #confirmarBoton {
+  background-color: #305BAB;
+}
+
+#unirse-partido #tarjetaConfirmacion #cancelarBoton {
+  background-color: #FF6464;
+}
+
+#unirse-partido #tarjetaConfirmacion #cancelarBoton:hover, #unirse-partido #tarjetaConfirmacion #confirmarBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+.jugadores {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.jugador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #000000;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+}
+
+.jugador img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.jugador p {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  background: #2c2c2c;
+  border-radius: 10px;
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+}
+
+.slot:hover {
+  background: #AEEA00;
+  color: black;
+}
+
+.slot.selected {
+  border: 2px solid #AEEA00;
+}
