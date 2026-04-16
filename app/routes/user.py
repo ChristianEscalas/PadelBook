@@ -1,5 +1,5 @@
 import os
-from time import time
+import time
 
 from werkzeug.security import generate_password_hash
 
@@ -30,8 +30,10 @@ def get_profile():
     "age": user.age,
     "firstname": user.firstname,
     "lastname": user.lastname,
-    "category": user.category.value,
-    "photo": user.photo
+    "category": user.category,
+    "photo": user.photo,
+    "rol": user.rol.value,
+    "points": user.points
   })
 
 @user_bp.route('/perfil', methods=['PUT'])
