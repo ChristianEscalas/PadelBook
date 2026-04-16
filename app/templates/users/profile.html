@@ -1,0 +1,65 @@
+{% extends "players/base_player.html" %}
+
+{% block titleHead %}
+  Mi perfil
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/player/profile.js') }}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+  <div id="perfil">
+    <h1>Mi perfil</h1>
+
+    <div class="tarjetaPerfil">
+
+      <div class="fotoPerfil">
+        <img id="photo" alt="Foto de perfil">
+      </div>
+
+      <div class="infoPerfil">
+
+        <div class="datos">
+          <p><strong>Nombre de usuario:</strong></p>
+          <p><strong>Email:</strong></p>
+          <p><strong>Teléfono:</strong></p>
+          <p><strong>Dirección:</strong></p>
+          <p><strong>Edad:</strong></p>
+          <p id="username"></p>
+        </div>
+
+        <div class="datos">
+          <p id="username"></p>
+          <p id="email"></p>
+          <p id="mobile"></p>
+          <p id="address"></p>
+          <p id="age"></p>
+        </div>
+
+        <div class="datos">
+          <p><strong>Nombre:</strong></p>
+          <p><strong>Apellidos:</strong></p>
+          <p><strong>Categoría:</strong></p>
+          <p><strong>Puntos:</strong></p>
+          <p><strong>Rol:</strong></p>
+        </div>
+
+        <div class="datos">
+          <p id="firstname"></p>
+          <p id="lastname"></p>
+          <p id="category"></p>
+          <p id="points"></p>
+          <p id="rol"></p>
+        </div>
+      </div>
+
+      <div class="botonesPerfil">
+        <button id="editarBtn">Editar perfil</button>
+        <button id="seguidoresBtn">Seguidores</button>
+        <button id="seguidosBtn">Seguidos</button>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
