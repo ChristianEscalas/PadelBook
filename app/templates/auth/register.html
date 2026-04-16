@@ -14,14 +14,17 @@
 
 {% block nav %}
   <ul>
-    <li><a href="/">INICIO</a></li>
-    <li><a href="/">COMO FUNCIONA</a></li>
-
     {% if not edit_mode %}
+      <li><a href="/">INICIO</a></li>
+      <li><a href="/">COMO FUNCIONA</a></li>
       <li><a href="/login">LOGIN</a></li>
       <li><a href="/registrar">REGISTRO</a></li>
     {% else %}
+      <li><a href="/reservar">RESERVAR</a></li>
+      <li><a href="/mis_reservas">MIS RESERVAS</a></li>
+      <li><a href="/buscar_partidos">BUSCAR PARTIDO</a></li>
       <li><a href="/perfil">MI PERFIL</a></li>
+      <li><a href="/ranking">RANKING</a></li>
     {% endif %}
   </ul>
 {% endblock %}
@@ -114,15 +117,13 @@
         <p>Todos los campos marcados con * son obligatorios</p>
         
         <div id="botones">
-          <button type="submit">
-            {% if edit_mode %}Guardar cambios{% else %}Crear cuenta{% endif %}
-          </button>
-
-          {% if edit_mode %}
-            <button type="button" id="cancelBtn">Cancelar</button>
+          {% if not edit_mode %}
+          <button type="submit" id="loginButton">Crear cuenta</button>
           {% else %}
-            <button type="button" id="cancelButton">Cancelar</button>
+          <button type="submit" id="guardar">Guardar cambios</button>
           {% endif %}
+          
+          <button type="button" id="cancelButton">Cancelar</button>
         </div>
       
         {% if not edit_mode %}
