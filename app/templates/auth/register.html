@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block titleHead %}
-  Crear cuenta
+  {% if edit_mode %}
+    Editar perfil
+  {% else %}
+    Crear cuenta
+  {% endif %}
 {% endblock %}
 
 {% block script %}
@@ -12,98 +16,120 @@
   <ul>
     <li><a href="/">INICIO</a></li>
     <li><a href="/">COMO FUNCIONA</a></li>
-    <li><a href="/login">LOGIN</a></li>
-    <li><a href="/registrar">REGISTRO</a></li>
+
+    {% if not edit_mode %}
+      <li><a href="/login">LOGIN</a></li>
+      <li><a href="/registrar">REGISTRO</a></li>
+    {% else %}
+      <li><a href="/perfil">MI PERFIL</a></li>
+    {% endif %}
   </ul>
 {% endblock %}
 
 {% block content %}
   <div id="registro">
-    <h1>Registro</h1>
-      <div id="form-contenedor">
+    <h1>{% if edit_mode %}Editar perfil{% else %}Registro{% endif %}</h1>
 
-        <form id="form" enctype="multipart/form-data">
-          <div class="campo">
-            <label for="username">Nombre de usuario *</label>
-            <input type="text" id="username" name="username" placeholder="Nombre de usuario" required>
-          </div>
-          
-          <div class="campo">
-            <label for="email">Email *</label>
-            <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
-          </div>
-          
-          <div class="campo">
-            <label for="password">Contraseña *</label>
-            <input type="password" id="password" name="password" placeholder="Contraseña" required>
-          </div>
-          
-          <div class="campo">
-            <label for="password2">Confirma la contraseña *</label>
-            <input type="password" id="password2" name="password2" placeholder="Contraseña" required>
-          </div>
-          
-          <div class="campo">
-            <label for="firstname">Nombre *</label>
-            <input type="text" id="firstname" name="firstname" placeholder="Nombre" required>
-          </div>
+    <div id="form-contenedor">
+      <form id="form" enctype="multipart/form-data">
 
-          <div class="campo">
-            <label for="lastname">Apellidos</label>
-            <input type="text" id="lastname" name="lastname" placeholder="Apellidos">
-          </div>
+        <div class="campo">
+          <label for="username">Nombre de usuario *</label>
+          <input type="text" id="username" name="username" required>
+        </div>
+        
+        <div class="campo">
+          <label for="email">Email *</label>
+          <input type="email" id="email" name="email" required>
+        </div>
 
-          <div class="campo">
-            <label for="age">Edad *</label>
-            <input type="number" id="age" name="age" placeholder="Edad" required>
-          </div>
+        {% if not edit_mode %}
+        <div class="campo">
+          <label for="password">Contraseña *</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        
+        <div class="campo">
+          <label for="password2">Confirma la contraseña *</label>
+          <input type="password" id="password2" name="password2" required>
+        </div>
+        {% endif %}
+        
+        <div class="campo">
+          <label for="firstname">Nombre *</label>
+          <input type="text" id="firstname" name="firstname" required>
+        </div>
 
-          <div class="campo">
-            <label for="mobile">Teléfono *</label>
-            <input type="tel" id="mobile" name="mobile" placeholder="Teléfono" required>
-          </div>
-          
-          <div class="campo">
-            <label for="address">Dirección</label>
-            <input type="text" id="address" name="address" placeholder="Dirección">
-          </div>
-          
-          <div class="campo">
-            <label for="photo">Foto de perfil *</label>
-            <input type="file" id="photo" name="photo" accept="image/*" required>
-          </div>
-          
-          <div class="campo">
-            <label for="category">Categoría *</label>
-            <select id="category" name="category" required>
-              <option value="">Elige tu categoría</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-            </select>
-          </div>
-          
-          <div class="campo">
-            <label for="rol">Jugador o propietario? *</label>
-            <select id="rol" name="rol" required>
-              <option value="">Elige tu rol</option>
-              <option value="player">Jugador</option>
-              <option value="owner">Propietario</option>
-            </select>
-          </div>
+        <div class="campo">
+          <label for="lastname">Apellidos</label>
+          <input type="text" id="lastname" name="lastname">
+        </div>
+
+        <div class="campo">
+          <label for="age">Edad *</label>
+          <input type="number" id="age" name="age" required>
+        </div>
+
+        <div class="campo">
+          <label for="mobile">Teléfono *</label>
+          <input type="tel" id="mobile" name="mobile" required>
+        </div>
+        
+        <div class="campo">
+          <label for="address">Dirección</label>
+          <input type="text" id="address" name="address">
+        </div>
+        
+        <div class="campo">
+          <label for="photo">Foto de perfil {% if not edit_mode %}*{% endif %}</label>
+          <input type="file" id="photo" name="photo" accept="image/*" {% if not edit_mode %}required{% endif %}>
+        </div>
+        
+        <div class="campo">
+          <label for="category">Categoría *</label>
+          <select id="category" name="category" required>
+            <option value="">Elige tu categoría</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+        </div>
+        
+        <div class="campo">
+          <label for="rol">Jugador o propietario? *</label>
+          <select id="rol" name="rol" {% if edit_mode %}disabled{% endif %} required>
+            <option value="">Elige tu rol</option>
+            <option value="player">Jugador</option>
+            <option value="owner">Propietario</option>
+          </select>
+        </div>
+
+        {% if edit_mode %}
+          <input type="hidden" name="rol" id="rol_hidden">
+        {% endif %}
       
-          <p>Todos los campos marcados con * son obligatorios</p>
-          
-          <div id="botones">
-            <button type="submit" id="loginButton">Crear cuenta</button>
+        <p>Todos los campos marcados con * son obligatorios</p>
+        
+        <div id="botones">
+          <button type="submit">
+            {% if edit_mode %}Guardar cambios{% else %}Crear cuenta{% endif %}
+          </button>
+
+          {% if edit_mode %}
+            <button type="button" id="cancelBtn">Cancelar</button>
+          {% else %}
             <button type="button" id="cancelButton">Cancelar</button>
-          </div>
+          {% endif %}
+        </div>
       
-          <a href="/login" id="registerButton">Ya tienes cuenta? Inicia sesión</a>
-        </form>
-      </div>
+        {% if not edit_mode %}
+          <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
+        {% endif %}
+
+      </form>
+    </div>
   </div>
 {% endblock %}

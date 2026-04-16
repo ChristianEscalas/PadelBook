@@ -52,4 +52,4 @@ def profile_page():
 
 @views_bp.route('/editar_perfil')
 def edit_profile_page():
-  return render_template('auth/register.html')
+  return render_template('auth/register.html', edit_mode=True)
