@@ -42,6 +42,7 @@ app.register_blueprint(views_bp)
 csrf.exempt(auth_bp)
 csrf.exempt(contact_bp)
 csrf.exempt(player_bp)
+csrf.exempt(user_bp)
 
 # Importación de los orm
 from app.models.users import User

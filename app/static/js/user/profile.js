@@ -22,7 +22,12 @@ async function loadProfile() {
     document.getElementById("lastname").innerText = data.lastname;
     document.getElementById("category").innerText = data.category;
     document.getElementById("points").innerText = data.points;
-    document.getElementById("rol").innerText = data.rol;
+
+    if (data.rol === "player") {
+      document.getElementById("rol").innerText = "Jugador";
+    } else {
+      document.getElementById("rol").innerText = "Propietario";
+    }
 
     const photo = document.getElementById("photo");
     photo.setAttribute("src", data.photo);
