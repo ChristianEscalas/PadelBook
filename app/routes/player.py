@@ -343,7 +343,7 @@ def get_reservations():
       "surface": surface,
       "status": status,
       "photo": club.photo,
-      "is_creator": reservation.creator_id == user_id
+      "is_creator": reservation.creator_id == int(user_id)
     })
     
   return jsonify(result), 200
@@ -649,47 +649,6 @@ def cancel_reservation(user_id = 1, reservation_id = 1):
   reservation.closed_at = datetime.now()
   db.session.commit()
   print(f"Reserva para el {reservation.start_date} cancelada correctamente")
-
-def leave_reservation(user_id = 7, reservation_id = 3):
-  user = User.query.filter_by(id = user_id).first()
-  
-  if user is None :
-    print("No existe el usuario")
-    return
-
-  if user.rol.value != "player":
-    print("El usuario no es jugador")
-    return
-  
-  player_in_reservation = ReservationPlayer.query.filter_by(user_id = user_id, reservation_id = reservation_id).first()
-  if player_in_reservation is None:
-    print("No estás apuntado a este partido")
-    return
-
-  if player_in_reservation.is_creator:
-    print("Eres el creador. Para salirte debes cancelar la reserva")
-    return
-
-  reservation = Reservation.query.filter_by(id = reservation_id).first()
-  if reservation is None:
-    print("La reserva no existe")
-    return
-  
-  if reservation.status_game.value in ["pending_result", "finalized"]:
-    print("No te puedes salir de un partido finalizado o en curso")
-    return
-  
-  if reservation.status_game.value == "canceled":
-    print("No te puedes salir de una reserva cancelada")
-    return
-  
-  if datetime.now() + timedelta(hours = 3) > reservation.start_date:
-    print("No puedes salirte a falta de menos de 3 horas")
-    return
-
-  db.session.delete(player_in_reservation)
-  db.session.commit()
-  print(f"Te has salido del partido. Ahora hay un sitio libre en el equipo {player_in_reservation.team.name}")
 
 def set_result(reservation_id = 3, user_id = 1, sets_a=[6, 4, 6], sets_b=[2, 6, 3]):
   reservation = Reservation.query.get(reservation_id)
