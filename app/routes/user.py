@@ -1,3 +1,6 @@
+from werkzeug.security import generate_password_hash
+
+from app import db
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
@@ -5,7 +8,7 @@ from app.models.users import User
 
 user_bp = Blueprint('user', __name__)
 
-@user_bp.route('/perfil', methods=['POST'])
+@user_bp.route('/perfil', methods=['GET'])
 def get_profile():
   # comprobar si el usuario ha hecho login
   verify_jwt_in_request()
@@ -14,18 +17,17 @@ def get_profile():
   user = User.query.get(user_id)
   
   if not user:
-    return jsonify({"error": "No existe el usuario"})
+    return jsonify({"error": "No existe el usuario"}), 404
   
   return jsonify({
     "username": user.username,
     "email": user.email,
-    "password_hash": user.password_hash,
     "mobile": user.mobile,
     "address": user.address,
     "age": user.age,
     "firstname": user.firstname,
     "lastname": user.lastname,
-    "category": user.category,
+    "category": user.category.value,
     "photo": user.photo
   })
 
@@ -38,19 +40,25 @@ def update_profile():
   user = User.query.get(user_id)
   
   if not user:
-    return jsonify({"error": "No existe el usuario"})
+    return jsonify({"error": "No existe el usuario"}), 404
   
   data = request.get_json()
   
-  # comprovamos que no existe un usuario con el mismo email o username
-  user_email = User.query.filter_by(email  = data.get("email")).first()
-  user_username = User.query.filter_by(username = data.get("username")).first()
-  if user_email or user_username:
-    return jsonify({"error": "usuario ya registrado"}), 409
+  # comprovamos que no existe un usuario con el mismo email o username que no sea el usuario logueado
+  if data.get("email"):
+    existing_email = User.query.filter(User.email == data.get("email"), User.id != user_id).first()
+
+    if existing_email:
+      return jsonify({"error": "Email ya en uso"}), 409
+
+  if data.get("username"):
+    existing_username = User.query.filter(User.username == data.get("username"), User.id != user_id).first()
+
+    if existing_username:
+      return jsonify({"error": "Username ya en uso"}), 409
   
   user.username = data.get("username")
   user.email = data.get("email")
-  user.password_hash = data.get("password_hash")
   user.mobile = data.get("mobile")
   user.address = data.get("address")
   user.age = data.get("age")
@@ -59,4 +67,8 @@ def update_profile():
   user.category = data.get("category")
   user.photo = data.get("photo")
   
+  if data.get("password"):
+    user.password_hash = generate_password_hash(data.get("password"))
+    
+  db.session.commit()
   return jsonify({"message": "Perfil actualizado"})
