@@ -616,43 +616,6 @@ def leave_reservation_route(id):
 
   return jsonify({"message": "Te has salido del partido", "team": player_in_reservation.team.value}), 200
 
-def cancel_reservation(user_id = 1, reservation_id = 1):
-  user = User.query.filter_by(id = user_id).first()
-  
-  if user is None:
-    print("No existe el usuario")
-    return
-  
-  if user.rol.value != "player":
-    print("El usuario no es jugador")
-    return
-  
-  reservation = Reservation.query.filter_by(id = reservation_id).first()
-  if reservation is None:
-    print("La reserva no existe")
-    return
-  
-  if user_id != reservation.creator_id:
-    print("No puedes cancelar la reserva. no eres el creador")
-    return
-  
-  reservation_status = reservation.status_game.value
-  if reservation_status in ["pending_result", "finalized"]:
-    print("No se puede cancelar un partido finalizado o en curso")
-    return
-    
-  if reservation_status == "canceled":
-    print("La reserva ya está cancelada")
-    return
-
-  if datetime.now() + timedelta(hours=3) > reservation.start_date:
-    print("Solo se puede cancelar con al menos 3 horas de antelación")
-    return
-
-  reservation.status_game = StatusGame.canceled
-  reservation.closed_at = datetime.now()
-  db.session.commit()
-  print(f"Reserva para el {reservation.start_date} cancelada correctamente")
 
 def set_result(reservation_id = 3, user_id = 1, sets_a=[6, 4, 6], sets_b=[2, 6, 3]):
   reservation = Reservation.query.get(reservation_id)

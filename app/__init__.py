@@ -31,10 +31,12 @@ from app.routes.auth import auth_bp
 from app.routes.contact import contact_bp
 from app.routes.player import player_bp
 from app.routes.views import views_bp
+from app.routes.user import user_bp
 
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(player_bp, url_prefix='/api/player')
 app.register_blueprint(contact_bp)
+app.register_blueprint(user_bp, url_prefix='/api/user')
 app.register_blueprint(views_bp)
 
 csrf.exempt(auth_bp)
