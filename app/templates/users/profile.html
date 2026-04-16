@@ -5,12 +5,15 @@
 {% endblock %}
 
 {% block script %}
-  <script src="{{ url_for('static', filename='js/player/profile.js') }}" type="module"></script>
+  <script src="{{ url_for('static', filename='js/user/profile.js') }}" type="module"></script>
 {% endblock %}
 
 {% block content %}
   <div id="perfil">
-    <h1>Mi perfil</h1>
+    <div id="fotoNombre">
+      <img id="photo">
+      <h1>Mi perfil</h1>
+    </div>
 
     <div class="tarjetaPerfil">
 
