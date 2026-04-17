@@ -636,7 +636,6 @@ def confirm_result(id):
   sets_a = data.get("sets_a")
   sets_b = data.get("sets_b")
 
-    # 🔴 VALIDACIÓN INPUT
   if not sets_a or not sets_b or len(sets_a) != 3 or len(sets_b) != 3:
     return jsonify({"error": "Formato de sets inválido"}), 400
 
@@ -653,7 +652,6 @@ def confirm_result(id):
   if reservation.status_game != StatusGame.pending_result:
     return jsonify({"error": "No permitido o ya finalizado"}), 400
 
-  # 🔥 IDENTIFICAR ROLES
   creator_id = reservation.creator_id
 
   team_b_players = sorted([p for p in reservation.players if p.team.value == "b"], key=lambda x: x.id)
@@ -662,51 +660,41 @@ def confirm_result(id):
   if user_id != creator_id and user_id != team_b_first:
     return jsonify({"error": "No tienes permisos"}), 403
 
-  # 🔥 VALIDACIÓN EMPATES
   for i in range(3):
     if sets_a[i] == sets_b[i] and sets_a[i] != 0:
       return jsonify({"error": f"Set {i+1} inválido (empate)"}), 400
 
-  # 🔥 CÁLCULO DE GANADOR
   wins_a = sum(1 for i in range(3) if sets_a[i] > sets_b[i])
   wins_b = sum(1 for i in range(3) if sets_b[i] > sets_a[i])
 
   if wins_a < 2 and wins_b < 2:
     return jsonify({"error": "Debe haber un ganador (mínimo 2 sets)"}), 400
 
-  # 🔥 VALIDACIÓN SET 3
-  gano_a_2_0 = sets_a[0] > sets_b[0] and sets_a[1] > sets_b[1]
-  gano_b_2_0 = sets_b[0] > sets_a[0] and sets_b[1] > sets_a[1]
+  win_a_2_0 = sets_a[0] > sets_b[0] and sets_a[1] > sets_b[1]
+  win_b_2_0 = sets_b[0] > sets_a[0] and sets_b[1] > sets_a[1]
 
-  # si termina en 2 sets → tercero 0-0
-  if (gano_a_2_0 or gano_b_2_0) and (sets_a[2] != 0 or sets_b[2] != 0):
+  if (win_a_2_0 or win_b_2_0) and (sets_a[2] != 0 or sets_b[2] != 0):
     return jsonify({"error": "El partido terminó en el segundo set, el tercero debe ser 0-0"}), 400
 
-  # si NO termina en 2 sets → hay tercer set obligatorio
-  if not (gano_a_2_0 or gano_b_2_0):
+  if not (win_a_2_0 or win_b_2_0):
     if sets_a[2] == 0 and sets_b[2] == 0:
       return jsonify({"error": "Debe jugarse el tercer set"}), 400
 
-  # 🔥 RESULTADO STRING
   new_result_str = f"{sets_a[0]}-{sets_b[0]}/{sets_a[1]}-{sets_b[1]}/{sets_a[2]}-{sets_b[2]}"
 
-  # 🔥 CONSISTENCIA (doble confirmación)
   if reservation.result and reservation.result != new_result_str:
     return jsonify({"error": "El resultado no coincide con el enviado por la otra parte"}), 400
 
-  # 🔥 PRIMER USUARIO GUARDA RESULTADO
   if not reservation.result:
     reservation.result = new_result_str
     reservation.winner_team = WinnerTeam.a if wins_a >= 2 else WinnerTeam.b
 
-  # 🔥 MARCAR CONFIRMACIÓN
   if user_id == creator_id:
     reservation.confirmed_by_creator = True
 
   if user_id == team_b_first:
     reservation.confirmed_by_team_b = True
 
-  # 🔥 FINALIZAR SOLO SI LOS DOS CONFIRMAN
   if reservation.confirmed_by_creator and reservation.confirmed_by_team_b:
 
     for player in reservation.players:
@@ -721,7 +709,6 @@ def confirm_result(id):
       user = player.user
       user.points = max(0, user.points + delta)
 
-      # 🔥 categorías
       if user.points >= 600:
         user.category = 1
       elif user.points >= 500:
