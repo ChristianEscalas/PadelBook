@@ -40,7 +40,7 @@ async function loadUserProfile() {
 
 async function checkFollowStatus() {
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/user/usuario/es_seguidor/${userId}`, {
+    const response = await fetch(`http://192.168.0.100:5000/api/user/usuario/es_seguido/${userId}`, {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 
