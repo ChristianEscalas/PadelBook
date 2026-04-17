@@ -654,57 +654,6 @@ def set_result(reservation_id = 3, user_id = 1, sets_a=[6, 4, 6], sets_b=[2, 6, 
   db.session.commit()
   print(f"Resultado {result} guardado. Ganador: Equipo {winner.name}")
 
-def follow(user_id = 1, user_to_follow_id = 1):
-  user = User.query.filter_by(id = user_id).first()
-  
-  if user is None:
-    print("No existe el usuario")
-    return
-  
-  if user.id == user_to_follow_id:
-    print("No te puedes seguir a ti mismo")
-    return
-  
-  user_to_follow = User.query.filter_by(id = user_to_follow_id).first()
-  if user_to_follow is None:
-    print("El usuario al que quieres seguir no existe")
-    return
-  
-  existing_following = Follower.query.filter_by(follower_id = user.id, following_id = user_to_follow.id).first()
-  if existing_following is not None:
-    print("Ya sigues a este usuario")
-    return
-  
-  new_follower = Follower(follower_id = user.id, following_id = user_to_follow.id)
-  db.session.add(new_follower)
-  db.session.commit()
-  print(f"Has empezado a seguir a {user_to_follow.firstname}")
-
-def unfollow(user_id = 1, user_to_unfollow_id = 1):
-  user = User.query.filter_by(id = user_id).first()
-  
-  if user is None:
-    print("No existe el usuario")
-    return
-  
-  if user.id == user_to_unfollow_id:
-    print("No te puedes dejar de seguir a ti mismo")
-    return
-  
-  user_to_unfollow = User.query.filter_by(id = user_to_unfollow_id).first()
-  if user_to_unfollow is None:
-    print("El usuario al que quieres seguir no existe")
-    return
-  
-  existing_following = Follower.query.filter_by(follower_id = user.id, following_id = user_to_unfollow.id).first()
-  if existing_following is None:
-    print("No sigues a este usuario")
-    return
-  
-  db.session.delete(existing_following)
-  db.session.commit()
-  print(f"Has dejado de seguir a {user_to_unfollow.firstname}")
-
 # carga los municipios            
 @player_bp.route('/municipios', methods=['GET'])
 def get_municipality():

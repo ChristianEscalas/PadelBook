@@ -164,3 +164,23 @@ def follow_user(id):
   db.session.commit()
 
   return jsonify({"message": "Has empezado a seguir al usuario"}), 200
+
+@user_bp.route('/usuario/dejar_de_seguir/<int:id>', methods=['DELETE'])
+def unfollow_user(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  user_id = get_jwt_identity()
+
+  user_to_unfollow = User.query.get(id)
+  if not user_to_unfollow:
+    return jsonify({"error": "El usuario que quieres dejar de seguir no existe"}), 404
+  
+  follow = Follower.query.filter_by(follower_id=user_id, following_id=id).first()
+  if not follow:
+    return jsonify({"error": "No sigues a este usuario"}), 400
+
+  db.session.delete(follow)
+  db.session.commit()
+
+  return jsonify({"message": "Has dejado de seguir al usuario"}), 200
