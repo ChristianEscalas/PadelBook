@@ -95,3 +95,26 @@ def update_profile():
   db.session.commit()
 
   return jsonify({"message": "Perfil actualizado"}), 200
+
+@user_bp.route('/ranking', methods=['GET'])
+def get_ranking():
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+  
+  category = request.args.get("categoria")
+  query = User.query.filter(User.rol == "player")
+
+  if category:
+    query = query.filter(User.category == int(category))
+
+  users = query.order_by(User.points.desc()).all()
+
+  result = []
+  for user in users:
+    result.append({
+      "firstname": user.firstname,
+      "photo": user.photo,
+      "points": user.points
+    })
+
+  return jsonify(result), 200
