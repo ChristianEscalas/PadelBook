@@ -61,3 +61,7 @@ def ranking_page():
 @views_bp.route('/usuario/<int:id>')
 def user_profile_page(id):
   return render_template('users/user_profile.html')
+
+@views_bp.route('/seguidores')
+def get_followers():
+  return render_template('/users/followers.html')
