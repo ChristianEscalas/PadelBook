@@ -100,4 +100,9 @@ document.addEventListener("click", async (event) => {
 
 document.addEventListener("DOMContentLoaded", () => {
   load_followers();
+
+  const returnButton = document.getElementById("Volver");
+  returnButton.addEventListener("click", () => {
+    window.location.href = "/perfil";
+  });
 });
