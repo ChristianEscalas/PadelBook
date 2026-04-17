@@ -3,10 +3,11 @@ import { showNotification } from "../main.js";
 const reservationId = window.location.pathname.split("/").pop();
 const token = localStorage.getItem("access_token");
 
+// 🔥 CARGAR RESULTADO EXISTENTE
 async function loadResult() {
   try {
     const response = await fetch(`http://192.168.0.100:5000/api/player/reservas/resultado/${reservationId}`, {
-      headers: { Accpet: "application/json", Authorization: "Bearer " + token },
+      headers: { Accept: "application/json", Authorization: "Bearer " + token },
     });
 
     if (response.status === 401) {
@@ -61,11 +62,11 @@ async function submitResult(event) {
 
     if (result.finalized) {
       showNotification("Resultado confirmado por ambos jugadores", "success");
-      window.location.href = `/reserva/${reservationId}`;
     } else {
       showNotification("Resultado guardado. Falta confirmación del rival", "success");
-      loadResult();
     }
+
+    window.location.href = `/reserva/${reservationId}`;
   } catch (error) {
     console.error(error);
   }
@@ -79,5 +80,5 @@ document.addEventListener("DOMContentLoaded", () => {
   loadResult();
 
   document.getElementById("formResultado").addEventListener("submit", submitResult);
-  document.getElementById("cancelBtn").addEventListener("click", cancel);
+  document.getElementById("cancelBoton").addEventListener("click", cancel);
 });

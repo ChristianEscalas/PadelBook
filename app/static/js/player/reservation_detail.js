@@ -64,13 +64,28 @@ async function loadReservation() {
 
   document.getElementById("detalles-reserva").innerHTML += info;
 
+  const confirmButton = document.getElementById("confirmarBoton");
+
+  if (confirmButton) {
+    confirmButton.addEventListener("click", () => {
+      const id = window.location.pathname.split("/").pop();
+      window.location.href = `/reserva/confirmar_resultado/${id}`;
+    });
+  }
+
   const token = localStorage.getItem("access_token");
   if (token) {
     const userId = JSON.parse(atob(token.split(".")[1])).sub;
     const isCreator = data.creator_id == userId;
     const isTeamBFirst = teamB.length > 0 && teamB[0].id == userId;
 
-    if (data.result === null && (isCreator || isTeamBFirst) && data.status === "pending_result") {
+    console.log("RESULT:", data.result);
+    console.log("STATUS:", data.status);
+    console.log("USER:", userId);
+    console.log("CREATOR:", data.creator_id);
+    console.log("TEAM B:", teamB);
+
+    if ((isCreator || isTeamBFirst) && data.status === "pending_result") {
       document.getElementById("confirmarBoton").style.display = "block";
     } else {
       document.getElementById("confirmarBoton").style.display = "none";
