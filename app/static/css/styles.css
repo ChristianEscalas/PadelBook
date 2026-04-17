@@ -1079,7 +1079,7 @@ footer div {
 
 #perfil .tarjetaPerfil button {
   padding: 10px;
-  width: 100px;
+  width: 150px;
   border-radius: 20px;
   border: 1px solid gray;
   color: white;
@@ -1185,6 +1185,94 @@ footer div {
   margin: 0px;
 }
 #ranking .tarjetaJugador .infoJugador img {
+  width: 50px;
+  height: 50px;
+}
+
+/* SEGUIDOS Y SEGUIDORES */
+
+#followers {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#followers #seguidosIntro {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+#followers #seguidosIntro h1 {
+  margin: 0px;
+}
+
+#followers button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#followers button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#followers #followersContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+#followers .tarjetaJugador {
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 350px;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#followers .tarjetaJugador .infoJugador {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+#followers .tarjetaJugador .infoJugador .fotoJugador {
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+  text-align: center;
+  align-items: center;
+}
+
+#followers .tarjetaJugador .infoJugador .boton {
+  display: flex;
+  margin-left: auto;
+}
+
+#followers .tarjetaJugador p {
+  margin: 0px;
+}
+
+#followers .tarjetaJugador h3 {
+  font-size: 22px;
+  margin: 0px;
+}
+#followers .tarjetaJugador .infoJugador img {
   width: 50px;
   height: 50px;
 }
