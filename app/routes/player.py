@@ -730,6 +730,40 @@ def confirm_result(id):
 
   return jsonify({ "message": "Resultado procesado", "finalized": reservation.status_game == StatusGame.finalized}), 200
 
+@player_bp.route('/reservas/resultado/<int:id>', methods=['GET'])
+def get_result(id):
+  verify_jwt_in_request()
+
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
+
+  user_id = int(get_jwt_identity())
+
+  reservation = Reservation.query.get(id)
+  if not reservation:
+    return jsonify({"error": "No existe"}), 404
+
+  user_in_game = any(p.user_id == user_id for p in reservation.players)
+  if not user_in_game:
+    return jsonify({"error": "No participas en este partido"}), 403
+
+  if not reservation.result:
+    return jsonify({"sets_a": None, "sets_b": None}), 200
+
+  try:
+    sets = reservation.result.split("/")
+    sets_a, sets_b = [], []
+
+    for s in sets:
+      a, b = s.split("-")
+      sets_a.append(int(a))
+      sets_b.append(int(b))
+  except:
+    return jsonify({"error": "Formato de resultado inválido"}), 500
+
+  return jsonify({"sets_a": sets_a, "sets_b": sets_b}), 200
+
 # carga los municipios            
 @player_bp.route('/municipios', methods=['GET'])
 def get_municipality():
