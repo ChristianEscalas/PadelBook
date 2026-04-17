@@ -1,0 +1,54 @@
+{% extends "players/base_player.html" %}
+
+{% block titleHead %}
+  Perfil jugador
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/user/user_profile.js') }}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+  <div id="perfil">
+    <div id="fotoNombre">
+      <img id="photo">
+      <h1>Perfil del usuario</h1>
+    </div>
+
+    <div class="tarjetaPerfil">
+
+      <div class="infoPerfil">
+
+        <div class="datos">
+          <p><strong>Nombre de usuario:</strong></p>
+          <p><strong>Teléfono:</strong></p>
+          <p><strong>Categoría:</strong></p>
+        </div>
+
+        <div class="datos">
+          <p id="username"></p>
+          <p id="mobile"></p>
+          <p id="category"></p>
+        </div>
+
+        <div class="datos">
+          <p><strong>Nombre:</strong></p>
+          <p><strong>Apellidos:</strong></p>
+          <p><strong>Puntos:</strong></p>
+        </div>
+
+        <div class="datos">
+          <p id="firstname"></p>
+          <p id="lastname"></p>
+          <p id="points"></p>
+        </div>
+      </div>
+
+      <div class="botonesPerfil">
+        <button id="seguirBoton"></button>
+        <button id="volverBoton"></button>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
