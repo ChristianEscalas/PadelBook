@@ -113,6 +113,7 @@ def get_ranking():
   result = []
   for user in users:
     result.append({
+      "id": user.id,
       "firstname": user.firstname,
       "photo": user.photo,
       "points": user.points
@@ -131,6 +132,7 @@ def get_public_profile(id):
     return jsonify({"error": "Usuario no encontrado"}), 404
 
   return jsonify({
+    "id": user.id,
     "username": user.username,
     "mobile": user.mobile,
     "category": user.category,
@@ -145,7 +147,7 @@ def follow_user(id):
   # comprobar si el usuario ha hecho login
   verify_jwt_in_request()
 
-  user_id = get_jwt_identity()
+  user_id = int(get_jwt_identity())
   
   user_to_follow = User.query.get(id)
   if not user_to_follow:

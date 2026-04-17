@@ -1,6 +1,6 @@
 import { showNotification } from "../main.js";
 
-const userId = window.location.pathname.split("/")[3];
+const userId = window.location.pathname.split("/")[2];
 
 let isFollowing = false;
 
