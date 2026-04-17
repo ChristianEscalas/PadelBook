@@ -53,3 +53,11 @@ def profile_page():
 @views_bp.route('/editar_perfil')
 def edit_profile_page():
   return render_template('auth/register.html', edit_mode=True)
+
+@views_bp.route('/ranking')
+def ranking_page():
+  return render_template('users/ranking.html')
+
+@views_bp.route('/usuario/<int:id>')
+def user_profile_page(id):
+  return render_template('users/user_profile.html')
