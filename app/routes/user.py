@@ -7,6 +7,7 @@ from app import db
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
+from app.models.followers import Follower
 from app.models.users import User
 
 user_bp = Blueprint('user', __name__)
@@ -138,3 +139,28 @@ def get_public_profile(id):
     "points": user.points,
     "photo": user.photo,
   }), 200
+
+@user_bp.route('/usuario/seguir/<int:id>', methods=['POST'])
+def follow_user(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  user_id = get_jwt_identity()
+  
+  user_to_follow = User.query.get(id)
+  if not user_to_follow:
+    return jsonify({"error": "El usuario que quieres seguir no existe"}), 404
+
+  if user_id == id:
+    return jsonify({"error": "No puedes seguirte a ti mismo"}), 400
+
+  exists = Follower.query.filter_by(follower_id=user_id, following_id=id).first()
+
+  if exists:
+    return jsonify({"error": "Ya sigues a este usuario"}), 400
+
+  follow = Follower(follower_id=user_id, following_id=id)
+  db.session.add(follow)
+  db.session.commit()
+
+  return jsonify({"message": "Has empezado a seguir al usuario"}), 200
