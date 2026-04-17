@@ -200,3 +200,26 @@ def is_following(id):
   return jsonify({
     "following": follow is not None
   }), 200
+
+@user_bp.route('/seguidores', methods=['GET'])
+def get_followers():
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+  
+  user_id = int(get_jwt_identity())
+  followers = Follower.query.filter_by(following_id=user_id)
+  
+  if not followers:
+    return jsonify([]), 200
+  
+  users = []
+  for follower in followers:
+    user = follower.follower_user
+    users.append({
+      "id": user.id,
+      "photo": user.photo,
+      "firstname": user.firstname,
+      "lastname": user.lastname
+    })
+  
+  return jsonify(users), 200
