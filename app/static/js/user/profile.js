@@ -43,4 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("editarBtn").addEventListener("click", () => {
     window.location.href = "/editar_perfil";
   });
+
+  document.getElementById("seguidoresBtn").addEventListener("click", () => {
+    window.location.href = "/seguidores";
+  });
+
+  document.getElementById("seguidosBtn").addEventListener("click", () => {
+    window.location.href = "/seguidos";
+  });
 });
