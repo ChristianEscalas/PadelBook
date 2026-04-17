@@ -31,7 +31,7 @@ async function loadUserProfile() {
     document.getElementById("points").innerText = data.points;
 
     const photo = document.getElementById("photo");
-    photo.setAttribute("src", data.photo);
+    photo.src = `/static/${data.photo}`;
     photo.setAttribute("alt", "Foto de perfil");
   } catch (error) {
     console.error(error);
