@@ -654,7 +654,7 @@ def confirm_result(id):
 
   creator_id = reservation.creator_id
 
-  team_b_players = sorted([p for p in reservation.players if p.team.value == "b"], key=lambda x: x.id)
+  team_b_players = sorted([p for p in reservation.players if p.team.value == "b"], key=lambda x: x.user_id)
   team_b_first = team_b_players[0].user_id if team_b_players else None
 
   if user_id != creator_id and user_id != team_b_first:
@@ -700,7 +700,7 @@ def confirm_result(id):
     for player in reservation.players:
       is_winner = player.team.value == reservation.winner_team.value
       delta = 10 if is_winner else -5
-      reason = ReasonType.win if is_winner else ReasonType.loss
+      reason = ReasonType.win if is_winner else ReasonType.lose
 
       # evitar duplicados
       if PointMovement.query.filter_by(user_id=player.user_id, reservation_id=reservation.id).first():
