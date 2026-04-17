@@ -65,3 +65,7 @@ def user_profile_page(id):
 @views_bp.route('/seguidores')
 def get_followers():
   return render_template('/users/followers.html')
+
+@views_bp.route('/seguidos')
+def get_following_page():
+  return render_template('/users/followings.html')
