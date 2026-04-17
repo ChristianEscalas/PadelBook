@@ -69,3 +69,7 @@ def get_followers():
 @views_bp.route('/seguidos')
 def get_following_page():
   return render_template('/users/followings.html')
+
+@views_bp.route('/reserva/confirmar_resultado/<int:id>')
+def confirm_result_view(id):
+    return render_template("players/confirm_result.html", reservation_id=id)
