@@ -32,8 +32,6 @@ async function loadProfile() {
     const photo = document.getElementById("photo");
     photo.setAttribute("src", data.photo);
     photo.setAttribute("alt", "Foto de perfil");
-
-    document.getElementById("photo").src = `/static/${data.photo}`;
   } catch (error) {
     console.error(error);
   }
