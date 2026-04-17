@@ -118,3 +118,23 @@ def get_ranking():
     })
 
   return jsonify(result), 200
+
+@user_bp.route('/usuario/<int:id>', methods=['GET'])
+def get_public_profile(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  user = User.query.get(id)
+
+  if not user:
+    return jsonify({"error": "Usuario no encontrado"}), 404
+
+  return jsonify({
+    "username": user.username,
+    "mobile": user.mobile,
+    "category": user.category,
+    "firstname": user.firstname,
+    "lastname": user.lastname,
+    "points": user.points,
+    "photo": user.photo,
+  }), 200
