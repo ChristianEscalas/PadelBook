@@ -14,6 +14,8 @@ class Reservation(db.Model):
   result = db.Column(db.String(20), nullable = True)
   closed_at = db.Column(db.DateTime, nullable = True)
   winner_team = db.Column(db.Enum(WinnerTeam), nullable = True)
+  confirmed_by_creator = db.Column(db.Boolean, default=False)
+  confirmed_by_team_b = db.Column(db.Boolean, default=False)
   
   # Restricción
   __table_args__ = (db.UniqueConstraint("court_id", "start_date", name = "court_id"),)

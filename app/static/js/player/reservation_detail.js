@@ -70,7 +70,7 @@ async function loadReservation() {
     const isCreator = data.creator_id == userId;
     const isTeamBFirst = teamB.length > 0 && teamB[0].id == userId;
 
-    if (data.result === null && (isCreator || isTeamBFirst) && data.status == "pending_result") {
+    if (data.result === null && (isCreator || isTeamBFirst) && data.status === "pending_result") {
       document.getElementById("confirmarBoton").style.display = "block";
     } else {
       document.getElementById("confirmarBoton").style.display = "none";
