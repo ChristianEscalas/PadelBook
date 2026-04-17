@@ -1,15 +1,23 @@
 from sqlalchemy import and_
 from app import db
 from datetime import datetime, timedelta
+from app.models.pointsMovements import PointMovement
 from app.models.reservations import Reservation
 from app.models.reservationPlayers import ReservationPlayer
 from app.models.courts import Court
 from app.models.users import User
 from app.models.clubs import Club
 from app.models.followers import Follower
-from app.enums import CourtType, StatusGame, SurfaceType, Team, WallType, WinnerTeam
+from app.enums import CourtType, ReasonType, StatusGame, SurfaceType, Team, WallType, WinnerTeam
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request, get_jwt
+from datetime import datetime
+
+def update_reservation_status(reservation):
+  if reservation.status_game == StatusGame.complete:
+    if reservation.start_date <= datetime.now():
+      reservation.status_game = StatusGame.pending_result
+      db.session.commit()
 
 player_bp = Blueprint('player', __name__)
 
@@ -281,6 +289,8 @@ def get_reservations():
   
   result = []
   for reservation in reservations:
+    update_reservation_status(reservation)
+    
     court = reservation.court
     club = reservation.court.club
     
@@ -309,15 +319,6 @@ def get_reservations():
       surface = "Hormigón"
     
     status_game = reservation.status_game
-    if status_game not in [StatusGame.canceled, StatusGame.finalized]:
-
-      if len(reservation.players) == 4:
-        status_game = StatusGame.complete
-      else:
-        status_game = StatusGame.open
-
-      if status_game == StatusGame.complete and reservation.start_date <= datetime.now():
-        status_game = StatusGame.pending_result
     
     status = ""
     if status_game.value == "open":
@@ -363,6 +364,8 @@ def get_reservation_detail(id):
   if not reservation:
     return jsonify({"error": "Reserva no encontrada"}), 404
 
+  update_reservation_status(reservation)
+  
   players = []
   for player in reservation.players:
     players.append({
@@ -575,7 +578,7 @@ def leave_reservation_route(id):
   # comprobar si el usuario ha hecho login
   verify_jwt_in_request()
 
-  # Comprobar el rol del usuario (del primer código)
+  # Comprobar el rol del usuario
   claims = get_jwt()
   if claims.get("rol") != "player":
     return jsonify({"error": "No autorizado"}), 403
@@ -617,42 +620,128 @@ def leave_reservation_route(id):
   return jsonify({"message": "Te has salido del partido", "team": player_in_reservation.team.value}), 200
 
 
-def set_result(reservation_id = 3, user_id = 1, sets_a=[6, 4, 6], sets_b=[2, 6, 3]):
-  reservation = Reservation.query.get(reservation_id)
-  if reservation is None:
-    print("La reserva no existe")
-    return
+@player_bp.route('/reservas/confirmar_resultado/<int:id>', methods=['POST'])
+def confirm_result(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
 
-  if reservation.creator_id != user_id:
-    print("No tienes permisos para subir el resultado de este partido")
-    return
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
 
-  if reservation.status_game.value in ["canceled", "finalized"]:
-    print("No se puede subir resultado de un partido cancelado o finalizado")
-    return
-  
+  user_id = int(get_jwt_identity())
+  data = request.get_json()
+
+  sets_a = data.get("sets_a")
+  sets_b = data.get("sets_b")
+
+    # 🔴 VALIDACIÓN INPUT
+  if not sets_a or not sets_b or len(sets_a) != 3 or len(sets_b) != 3:
+    return jsonify({"error": "Formato de sets inválido"}), 400
+
+  try:
+    sets_a = [int(x) for x in sets_a]
+    sets_b = [int(x) for x in sets_b]
+  except:
+    return jsonify({"error": "Sets deben ser números"}), 400
+
+  reservation = Reservation.query.get(id)
+  if not reservation:
+    return jsonify({"error": "Reserva no existe"}), 404
+
+  if reservation.status_game != StatusGame.pending_result:
+    return jsonify({"error": "No permitido o ya finalizado"}), 400
+
+  # 🔥 IDENTIFICAR ROLES
+  creator_id = reservation.creator_id
+
+  team_b_players = sorted([p for p in reservation.players if p.team.value == "b"], key=lambda x: x.id)
+  team_b_first = team_b_players[0].user_id if team_b_players else None
+
+  if user_id != creator_id and user_id != team_b_first:
+    return jsonify({"error": "No tienes permisos"}), 403
+
+  # 🔥 VALIDACIÓN EMPATES
   for i in range(3):
-    if sets_a[i] == sets_b[i] and (sets_a[i] != 0 or sets_b[i] != 0):
-      print(f"Error: El Set {i+1} no puede ser un empate ({sets_a[i]}-{sets_b[i]}). Debe haber un ganador.")
-      return
-  
-  result = f"{sets_a[0]}-{sets_b[0]}/{sets_a[1]}-{sets_b[1]}/{sets_a[2]}-{sets_b[2]}"
-    
-  wins_a = 0
-  for i in range(3):
-    if sets_a[i] > sets_b[i]:
-      wins_a += 1
-    
-  if wins_a >= 2:
-    winner = WinnerTeam.a
-  else:
-    winner = WinnerTeam.b
+    if sets_a[i] == sets_b[i] and sets_a[i] != 0:
+      return jsonify({"error": f"Set {i+1} inválido (empate)"}), 400
 
-  reservation.result = result
-  reservation.winner_team = winner
-  reservation.status_game = StatusGame.pending_result
+  # 🔥 CÁLCULO DE GANADOR
+  wins_a = sum(1 for i in range(3) if sets_a[i] > sets_b[i])
+  wins_b = sum(1 for i in range(3) if sets_b[i] > sets_a[i])
+
+  if wins_a < 2 and wins_b < 2:
+    return jsonify({"error": "Debe haber un ganador (mínimo 2 sets)"}), 400
+
+  # 🔥 VALIDACIÓN SET 3
+  gano_a_2_0 = sets_a[0] > sets_b[0] and sets_a[1] > sets_b[1]
+  gano_b_2_0 = sets_b[0] > sets_a[0] and sets_b[1] > sets_a[1]
+
+  # si termina en 2 sets → tercero 0-0
+  if (gano_a_2_0 or gano_b_2_0) and (sets_a[2] != 0 or sets_b[2] != 0):
+    return jsonify({"error": "El partido terminó en el segundo set, el tercero debe ser 0-0"}), 400
+
+  # si NO termina en 2 sets → hay tercer set obligatorio
+  if not (gano_a_2_0 or gano_b_2_0):
+    if sets_a[2] == 0 and sets_b[2] == 0:
+      return jsonify({"error": "Debe jugarse el tercer set"}), 400
+
+  # 🔥 RESULTADO STRING
+  new_result_str = f"{sets_a[0]}-{sets_b[0]}/{sets_a[1]}-{sets_b[1]}/{sets_a[2]}-{sets_b[2]}"
+
+  # 🔥 CONSISTENCIA (doble confirmación)
+  if reservation.result and reservation.result != new_result_str:
+    return jsonify({"error": "El resultado no coincide con el enviado por la otra parte"}), 400
+
+  # 🔥 PRIMER USUARIO GUARDA RESULTADO
+  if not reservation.result:
+    reservation.result = new_result_str
+    reservation.winner_team = WinnerTeam.a if wins_a >= 2 else WinnerTeam.b
+
+  # 🔥 MARCAR CONFIRMACIÓN
+  if user_id == creator_id:
+    reservation.confirmed_by_creator = True
+
+  if user_id == team_b_first:
+    reservation.confirmed_by_team_b = True
+
+  # 🔥 FINALIZAR SOLO SI LOS DOS CONFIRMAN
+  if reservation.confirmed_by_creator and reservation.confirmed_by_team_b:
+
+    for player in reservation.players:
+      is_winner = player.team.value == reservation.winner_team.value
+      delta = 10 if is_winner else -5
+      reason = ReasonType.win if is_winner else ReasonType.loss
+
+      # evitar duplicados
+      if PointMovement.query.filter_by(user_id=player.user_id, reservation_id=reservation.id).first():
+        continue
+
+      user = player.user
+      user.points = max(0, user.points + delta)
+
+      # 🔥 categorías
+      if user.points >= 600:
+        user.category = 1
+      elif user.points >= 500:
+        user.category = 2
+      elif user.points >= 400:
+        user.category = 3
+      elif user.points >= 300:
+        user.category = 4
+      elif user.points >= 200:
+        user.category = 5
+      else:
+        user.category = 6
+
+      db.session.add(PointMovement(user_id=player.user_id, reservation_id=reservation.id, reason=reason, delta=delta))
+
+    reservation.status_game = StatusGame.finalized
+
   db.session.commit()
-  print(f"Resultado {result} guardado. Ganador: Equipo {winner.name}")
+
+  return jsonify({ "message": "Resultado procesado", "finalized": reservation.status_game == StatusGame.finalized}), 200
 
 # carga los municipios            
 @player_bp.route('/municipios', methods=['GET'])
