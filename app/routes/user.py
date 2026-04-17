@@ -207,7 +207,7 @@ def get_followers():
   verify_jwt_in_request()
   
   user_id = int(get_jwt_identity())
-  followers = Follower.query.filter_by(following_id=user_id)
+  followers = Follower.query.filter_by(following_id=user_id).all()
   
   if not followers:
     return jsonify([]), 200
@@ -215,17 +215,21 @@ def get_followers():
   users = []
   for follower in followers:
     user = follower.follower_user
+
+    is_following = Follower.query.filter_by(follower_id=user_id, following_id=user.id).first() is not None
+
     users.append({
       "id": user.id,
       "photo": user.photo,
       "firstname": user.firstname,
-      "lastname": user.lastname
+      "lastname": user.lastname,
+      "is_following": is_following
     })
   
   return jsonify(users), 200
 
 @user_bp.route('/seguidos', methods=['GET'])
-def get_followers():
+def get_following():
   # comprobar si el usuario ha hecho login
   verify_jwt_in_request()
   
