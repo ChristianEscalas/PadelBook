@@ -116,7 +116,8 @@ def get_ranking():
       "id": user.id,
       "firstname": user.firstname,
       "photo": user.photo,
-      "points": user.points
+      "points": user.points,
+      "category": user.category
     })
 
   return jsonify(result), 200
