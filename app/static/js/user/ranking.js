@@ -27,7 +27,7 @@ async function loadRanking(params = "") {
       container.innerHTML += `
         <div class="tarjetaJugador">
           <div class="infoJugador">
-            <div class="fotoJugador>
+            <div class="fotoJugador">
               <img src="/static/${user.photo}" data-id="${user.id}" class="clickableUser">
             </div>
 
