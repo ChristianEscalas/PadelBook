@@ -58,14 +58,14 @@ async function loadReservation() {
   renderTeam(teamB, playersB, "b");
 
   document.getElementById("teamA").insertAdjacentHTML("beforebegin", `<p>${playersA.length}/2</p>`);
-  document.getElementById("teamB").insertAdjacentHTML("beforebegin", `<p>${playersA.length}/2</p>`);
+  document.getElementById("teamB").insertAdjacentHTML("beforebegin", `<p>${playersB.length}/2</p>`);
 }
 
 function renderTeam(container, players, team) {
   players.forEach((p) => {
     container.innerHTML += `
       <div class="jugador">
-        <img src="${p.photo}" alt="${p.name}">
+        <img src="/static/${p.photo}" alt="${p.name}">
         <p>${p.name}</p>
       </div>
     `;
