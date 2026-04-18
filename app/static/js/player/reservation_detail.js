@@ -16,7 +16,7 @@ async function loadReservation() {
       .map(
         (p) => `
       <div class="jugador">
-        <img src="${p.photo}">
+        <img src="/static/${p.photo}">
         <p>${p.name}</p>
       </div>
     `,
@@ -31,7 +31,7 @@ async function loadReservation() {
 
     <div id="info-reserva">
       <div id="foto-club">
-        <img src="${data.photo}" alt="Foto del club">
+        <img src="/static/${data.photo}" alt="Foto del club">
       </div>
 
       <div id="detalle-reserva">
