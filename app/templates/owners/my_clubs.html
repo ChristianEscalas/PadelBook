@@ -1,0 +1,19 @@
+{% extends 'players/base_owner.html' %}
+
+{% block titleHead %}
+  Mis clubes
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='/js/owner/my_clubs.js')}}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+  <div id="mis-clubes">
+    <div id="introClubes">
+      <h1>Mis clubes</h1>
+      <button type="button" id="crearClub">Crear club</button>
+    </div>
+
+    <div id="tarjetas-clubes"></div>
+{% endblock %}
