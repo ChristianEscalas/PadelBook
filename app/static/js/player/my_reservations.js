@@ -65,7 +65,13 @@ async function loadReservations() {
               Detalles
             </button>
 
-            ${reservation.is_creator ? `<button type="button" class="cancelarBoton" data-id="${reservation.id}">Cancelar</button>` : `<button type="button" class="salirBoton" data-id="${reservation.id}">Desapuntarse</button>`}
+            ${
+              !["Pendiente de resultado", "Finalizada"].includes(reservation.status)
+                ? reservation.is_creator
+                  ? `<button type="button" class="cancelarBoton" data-id="${reservation.id}">Cancelar</button>`
+                  : `<button type="button" class="salirBoton" data-id="${reservation.id}">Desapuntarse</button>`
+                : ""
+            }
 
           </div>
         </div>
