@@ -15,41 +15,54 @@
   <div id="tarjetaResultado">
     <form id="formResultado">
 
-      <div class="set">
-        <h3>Set 1</h3>
-        <div class="inputs">
-          <input type="number" id="a1" min="0" max="7" placeholder="Equipo A" required>
-          <span>-</span>
-          <input type="number" id="b1" min="0" max="7" placeholder="Equipo B" required>
+      <div id="datosPartido">
+        <div id="equiposMarcador">
+          <p><strong>Equipo A:</strong></p>
+          <p><strong>Equipo B:</strong></p>
         </div>
-      </div>
 
-      <div class="set">
-        <h3>Set 2</h3>
-        <div class="inputs">
-          <input type="number" id="a2" min="0" max="7" placeholder="Equipo A" required>
-          <span>-</span>
-          <input type="number" id="b2" min="0" max="7" placeholder="Equipo B" required>
+        <div class="set">
+          <h3>Set 1</h3>
+          <div class="inputs">
+            <input type="number" id="a1" min="0" max="7" required>
+            <input type="number" id="b1" min="0" max="7" required>
+          </div>
         </div>
-      </div>
 
-      <div class="set">
-        <h3>Set 3</h3>
-        <div class="inputs">
-          <input type="number" id="a3" min="0" max="7" placeholder="Equipo A">
-          <span>-</span>
-          <input type="number" id="b3" min="0" max="7" placeholder="Equipo B">
+        <div class="set">
+          <h3>Set 2</h3>
+          <div class="inputs">
+            <input type="number" id="a2" min="0" max="7" required>
+            <input type="number" id="b2" min="0" max="7" required>
+          </div>
         </div>
-        <p class="hint">Si el partido termina en 2 sets, deja 0-0</p>
+      
+        <div class="set">
+          <h3>Set 3</h3>
+          <div class="inputs">
+            <input type="number" id="a3" min="0" max="7">
+            <input type="number" id="b3" min="0" max="7">
+          </div>
+        </div>
+
+        <div id="botones">
+          <button type="submit" id="guardarBoton">Guardar resultado</button>
+          <button type="button" id="cancelBoton">Cancelar</button>
+        </div>
       </div>
+      <p class="hint">Si el partido termina en 2 sets, deja 0-0</p>
 
       <div id="estadoConfirmacion">
         <p id="estadoTexto"></p>
       </div>
 
-      <div id="botones">
-        <button type="submit" id="guardarBoton">Guardar resultado</button>
-        <button type="button" id="cancelBoton">Cancelar</button>
+      <div id="equipos">
+        <p><strong>Equipos:</strong></p>
+
+        <div id="parejas">
+          <div id="teamA"></div>
+          <div id="teamB"></div>
+        </div>
       </div>
     </form>
   </div>

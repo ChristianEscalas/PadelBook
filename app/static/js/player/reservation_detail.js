@@ -45,10 +45,12 @@ async function loadReservation() {
 
           <div id="parejas">
             <div class="pareja">
+              <p><strong>Equipo A:</strong></p>
               ${renderPlayers(teamA)}
             </div>
 
             <div class="pareja">
+              <p><strong>Equipo B:</strong></p>
               ${renderPlayers(teamB)}
             </div>
           </div>
