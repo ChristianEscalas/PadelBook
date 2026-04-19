@@ -9,9 +9,20 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const contactButton = document.getElementById("contactButton");
+      const logoutButton = document.getElementById("logoutButton");
+      const token = localStorage.getItem("access_token");
+
       contactButton.addEventListener("click", () => {
         window.location.href = "/contacto";
       });
+
+      if (token) {
+        logoutButton.style.display = "inline-block";
+        logoutButton.addEventListener("click", () => {
+          localStorage.removeItem("access_token");
+          window.location.href = "/login";
+        });
+      }
     });
   </script>
 </head>
@@ -34,7 +45,10 @@
           </ul>
         </nav>
       </div>
-      <button type="button" id="contactButton" herf="/contact">CONTACTO</button>
+      <div id="botones">
+        <button type="button" id="logoutButton" style="display: none;">CERRAR SESIÓN</button>
+        <button type="button" id="contactButton" href="/contact">CONTACTO</button>
+      </div>
     </div>
   </header>
 
