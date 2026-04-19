@@ -16,9 +16,19 @@ async function loadProfile() {
     document.getElementById("username").innerText = data.username;
     document.getElementById("email").innerText = data.email;
     document.getElementById("mobile").innerText = data.mobile;
+
+    if (data.address.length === 0) {
+      data.address = "-";
+    }
+
     document.getElementById("address").innerText = data.address;
     document.getElementById("age").innerText = data.age;
     document.getElementById("firstname").innerText = data.firstname;
+
+    if (data.lastname.length === 0) {
+      data.lastname = "-";
+    }
+
     document.getElementById("lastname").innerText = data.lastname;
     document.getElementById("category").innerText = data.category;
     document.getElementById("points").innerText = data.points;

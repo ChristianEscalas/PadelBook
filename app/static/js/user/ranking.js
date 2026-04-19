@@ -32,9 +32,11 @@ async function loadRanking(params = "") {
               <p>Categoría: ${user.category}a</p>
             </div>
 
-            <div class="infoJugador">
-              <h3>${user.firstname}</h3>
-              <p>${user.points} puntos</p>
+            <div class="datosJugador">
+              <h3>${user.firstname} ${user.lastname}</h3>
+              <div class="puntos">
+                <p>${user.points} puntos</p>
+              </div>
             </div>
           </div>
         </div>

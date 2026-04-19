@@ -3,7 +3,6 @@ import { showNotification } from "../main.js";
 const reservationId = window.location.pathname.split("/").pop();
 const token = localStorage.getItem("access_token");
 
-// 🔥 CARGAR RESULTADO EXISTENTE
 async function loadResult() {
   try {
     const response = await fetch(`http://192.168.0.100:5000/api/player/reservas/resultado/${reservationId}`, {
@@ -34,6 +33,49 @@ async function loadResult() {
     } else {
       document.getElementById("estadoTexto").textContent = "Introduce el resultado del partido.";
     }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function loadReservation() {
+  try {
+    const response = await fetch(`http://192.168.0.100:5000/api/player/reservas/${reservationId}`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    if (!response.ok) return;
+
+    const data = await response.json();
+
+    const teamA = data.players.filter((p) => p.team === "a");
+    const teamB = data.players.filter((p) => p.team === "b");
+
+    const renderPlayers = (list) => {
+      return list
+        .map(
+          (p) => `
+        <div class="jugador">
+          <img src="/static/${p.photo}">
+          <p>${p.name}</p>
+        </div>
+      `,
+        )
+        .join("");
+    };
+
+    document.getElementById("teamA").innerHTML = `
+      <p><strong>Equipo A:</strong></p>
+      ${renderPlayers(teamA)}
+    `;
+
+    document.getElementById("teamB").innerHTML = `
+      <p><strong>Equipo B:</strong></p>
+      ${renderPlayers(teamB)}
+    `;
   } catch (error) {
     console.error(error);
   }
@@ -78,7 +120,7 @@ function cancel() {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadResult();
-
+  loadReservation();
   document.getElementById("formResultado").addEventListener("submit", submitResult);
   document.getElementById("cancelBoton").addEventListener("click", cancel);
 });

@@ -115,6 +115,7 @@ def get_ranking():
     result.append({
       "id": user.id,
       "firstname": user.firstname,
+      "lastname": user.lastname,
       "photo": user.photo,
       "points": user.points,
       "category": user.category

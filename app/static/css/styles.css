@@ -227,7 +227,7 @@ footer div {
   border: 1px solid gray;
 }
 
-#form #botones {
+#login #form #botones {
   display: flex;
   gap: 30px;
   justify-content: center;
@@ -245,7 +245,7 @@ footer div {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-#botones button:hover {
+#login #botones button:hover {
   background-color: #AEEA00;
   color: black;
   transform: translateY(-5px);
@@ -334,7 +334,7 @@ footer div {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-#botones button:hover {
+#registro #botones button:hover {
   background-color: #AEEA00;
   color: black;
   transform: translateY(-5px);
@@ -407,13 +407,14 @@ footer div {
   border: 1px solid gray;
   height: 100px;
 }
-#form #botones {
+
+#contacto #form #botones {
   display: flex;
   gap: 30px;
   justify-content: center;
 }
 
-#botones button {
+#contacto #botones button {
   margin-top: 10px;
   margin-bottom: 25px;
   padding: 10px;
@@ -425,7 +426,7 @@ footer div {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-#botones button:hover {
+#contacto #botones button:hover {
   background-color: #AEEA00;
   color: black;
   transform: translateY(-5px);
@@ -736,6 +737,7 @@ footer div {
 #detalles-reserva #tarjeta-detalle #info-reserva #detalle-reserva {
   text-align: center;
 }
+
 #detalles-reserva #tarjeta-detalle #info-reserva #equipos {
   grid-column: span 2;
   margin-top: 15px;
@@ -751,9 +753,14 @@ footer div {
   border-radius: 12px;
 }
 
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas p {
+  margin: 0px;
+}
+
 #detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas .pareja {
   display: flex;
   gap: 5px;
+  align-items: center;
 }
 
 #detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas .pareja .jugador {
@@ -761,6 +768,7 @@ footer div {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  width: 50px;
 }
 
 #detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas .pareja .jugador img {
@@ -1154,7 +1162,7 @@ footer div {
   background-color: #FFFFFF;
   border-radius: 30px;
   padding: 25px;
-  width: 350px;
+  width: 500px;
   box-shadow: 10px 10px 0px #1E88E5;
   margin-top: 30px;
   margin-top: auto;
@@ -1176,10 +1184,27 @@ footer div {
   align-items: center;
 }
 
-#ranking .tarjetaJugador p {
+#ranking .tarjetaJugador .infoJugador .fotoJugador p {
   margin: 0px;
+  width: 90px;
 }
 
+#ranking .tarjetaJugador .infoJugador .datosJugador {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+}
+
+#ranking .tarjetaJugador .infoJugador .datosJugador .puntos {
+  display: flex;
+  margin-left: auto;
+}
+
+#ranking .tarjetaJugador .datosJugador .puntos p {
+  margin: 0;
+}
 #ranking .tarjetaJugador h3 {
   font-size: 22px;
   margin: 0px;
@@ -1233,11 +1258,12 @@ footer div {
   flex-direction: column;
   gap: 40px;
 }
+
 #followers .tarjetaJugador {
   background-color: #FFFFFF;
   border-radius: 30px;
   padding: 25px;
-  width: 350px;
+  width: 500px;
   box-shadow: 10px 10px 0px #1E88E5;
   margin-top: 30px;
   margin-top: auto;
@@ -1275,4 +1301,163 @@ footer div {
 #followers .tarjetaJugador .infoJugador img {
   width: 50px;
   height: 50px;
+}
+
+/* CONFIRMAR RESULTADO */
+
+#confirmarResultado {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 80vh;
+  box-sizing: border-box;
+}
+
+#confirmarResultado #tarjetaResultado {
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: fit-content;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  gap: 20px;
+  align-items: center;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #equiposMarcador {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #equiposMarcador p {
+margin: 0px;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido .set {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #botones {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 5px;
+  margin-top: 21px;
+  margin-left: auto;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #botones button {
+  width: 150px;
+  margin: 0px;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #botones #guardarBoton {
+  background-color: #5cf094;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #botones #cancelBoton {
+  background-color: #FF6464;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #botones #guardarBoton:hover,
+#confirmarResultado #tarjetaResultado #datosPartido #botones #cancelBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido .set h3 {
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido .set .inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 40px;
+  
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido .set .inputs input {
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid gray;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido .set .inputs input:focus {
+  background-color: rgb(226, 226, 226);
+  border: 1px solid black;
+  padding: 5px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos {
+  grid-column: span 2;
+  margin-top: 40px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos p {
+  text-align: center;
+  font-size: 20px;
+}
+#confirmarResultado #tarjetaResultado #equipos #parejas {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  text-align: center;
+  margin-top: 30px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas #teamA {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas #teamB {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas p {
+  margin: 0px;
+  font-size: 16px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas .pareja {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas .pareja .jugador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 50px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas .pareja .jugador img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
 }
