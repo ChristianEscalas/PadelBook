@@ -29,7 +29,7 @@ async function login(form) {
         if (rol === "player") {
           window.location.href = "/reservar";
         } else if (rol === "owner") {
-          window.location.href = "/clubes";
+          window.location.href = "/mis_clubes";
         } else {
           console.log("Rol desconocido", rol);
         }

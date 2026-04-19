@@ -1,3 +1,5 @@
+from flask import Blueprint, jsonify, request
+from flask_jwt_extended import get_jwt, get_jwt_identity, verify_jwt_in_request
 from app import db
 from app.models.clubs import Club
 from app.models.users import User
@@ -5,6 +7,72 @@ from app.models.courts import Court
 from app.models.reservations import Reservation
 from app.enums import CourtType, WallType, SurfaceType, StatusGame
 from datetime import time, datetime, timedelta
+
+owner_bp = Blueprint('owner', __name__)
+@owner_bp.route('/mis_clubes', methods=['GET'])
+def get_clubs():
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  # id del usuario
+  user_id = get_jwt_identity()
+  
+  # clubes del usuario
+  clubs = Club.query.filter(Club.owner_id == user_id, Club.active != False).order_by(Club.club_name.desc()).all()
+  
+  if not clubs:
+    return jsonify([]), 200
+  
+  result = []
+  for club in clubs:
+    result.append({
+      "id": club.id,
+      "club_name": club.club_name,
+      "address": club.address,
+      "photo": club.photo,
+      "open_hour": club.open_hour.strftime("%H:%M"),
+      "close_hour": club.close_hour.strftime("%H:%M"),
+      "game_duration": club.game_duration,
+    })
+    
+  return jsonify(result), 200
+
+@owner_bp.route('/pistas/club/<int:id>', methods=['GET'])
+def get_courts(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+
+  club = Club.query.get(id)
+  if club.active == False:
+    return jsonify({"error": "El club está eliminado"}), 404
+  
+  courts = Court.query.filter(Court.club_id == club.id)
+  if not courts:
+    return jsonify([]), 200
+    
+  result = []
+  for court in courts:
+    courts.append({
+      "id": court.id,
+      "number_court": court.number_court,
+      "court_type": court.court_type,
+      "covered": court.covered,
+      "wall": court.wall,
+      "surface": court.surface,
+      "active": court.active,
+    })
+
+  return jsonify(result), 200
 
 def create_club():
   new_club = Club(owner_id = 3, club_name = "PruebaCrearClub2", address = "Calle prueba, 2", open_hour = time(10, 0, 0), close_hour = time(21, 0, 0), game_duration = 90, municipality = "Marratxí", photo = "app/static/images/clubs/clubPadel.jpg")

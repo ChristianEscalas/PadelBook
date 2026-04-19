@@ -73,3 +73,7 @@ def get_following_page():
 @views_bp.route('/reserva/confirmar_resultado/<int:id>')
 def confirm_result_view(id):
     return render_template("players/confirm_result.html", reservation_id=id)
+
+@views_bp.route('/mis_clubes')
+def my_clubes_page():
+    return render_template("owners/my_clubs.html")
