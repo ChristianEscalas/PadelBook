@@ -1,0 +1,23 @@
+{% extends 'owners/base_owner.html' %}
+
+{% block titleHead %}
+  Mis pistas
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='/js/owner/courts_by_club.js')}}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+  <div id="mis-pistas">
+    <div id="intropistas">
+      <h1>Mis pistas</h1>
+      <div id="botones">
+        <button type="button" id="volverClub">Volver al club</button>
+        <button type="button" id="crearPista">Crear pista</button>
+      </div>
+    </div>
+
+    <div id="tarjetas-pistas"></div>
+  </div>
+{% endblock %}

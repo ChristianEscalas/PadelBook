@@ -25,7 +25,7 @@ async function loadCourts() {
     divPistas.innerHTML = "";
     data.forEach((court) => {
       divPistas.innerHTML += `
-      <div class="tarjetaClub">
+      <div class="tarjetaPista">
         <h3>Pista nº ${court.number_court}</h3>
         <div class="infoPista">
         
