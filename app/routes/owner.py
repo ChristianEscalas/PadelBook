@@ -42,6 +42,38 @@ def get_clubs():
     
   return jsonify(result), 200
 
+@owner_bp.route('/pistas/club/<int:id>', methods=['GET'])
+def get_courts(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+
+  club = Club.query.get(id)
+  if club.active == False:
+    return jsonify({"error": "El club está eliminado"}), 404
+  
+  courts = Court.query.filter(Court.club_id == club.id)
+  if not courts:
+    return jsonify([]), 200
+    
+  result = []
+  for court in courts:
+    courts.append({
+      "id": court.id,
+      "number_court": court.number_court,
+      "court_type": court.court_type,
+      "covered": court.covered,
+      "wall": court.wall,
+      "surface": court.surface,
+      "active": court.active,
+    })
+
+  return jsonify(result), 200
+
 def create_club():
   new_club = Club(owner_id = 3, club_name = "PruebaCrearClub2", address = "Calle prueba, 2", open_hour = time(10, 0, 0), close_hour = time(21, 0, 0), game_duration = 90, municipality = "Marratxí", photo = "app/static/images/clubs/clubPadel.jpg")
   existing_club = Club.query.filter_by(club_name = new_club.club_name).first()

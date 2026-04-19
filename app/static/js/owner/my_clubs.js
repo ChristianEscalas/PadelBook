@@ -61,7 +61,7 @@ async function loadClubs() {
 document.addEventListener("click", async (event) => {
   if (event.target.classList.contains("pistasBoton")) {
     const clubId = event.target.dataset.id;
-    window.location.href = `/pistas/${clubId}`;
+    window.location.href = `/pistas/club/${clubId}`;
   }
 
   if (event.target.classList.contains("editarclubBoton")) {
