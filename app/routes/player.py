@@ -14,10 +14,15 @@ from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request, get_jwt
 from datetime import datetime
 
 def update_reservation_status(reservation):
+  now = datetime.now()
+
   if reservation.status_game == StatusGame.complete:
-    if reservation.start_date <= datetime.now():
+    if reservation.start_date <= now:
       reservation.status_game = StatusGame.pending_result
-      db.session.commit()
+  elif reservation.status_game == StatusGame.open:
+    if reservation.start_date <= now:
+      reservation.status_game = StatusGame.canceled
+      reservation.closed_at = datetime.now()
 
 player_bp = Blueprint('player', __name__)
 
@@ -287,9 +292,14 @@ def get_reservations():
   if not reservations:
     return jsonify([]), 200
   
+  updated = False
   result = []
   for reservation in reservations:
+    before = reservation.status_game
     update_reservation_status(reservation)
+    
+    if reservation.status_game != before:
+      updated = True
     
     court = reservation.court
     club = reservation.court.club
@@ -318,19 +328,13 @@ def get_reservations():
     else:
       surface = "Hormigón"
     
-    status_game = reservation.status_game
-    
-    status = ""
-    if status_game.value == "open":
-      status = "Abierta"
-    elif status_game.value == "complete":
-      status = "Completa"
-    elif status_game.value == "canceled":
-      status = "Cancelada"
-    elif status_game.value == "pending_result":
-      status = "Pendiente de resultado"
-    else:
-      status = "Finalizada"
+    status_map = {
+      "open": "Abierta",
+      "complete": "Completa",
+      "canceled": "Cancelada",
+      "pending_result": "Pendiente de resultado",
+      "finalized": "Finalizada"
+    }
     
     result.append({
       "id": reservation.id,
@@ -342,11 +346,13 @@ def get_reservations():
       "cover": cover,
       "wall": wall,
       "surface": surface,
-      "status": status,
+      "status": status_map[reservation.status_game.value],
       "photo": club.photo,
       "is_creator": reservation.creator_id == int(user_id)
     })
-    
+  
+  if updated:
+    db.session.commit()
   return jsonify(result), 200
 
 @player_bp.route('/reservas/<int:id>', methods=['GET'])
@@ -364,8 +370,12 @@ def get_reservation_detail(id):
   if not reservation:
     return jsonify({"error": "Reserva no encontrada"}), 404
 
+  before = reservation.status_game
   update_reservation_status(reservation)
   
+  if reservation.status_game != before:
+    db.session.commit()
+    
   players = []
   for player in reservation.players:
     players.append({
