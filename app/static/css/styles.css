@@ -21,7 +21,8 @@ main {
 }
 
 #contactButton:hover,
-#reservaButton:hover {
+#reservaButton:hover,
+#logoutButton:hover {
   background-color: #AEEA00;
   color: black;
   transform: translateY(-5px);
@@ -85,14 +86,30 @@ h1 {
   transform: translateY(-5px);
 }
 
-#contactButton {
+#header #botones {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+#header #botones button {
+  margin: 0px;
+  width: 200px;
   border-radius: 20px;
   border: 1px solid black;
   padding: 10px;
   font-size: 20px;
-  background-color: #305BAB;
+  height: fit-content;
   color: white;
-  width: 200px;
+}
+
+#logoutButton {
+  background-color: #FF6464;
+}
+
+#contactButton {
+  background-color: #305BAB;
 }
 
 #inicio {
