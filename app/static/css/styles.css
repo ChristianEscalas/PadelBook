@@ -517,8 +517,9 @@ footer div {
 #reservar .tarjetaClub{
   background-color: #FFFFFF;
   border-radius: 30px;
-  padding: 25px 25px 9px 25px;
-  width: 800px;
+  padding: 25px;
+  width: 750px;
+  height: fit-content;
   box-shadow: 10px 10px 0px #1E88E5;
   margin-top: 30px;
 }
@@ -530,9 +531,15 @@ footer div {
   gap: 20px;
 }
 
+#reservar .tarjetaClub .infoClub .fotoclub {
+  width: fit-content;
+}
+
 #reservar .tarjetaClub .infoClub .fotoclub img {
   width: 150px;
   height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
 }
 
 #reservar .tarjetaClub h3{
@@ -544,6 +551,8 @@ footer div {
 
 #reservar .tarjetaClub .boton-reserva {
   text-align: center;
+  width: fit-content;
+  margin-left: auto;
 }
 
 #reservar .tarjetaClub button {
@@ -575,15 +584,16 @@ footer div {
 #confirmar-reserva .tarjetaClub{
   background-color: #FFFFFF;
   border-radius: 30px;
-  padding: 25px 25px 9px 25px;
-  width: 800px;
+  padding: 25px;
+  width: fit-content;
+  height: fit-content;
   box-shadow: 10px 10px 0px #1E88E5;
   margin-top: 30px;
 }
 
 #confirmar-reserva .tarjetaClub .infoClub {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, auto);
   align-items: center;
   gap: 10px;
 }
@@ -591,6 +601,9 @@ footer div {
 #confirmar-reserva .tarjetaClub .infoClub .fotoclub img {
   width: 150px;
   height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
+  margin-right: 10px;
 }
 
 #confirmar-reserva .tarjetaClub h3{
@@ -605,6 +618,8 @@ footer div {
   flex-direction: column;
   gap: 20px;
   text-align: center;
+  width: fit-content;
+  margin-left: 10px;
 }
 
 #confirmar-reserva .tarjetaClub button {
@@ -643,15 +658,16 @@ footer div {
 #mis-reservas .tarjetaClub{
   background-color: #FFFFFF;
   border-radius: 30px;
-  padding: 25px 25px 9px 25px;
+  padding: 25px;
   width: 800px;
+  height: fit-content;
   box-shadow: 10px 10px 0px #1E88E5;
   margin-top: 30px;
 }
 
 #mis-reservas .tarjetaClub .infoClub {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 1fr auto auto auto 1fr auto;
   align-items: center;
   gap: 10px;
 }
@@ -659,6 +675,8 @@ footer div {
 #mis-reservas .tarjetaClub .infoClub .fotoclub img {
   width: 150px;
   height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
 }
 
 #mis-reservas .tarjetaClub h3{
@@ -673,6 +691,8 @@ footer div {
   flex-direction: column;
   gap: 20px;
   text-align: center;
+  width: fit-content;
+  margin-left: auto;
 }
 
 #mis-reservas .tarjetaClub button {
@@ -712,7 +732,8 @@ footer div {
   background-color: #FFFFFF;
   border-radius: 30px;
   padding: 25px 25px 9px 25px;
-  width: 800px;
+  width: fit-content;
+  height: fit-content;
   box-shadow: 10px 10px 0px #1E88E5;
   margin-top: 30px;
 }
@@ -724,9 +745,11 @@ footer div {
   gap: 20px;
 }
 
-#detalles-reserva #tarjeta-detalle #info-reserva #fotoclub img {
+#detalles-reserva #tarjeta-detalle #info-reserva #foto-club img {
   width: 150px;
   height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
 }
 
 #detalles-reserva #tarjeta-detalle h3{
@@ -914,16 +937,17 @@ footer div {
   background-color: #FFFFFF;
   border-radius: 30px;
   padding: 25px;
-  width: 700px;
+  width: fit-content;
+  height: fit-content;
   box-shadow: 10px 10px 0px #1E88E5;
   margin-top: 30px;
 }
 
 #unirse-partido #tarjetaConfirmacion .partido {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: auto auto auto;
   align-items: center;
-  gap: 10px;
+  gap: 30px;
 }
 
 #unirse-partido #tarjetaConfirmacion .partido #columnaUnirse {
@@ -931,7 +955,7 @@ footer div {
   grid-template-rows: auto auto auto;
   margin-top: 20px;
   width: 450px;
-  gap: 10px;
+  gap: 20px;
 }
 #unirse-partido #tarjetaConfirmacion .partido .datos {
   display: flex;
@@ -951,14 +975,17 @@ footer div {
 
 #unirse-partido #tarjetaConfirmacion .partido .equipos .equipo p, h4 {
   text-align: center;
-}
-#unirse-partido #tarjetaConfirmacion .info-reserva .info p {
-  margin: 0;
+  margin-top: 10px;
 }
 
-#unirse-partido #tarjetaConfirmacion .info-reserva .fotoclub img {
+#unirse-partido #tarjetaConfirmacion .partido #fotoClub {
+  width: fit-content;
+}
+#unirse-partido #tarjetaConfirmacion .partido #fotoClub img {
   width: 150px;
   height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
 }
 
 #unirse-partido #tarjetaConfirmacion h3{
@@ -973,6 +1000,7 @@ footer div {
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  width: fit-content;
 }
 
 #unirse-partido #tarjetaConfirmacion button {
@@ -1032,7 +1060,8 @@ footer div {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80px;
+  height: 120px;
+  width: 80px;
   background: #2c2c2c;
   border-radius: 10px;
   font-size: 30px;
@@ -1046,7 +1075,7 @@ footer div {
 }
 
 .slot.selected {
-  border: 2px solid #AEEA00;
+  border: 2px solid red;
 }
 
 /* MI PERFIL */
