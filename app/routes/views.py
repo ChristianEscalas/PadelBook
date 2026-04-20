@@ -77,3 +77,15 @@ def confirm_result_view(id):
 @views_bp.route('/mis_clubes')
 def my_clubes_page():
     return render_template("owners/my_clubs.html")
+
+@views_bp.route('/pistas/club/<int:id>')
+def courts_by_club_page(id):
+    return render_template("owners/courts_by_club.html")
+
+@views_bp.route('/crear_club')
+def create_club_page():
+  return render_template('owners/create_club.html')
+
+@views_bp.route('/editar_club/<int:id>')
+def edit_club_page(id):
+  return render_template('owners/edit_club.html', club_id = id, edit_mode = True)

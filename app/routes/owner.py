@@ -62,13 +62,13 @@ def get_courts(id):
     
   result = []
   for court in courts:
-    courts.append({
+    result.append({
       "id": court.id,
       "number_court": court.number_court,
-      "court_type": court.court_type,
+      "court_type": court.court_type.value,
       "covered": court.covered,
-      "wall": court.wall,
-      "surface": court.surface,
+      "wall": court.wall.value,
+      "surface": court.surface.value,
       "active": court.active,
     })
 

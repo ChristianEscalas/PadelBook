@@ -82,4 +82,8 @@ document.addEventListener("click", async (event) => {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadClubs();
+
+  document.getElementById("crearClub").addEventListener("click", () => {
+    window.location.href = "/crear_club";
+  });
 });
