@@ -88,4 +88,4 @@ def create_club_page():
 
 @views_bp.route('/editar_club/<int:id>')
 def edit_club_page(id):
-  return render_template('owners/edit_club.html', club_id = id, edit_mode = True)
+  return render_template('owners/create_club.html', edit_mode = True)

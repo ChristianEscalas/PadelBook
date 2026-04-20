@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
   handleForm(form);
   loadClubIfEdit();
 
-  const cancelBtn = document.getElementById("cancelBtn") || document.getElementById("cancelButton");
+  const cancelBtn = document.getElementById("cancelButton");
   if (cancelBtn) {
     cancelBtn.addEventListener("click", () => {
       window.location.href = "/mis_clubes";
