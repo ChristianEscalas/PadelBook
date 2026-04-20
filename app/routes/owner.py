@@ -134,6 +134,31 @@ def create_club():
     db.session.rollback()
     return jsonify({"error": str(ex)}), 500
 
+@owner_bp.route('/club/<int:id>', methods=['GET'])
+def get_club(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  club = Club.query.get(id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
+  
+  return jsonify({
+    "club_name": club.club_name,
+    "address": club.address,
+    "open_hour": club.open_hour.strftime("%H:%M"),
+    "close_hour": club.close_hour.strftime("%H:%M"),
+    "game_duration": club.game_duration,
+    "municipality": club.municipality,
+    "photo": club.photo,
+    "active": club.active,
+  }), 200
+
 def delete_club(club_id = 1, owner_id = 3):
   existing_club = Club.query.filter_by(id = club_id).first()
   
