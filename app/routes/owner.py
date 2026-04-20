@@ -1,3 +1,5 @@
+import os
+
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt, get_jwt_identity, verify_jwt_in_request
 from app import db
@@ -74,25 +76,152 @@ def get_courts(id):
 
   return jsonify(result), 200
 
+@owner_bp.route('/crear_club', methods=['POST'])
 def create_club():
-  new_club = Club(owner_id = 3, club_name = "PruebaCrearClub2", address = "Calle prueba, 2", open_hour = time(10, 0, 0), close_hour = time(21, 0, 0), game_duration = 90, municipality = "Marratxí", photo = "app/static/images/clubs/clubPadel.jpg")
-  existing_club = Club.query.filter_by(club_name = new_club.club_name).first()
-  user = User.query.filter_by(id = new_club.owner_id).first()
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
   
-  if user is None:
-    print("El usuario no existe")
-    return
+  data = request.form
+  photo = request.files.get("photo")
   
-  if user.rol.value != "owner":
-    print("El usuario no es propietario")
-    return
+  required_fields = ["nombre", "direccion", "horaApertura", "horaCierre", "duracion", "municipio", "activo"]
+  if not data or not all(field in data for field in required_fields) or not photo:
+    return jsonify({"error": "Faltan campos obligatorios"}), 400
   
-  if existing_club is None:
+  club_name = Club.query.filter(Club.club_name == data["nombre"]).first()
+  if club_name:
+    return jsonify({"error": "Ya existe un club con este nombre"}), 409
+  
+  try:
+    # miramos en que carpeta se va a guardar la foto del club
+    folder = "images/clubs"
+    extension = photo.filename.split('.')[-1]
+    filename = f"{data['nombre']}_{int(time.time())}.{extension}"
+    save_path = os.path.join('app', 'static', folder)
+      
+    if not os.path.exists(save_path):
+      os.makedirs(save_path)
+
+    file_path = os.path.join(save_path, filename)
+    photo.save(file_path)
+    db_path = f"{folder}/{filename}"
+    
+    owner_id = int(get_jwt_identity())
+    open_hour = datetime.strptime(data["horaApertura"], "%H:%M").time()
+    close_hour = datetime.strptime(data["horaCierre"], "%H:%M").time()
+    
+    new_club = Club(
+      owner_id = owner_id,
+      club_name = data["nombre"],
+      address = data["direccion"],
+      open_hour = open_hour,
+      close_hour = close_hour,
+      game_duration = int(data["duracion"]),
+      municipality = data["municipio"],
+      photo = db_path
+      )
+  
     db.session.add(new_club)
     db.session.commit()
-    print(f"Club {new_club.club_name} creado correctamente")
-  else:
-    print("Ya existe un club con ese nombre.")
+    
+    return jsonify({"message": "Club creado correctamente"}), 201
+  except Exception as ex:
+    db.session.rollback()
+    return jsonify({"error": str(ex)}), 500
+
+@owner_bp.route('/club/<int:id>', methods=['GET'])
+def get_club(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  club = Club.query.get(id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
+  
+  return jsonify({
+    "club_name": club.club_name,
+    "address": club.address,
+    "open_hour": club.open_hour.strftime("%H:%M"),
+    "close_hour": club.close_hour.strftime("%H:%M"),
+    "game_duration": club.game_duration,
+    "municipality": club.municipality,
+    "photo": club.photo,
+    "active": club.active,
+  }), 200
+
+@owner_bp.route('/editar_club/<int:id>', methods=['PUT'])
+def update_club(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  club = Club.query.get(id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
+  
+  user_id = int(get_jwt_identity())
+  if club.owner_id != user_id:
+    return jsonify({"error": "No eres el propietario del club"})
+  
+  data = request.form
+  photo = request.files.get("photo")
+  
+  # comprovamos que no existe un club con el mismo nombre
+  if data.get("nombre"):
+    existing_club = Club.query.filter(Club.club_name == data.get("nombre")).first()
+    if existing_club and existing_club.id != club.id:
+      return jsonify({"error": "El club ya existe"}), 409
+
+  if data.get("horaApertura"):
+    club.open_hour = datetime.strptime(data.get("horaApertura"), "%H:%M").time()
+
+  if data.get("horaCierre"):
+    club.close_hour = datetime.strptime(data.get("horaCierre"), "%H:%M").time()
+
+  if data.get("duracion"):
+    club.game_duration = int(data.get("duracion"))
+
+  if data.get("activo") is not None:
+    club.active = data.get("activo") == "true"
+
+  club.club_name = data.get("nombre", club.club_name)
+  club.address = data.get("direccion", club.address)
+  club.municipality = data.get("municipio", club.municipality)
+  
+  if photo and photo.filename:
+    folder = "images/clubs"
+    extension = photo.filename.split('.')[-1]
+    
+    club_name = data.get("nombre", club.club_name)
+    filename = f"{club_name}_{int(time.time())}.{extension}"
+    
+    save_path = os.path.join('app', 'static', folder)
+    
+    if not os.path.exists(save_path):
+      os.makedirs(save_path)
+
+    file_path = os.path.join(save_path, filename)
+    photo.save(file_path)
+    
+    club.photo = f"{folder}/{filename}"
+    
+  db.session.commit()
+
+  return jsonify({"message": "Club actualizado"}), 200
 
 def delete_club(club_id = 1, owner_id = 3):
   existing_club = Club.query.filter_by(id = club_id).first()
