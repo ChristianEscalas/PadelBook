@@ -1,5 +1,5 @@
 import os
-
+import time
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt, get_jwt_identity, verify_jwt_in_request
 from app import db
@@ -8,7 +8,7 @@ from app.models.users import User
 from app.models.courts import Court
 from app.models.reservations import Reservation
 from app.enums import CourtType, WallType, SurfaceType, StatusGame
-from datetime import time, datetime, timedelta
+from datetime import datetime, timedelta
 
 owner_bp = Blueprint('owner', __name__)
 @owner_bp.route('/mis_clubes', methods=['GET'])
@@ -25,7 +25,7 @@ def get_clubs():
   user_id = get_jwt_identity()
   
   # clubes del usuario
-  clubs = Club.query.filter(Club.owner_id == user_id, Club.active != False).order_by(Club.club_name.desc()).all()
+  clubs = Club.query.filter(Club.owner_id == user_id).order_by(Club.club_name.desc()).all()
   
   if not clubs:
     return jsonify([]), 200
@@ -36,10 +36,12 @@ def get_clubs():
       "id": club.id,
       "club_name": club.club_name,
       "address": club.address,
-      "photo": club.photo,
       "open_hour": club.open_hour.strftime("%H:%M"),
       "close_hour": club.close_hour.strftime("%H:%M"),
       "game_duration": club.game_duration,
+      "municipality": club.municipality,
+      "photo": club.photo,
+      "active": club.active
     })
     
   return jsonify(result), 200

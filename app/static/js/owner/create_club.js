@@ -4,6 +4,9 @@ const pathParts = window.location.pathname.split("/");
 const isEditMode = window.location.pathname.includes("/editar_club");
 const clubId = isEditMode ? pathParts[pathParts.length - 1] : null;
 
+const API = "http://192.168.0.100:5000/api/owner";
+const token = localStorage.getItem("access_token");
+
 async function handleForm(form) {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -11,9 +14,9 @@ async function handleForm(form) {
     const formData = new FormData(form);
 
     if (!isEditMode) {
-      const required_fields = ["nombre", "direccion", "horaApertura", "horaCierre", "duracion", "municipio", "activo"];
+      const required = ["nombre", "direccion", "horaApertura", "horaCierre", "duracion", "municipio", "activo"];
 
-      for (const field of required_fields) {
+      for (const field of required) {
         if (!formData.get(field)) {
           showNotification(`El campo ${field} es obligatorio`, "error");
           return;
@@ -27,11 +30,11 @@ async function handleForm(form) {
       }
     }
 
-    let url = "http://192.168.0.100:5000/api/owner/crear_club";
+    let url = `${API}/crear_club`;
     let method = "POST";
 
     if (isEditMode) {
-      url = `http://192.168.0.100:5000/api/owner/editar_club/${clubId}`;
+      url = `${API}/editar_club/${clubId}`;
       method = "PUT";
     }
 
@@ -39,30 +42,33 @@ async function handleForm(form) {
       const response = await fetch(url, {
         method,
         body: formData,
-        ...(isEditMode && {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-          },
-        }),
+        headers: { Accept: "application/json", Authorization: "Bearer " + token },
       });
+
+      if (response.status === 401) {
+        localStorage.removeItem("access_token");
+        window.location.href = "/login";
+        return;
+      }
 
       const result = await response.json();
 
       if (response.ok) {
-        showNotification(isEditMode ? "Club actualizado correctamente" : "club creado correctamente", "success");
+        showNotification(isEditMode ? "Club actualizado correctamente" : "Club creado correctamente", "success");
 
         setTimeout(() => {
           window.location.href = "/mis_clubes";
         }, 1000);
       } else if (response.status === 409) {
-        showNotification(result.error || "Conflicto de datos", "error");
+        showNotification(result.error, "error");
       } else if (response.status === 400) {
-        showNotification(result.error || "Datos inválidos", "error");
+        showNotification(result.error, "error");
       } else {
-        showNotification(result.error || "Error inesperado", "error");
+        showNotification("Error inesperado", "error");
       }
     } catch (error) {
-      console.log("Error: ", error);
+      console.error(error);
+      showNotification("Error de conexión", "error");
     }
   });
 }
@@ -71,9 +77,15 @@ async function loadClubIfEdit() {
   if (!isEditMode) return;
 
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/owner/club/${clubId}`, {
-      headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
+    const response = await fetch(`${API}/club/${clubId}`, {
+      headers: { Accept: "application/json", Authorization: "Bearer " + token },
     });
+
+    if (response.status === 401) {
+      localStorage.removeItem("access_token");
+      window.location.href = "/login";
+      return;
+    }
 
     const data = await response.json();
 
@@ -83,7 +95,8 @@ async function loadClubIfEdit() {
     document.getElementById("horaCierre").value = data.close_hour;
     document.getElementById("duracion").value = data.game_duration;
     document.getElementById("municipio").value = data.municipality;
-    document.getElementById("activo").value = data.active;
+
+    document.getElementById("activo").value = data.active ? "true" : "false";
   } catch (error) {
     console.error(error);
   }
@@ -92,10 +105,9 @@ async function loadClubIfEdit() {
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("form");
   handleForm(form);
-
   loadClubIfEdit();
 
-  const cancelBtn = document.getElementById("cancelBtn") || document.getElementById("cancelButton");
+  const cancelBtn = document.getElementById("cancelButton");
   if (cancelBtn) {
     cancelBtn.addEventListener("click", () => {
       window.location.href = "/mis_clubes";

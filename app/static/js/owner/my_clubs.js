@@ -29,19 +29,23 @@ async function loadClubs() {
         <div class="infoClub">
         
           <div class="fotoclub">
-            <img src="${club.photo}" alt="Foto del club">
+            <img src="/static/${club.photo}" alt="Foto del club">
           </div>
           
           <div class="info">
             <p><strong>Dirección:</strong></p>
             <p><strong>Horario:</strong></p>
             <p><strong>Duración de los partidos:</strong></p>
+            <p><strong>Municipio:</strong></p>
+            <p><strong>Activo:</strong></p>
           </div>
 
           <div class="datos">
             <p>${club.address}</p>
             <p>${club.open_hour} - ${club.close_hour}</p>
             <p>${club.game_duration} minutos</p>
+            <p>${club.municipality}</p>
+            <p>${club.active}</p>
           </div>
 
           <div class="botones">

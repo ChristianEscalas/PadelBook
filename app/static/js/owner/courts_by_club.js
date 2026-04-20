@@ -88,4 +88,7 @@ document.addEventListener("click", async (event) => {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadCourts();
+  document.getElementById("volverClub").addEventListener("click", () => {
+    window.history.back();
+  });
 });
