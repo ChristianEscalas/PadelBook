@@ -15,7 +15,8 @@ async function loadReservation() {
   document.getElementById("club").innerText = data.club;
   document.getElementById("dia").innerText = data.date;
   document.getElementById("duracion").innerText = data.duration + " minutos";
-  document.getElementById("fotoClub").innerHTML = `<img src="${data.photo} alt="${data.club}">`;
+  const photo = document.getElementById("foto");
+  photo.src = `/static/${data.photo}`;
 
   const type = data.type;
   if (type === "double") {

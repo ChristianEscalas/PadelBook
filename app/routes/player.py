@@ -266,6 +266,7 @@ def preview_reservation():
 
   return jsonify({
     "club": club.club_name,
+    "photo": club.photo,
     "address": club.address,
     "court_number": court.number_court,
     "start": start.strftime("%Y-%m-%d %H:%M"),
