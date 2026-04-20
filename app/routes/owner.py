@@ -229,7 +229,7 @@ def update_club(id):
 def create_court(id):
   # comprobar si el usuario ha hecho login
   verify_jwt_in_request()
-
+  
   # Comprobar el rol del usuario
   claims = get_jwt()
   if claims.get("rol") != "owner":
@@ -279,7 +279,7 @@ def create_court(id):
 def get_court(club_id, court_id):
   # comprobar si el usuario ha hecho login
   verify_jwt_in_request()
-
+  
   # Comprobar el rol del usuario
   claims = get_jwt()
   if claims.get("rol") != "owner":
@@ -310,6 +310,58 @@ def get_court(club_id, court_id):
     "active": court.active,
   }), 200
 
+@owner_bp.route('/club/<int:club_id>/pista/<int:court_id>', methods=['PUT'])
+def update_court(club_id, court_id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  club = Club.query.get(club_id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
+  
+  user_id = int(get_jwt_identity())
+  if club.owner_id != user_id:
+    return jsonify({"error": "No eres el propietario del club"}), 403
+  
+  court = Court.query.get(court_id)
+  if not court:
+    return jsonify({"error": "No existe la pista"}), 404
+  
+  if court.club_id != club.id:
+    return jsonify({"error": "El club no tiene esta pista creada"}), 409
+  
+  data = request.form
+  
+  # comprovamos que no existe una pista con el mismo número
+  if data.get("numero"):
+    existing = Court.query.filter(Court.club_id == club_id, Court.number_court == data.get("numero")).first()
+    if existing and existing.id != court.id:
+      return jsonify({"error": "El club ya tiene este número de pista"}), 409
+    
+  if data.get("activa") is not None:
+    court.active = data.get("activa") == "true"
+    
+  court.number_court = data.get("numero", court.number_court)
+  if data.get("tipo"):
+    court.court_type = CourtType(data["tipo"])
+    
+  if data.get("cubierta"):
+    court.covered = data["cubierta"] == "true"
+      
+  if data.get("pared"):
+    court.wall = WallType(data["pared"])
+    
+  if data.get("superficie"):
+    court.surface = SurfaceType(data["superficie"])
+  
+  db.session.commit()
+  
+  return jsonify({"message": "Pista actualizada"}), 200
 
 def delete_club(club_id = 1, owner_id = 3):
   existing_club = Club.query.filter_by(id = club_id).first()
