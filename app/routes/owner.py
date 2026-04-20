@@ -275,6 +275,41 @@ def create_court(id):
     db.session.rollback()
     return jsonify({"error": str(ex)}), 500
 
+@owner_bp.route('/club/<int:club_id>/pista/<int:court_id>', methods=['GET'])
+def get_court(club_id, court_id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  club = Club.query.get(club_id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
+  
+  user_id = int(get_jwt_identity())
+  if club.owner_id != user_id:
+    return jsonify({"error": "No eres el propietario del club"}), 403
+  
+  court = Court.query.get(court_id)
+  if not court:
+    return jsonify({"error": "No existe la pista"}), 404
+  
+  existing_court = Court.query.filter(Court.club_id == club.id, Court.id == court.id).first()
+  if not existing_court:
+    return jsonify({"error": "El club no tiene esta pista creada"}), 409
+  
+  return jsonify({
+    "number_court": court.number_court,
+    "court_type": court.court_type,
+    "covered": court.covered,
+    "wall": court.wall,
+    "surface": court.surface,
+    "active": court.active,
+  }), 200
+
 
 def delete_club(club_id = 1, owner_id = 3):
   existing_club = Club.query.filter_by(id = club_id).first()
