@@ -310,7 +310,7 @@ def get_court(club_id, court_id):
     "active": court.active,
   }), 200
 
-@owner_bp.route('/club/<int:club_id>/pista/<int:court_id>', methods=['PUT'])
+@owner_bp.route('/club/<int:club_id>/editar_pista/<int:court_id>', methods=['PUT'])
 def update_court(club_id, court_id):
   # comprobar si el usuario ha hecho login
   verify_jwt_in_request()

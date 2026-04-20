@@ -89,3 +89,11 @@ def create_club_page():
 @views_bp.route('/editar_club/<int:id>')
 def edit_club_page(id):
   return render_template('owners/create_club.html', edit_mode = True)
+
+@views_bp.route('/club/<int:id>/crear_pista')
+def create_court_page(id):
+  return render_template('owners/create_court.html')
+
+@views_bp.route('/club/<int:club_id>/editar_pista/<int:court_id>')
+def edit_court_page(club_id, court_id):
+  return render_template('owners/create_court.html', edit_mode = True)
