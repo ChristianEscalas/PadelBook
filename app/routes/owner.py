@@ -159,6 +159,70 @@ def get_club(id):
     "active": club.active,
   }), 200
 
+@owner_bp.route('/editar_club/<int:id>', methods=['PUT'])
+def update_club(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  club = Club.query.get(id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
+  
+  user_id = int(get_jwt_identity())
+  if club.owner_id != user_id:
+    return jsonify({"error": "No eres el propietario del club"})
+  
+  data = request.form
+  photo = request.files.get("photo")
+  
+  # comprovamos que no existe un club con el mismo nombre
+  if data.get("nombre"):
+    existing_club = Club.query.filter(Club.club_name == data.get("nombre")).first()
+    if existing_club and existing_club.id != club.id:
+      return jsonify({"error": "El club ya existe"}), 409
+
+  if data.get("horaApertura"):
+    club.open_hour = datetime.strptime(data.get("horaApertura"), "%H:%M").time()
+
+  if data.get("horaCierre"):
+    club.close_hour = datetime.strptime(data.get("horaCierre"), "%H:%M").time()
+
+  if data.get("duracion"):
+    club.game_duration = int(data.get("duracion"))
+
+  if data.get("activo") is not None:
+    club.active = data.get("activo") == "true"
+
+  club.club_name = data.get("nombre", club.club_name)
+  club.address = data.get("direccion", club.address)
+  club.municipality = data.get("municipio", club.municipality)
+  
+  if photo and photo.filename:
+    folder = "images/clubs"
+    extension = photo.filename.split('.')[-1]
+    
+    club_name = data.get("nombre", club.club_name)
+    filename = f"{club_name}_{int(time.time())}.{extension}"
+    
+    save_path = os.path.join('app', 'static', folder)
+    
+    if not os.path.exists(save_path):
+      os.makedirs(save_path)
+
+    file_path = os.path.join(save_path, filename)
+    photo.save(file_path)
+    
+    club.photo = f"{folder}/{filename}"
+    
+  db.session.commit()
+
+  return jsonify({"message": "Club actualizado"}), 200
+
 def delete_club(club_id = 1, owner_id = 3):
   existing_club = Club.query.filter_by(id = club_id).first()
   
