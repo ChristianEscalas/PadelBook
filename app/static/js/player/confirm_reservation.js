@@ -51,6 +51,9 @@ async function loadPreview() {
 
   document.getElementById("club").innerText = data.club;
   document.getElementById("pista").innerText = data.court_number;
+
+  const photo = document.getElementById("fotoCluB");
+  photo.src = `/static/${data.photo}`;
 }
 
 async function confirmReservation() {

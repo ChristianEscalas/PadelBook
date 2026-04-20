@@ -45,7 +45,7 @@ async function sendForm(form) {
             <div class="infoClub">
 
               <div class="fotoclub">
-              <img src="${club.photo}" alt="Foto del club">
+              <img src="/static/${club.photo}" alt="Foto del club">
               </div>
 
               <div class="info">
