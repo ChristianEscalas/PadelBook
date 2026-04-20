@@ -203,6 +203,7 @@ def update_club(id):
   club.club_name = data.get("nombre", club.club_name)
   club.address = data.get("direccion", club.address)
   club.municipality = data.get("municipio", club.municipality)
+  club.game_duration = int(data.get("duracion", club.game_duration))
   
   if photo and photo.filename:
     folder = "images/clubs"
@@ -303,10 +304,10 @@ def get_court(club_id, court_id):
   
   return jsonify({
     "number_court": court.number_court,
-    "court_type": court.court_type,
+    "court_type": court.court_type.value,
     "covered": court.covered,
-    "wall": court.wall,
-    "surface": court.surface,
+    "wall": court.wall.value,
+    "surface": court.surface.value,
     "active": court.active,
   }), 200
 
