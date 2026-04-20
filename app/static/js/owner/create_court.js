@@ -53,7 +53,7 @@ async function handleForm(form) {
         showNotification(isEditMode ? "Pista actualizada correctamente" : "Pista creada correctamente", "success");
 
         setTimeout(() => {
-          window.location.href = "/mis_clubes";
+          window.location.href = `/pistas/club/${clubId}`;
         }, 1000);
       } else if (response.status === 409) {
         showNotification(result.error, "error");
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cancelBtn = document.getElementById("cancelButton");
   if (cancelBtn) {
     cancelBtn.addEventListener("click", () => {
-      window.location.href = `/pistas/${clubId}`;
+      window.history.back();
     });
   }
 });

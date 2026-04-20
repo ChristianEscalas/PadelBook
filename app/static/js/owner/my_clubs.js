@@ -52,7 +52,6 @@ async function loadClubs() {
             <button type="button" class="pistasBoton" data-id="${club.id}">Pistas</button>
             <button type="button" class="editarclubBoton" data-id="${club.id}">Editar club</button>
             <button type="button" class="reservasBoton" data-id="${club.id}">Reservas</button>
-            <button type="button" class="eliminarClubBoton" data-id="${club.id}">Eliminar club</button>
           </div>
         </div>
       </div>`;
@@ -76,11 +75,6 @@ document.addEventListener("click", async (event) => {
   if (event.target.classList.contains("reservasBoton")) {
     const clubId = event.target.dataset.id;
     window.location.href = `/reservas/club/${clubId}`;
-  }
-
-  if (event.target.classList.contains("eliminarClubBoton")) {
-    const clubId = event.target.dataset.id;
-    window.location.href = `/eliminar/club/${clubId}`;
   }
 });
 

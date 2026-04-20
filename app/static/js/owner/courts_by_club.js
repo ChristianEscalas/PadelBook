@@ -1,8 +1,9 @@
 import { showNotification } from "../main.js";
 
+const id = window.location.pathname.split("/")[3];
+
 async function loadCourts() {
   try {
-    const id = window.location.pathname.split("/")[3];
     const response = await fetch(`http://192.168.0.100:5000/api/owner/pistas/club/${id}`, {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
@@ -47,14 +48,6 @@ async function loadCourts() {
 
           <div class="botones">
             <button type="button" class="editarPistaBoton" data-id="${court.id}">Editar pista</button>
-
-            ${
-              court.active === false
-                ? `
-              <button type="button" class="activarPistaBoton" data-id="${court.id}">Activar pista</button>`
-                : `<button type="button" class="desactivarPistaBoton" data-id="${court.id}">Desactivar pista</button>`
-            }
-
           </div>
         </div>
       </div>`;
@@ -65,30 +58,20 @@ async function loadCourts() {
 }
 
 document.addEventListener("click", async (event) => {
+  if (event.target.classList.contains("crearPista")) {
+    const courtId = event.target.dataset.id;
+    window.location.href = `/club/${id}/crear_pista`;
+  }
+
   if (event.target.classList.contains("editarPistaBoton")) {
     const courtId = event.target.dataset.id;
-    window.location.href = `/editar_pista/${courtId}`;
-  }
-
-  if (event.target.classList.contains("activarPistaBoton")) {
-    const courtId = event.target.dataset.id;
-    window.location.href = `/activar_pista/${courtId}`;
-  }
-
-  if (event.target.classList.contains("desactivarPistaBoton")) {
-    const courtId = event.target.dataset.id;
-    window.location.href = `/desactivar_pista/club/${courtId}`;
-  }
-
-  if (event.target.classList.contains("eliminarClubBoton")) {
-    const clubId = event.target.dataset.id;
-    window.location.href = `/eliminar/club/${clubId}`;
+    window.location.href = `/club/${id}/editar_pista/${courtId}`;
   }
 });
-
+s;
 document.addEventListener("DOMContentLoaded", () => {
   loadCourts();
   document.getElementById("volverClub").addEventListener("click", () => {
-    window.history.back();
+    window.location.href = `/mis_clubes`;
   });
 });
