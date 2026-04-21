@@ -364,52 +364,62 @@ def update_court(club_id, court_id):
   
   return jsonify({"message": "Pista actualizada"}), 200
 
-def delete_club(club_id = 1, owner_id = 3):
-  existing_club = Club.query.filter_by(id = club_id).first()
-  
-  if existing_club is None:
-    print("No existe el club")
-    return
-  
-  if existing_club.owner_id != owner_id:
-    print("No eres el propietario del club")
-    return
-  
-  if not existing_club.active:
-    print("El club ya está inactivo")
-    return
-  
-  existing_club.active = False
-  db.session.commit()
-  print("El club marcado como inactivo")
+@owner_bp.route('/reservas/club/<int:id>', methods=['GET'])
+def get_reservations_club(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
 
-def delete_court(club_id = 2, owner_id = 3, number_court = 2):
-  existing_club = Club.query.filter_by(id = club_id).first()
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
   
-  if existing_club is None:
-    print("No existe el club")
-    return
+  club = Club.query.get(id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
   
-  if existing_club.owner_id != owner_id:
-    print("No eres el propietario del club")
-    return
+  user_id = int(get_jwt_identity())
+  if club.owner_id != user_id:
+    return jsonify({"error": "No eres el propietario del club"}), 403
   
-  if not existing_club.active:
-    print("El club no está activo")
-    return
+  query = Reservation.query.join(Court).filter(Court.club_id == club.id)
   
-  existing_court = Court.query.filter_by(club_id = club_id, number_court = number_court).first()
-  if existing_court is None:
-    print(f"El club no tiene la pista número {number_court}")
-    return
+  dia = request.args.get('dia')
+  hora = request.args.get('hora')
+  status = request.args.get('estado')
+
+  if dia and hora:
+    start_datetime = datetime.strptime(f"{dia} {hora}", "%Y-%m-%d %H:%M")
+    query = query.filter(Reservation.start_date == start_datetime)
+  elif dia:
+    day_obj = datetime.strptime(dia, "%Y-%m-%d").date()
+    query = query.filter(db.func.date(Reservation.start_date) == day_obj)
+  elif hora:
+    hour_obj = datetime.strptime(hora, "%H:%M").time()
+    query = query.filter(db.func.time(Reservation.start_date) == hour_obj)
   
-  if not existing_court.active:
-    print("Esta pista ya está inactiva")
-    return
+  if status:
+    try:
+      query = query.filter(Reservation.status_game == StatusGame(status))
+    except:
+      return jsonify({"error": "Estado de la reserva inválido"}), 400
   
-  existing_court.active = False
-  db.session.commit()
-  print(f"Pista número {number_court} del club {existing_club.club_name} marcada como inactiva")
+  reservations = query.order_by(Reservation.start_date.desc()).all()
+  
+  result = []
+  for reservation in reservations:
+    result.append({
+      "id": reservation.id,
+      "number_court": reservation.court.number_court,
+      "start_date": reservation.start_date.strftime("%d/%m/%Y %H:%M"),
+      "end_date": reservation.end_date.strftime("%d/%m/%Y %H:%M"),
+      "status_game": reservation.status_game.value
+    })
+  
+  if len(result) == 0:
+    return jsonify([]), 200
+  
+  return jsonify(result), 200
 
 def cancel_reservation(club_id = 2, owner_id = 3, court_id = 1, reservation_id = 1):
   existing_club = Club.query.filter_by(id = club_id).first()
