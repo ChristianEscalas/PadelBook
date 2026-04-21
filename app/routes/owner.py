@@ -10,6 +10,17 @@ from app.models.reservations import Reservation
 from app.enums import CourtType, WallType, SurfaceType, StatusGame
 from datetime import datetime, timedelta
 
+def update_reservation_status(reservation):
+  now = datetime.now()
+
+  if reservation.status_game == StatusGame.complete:
+    if reservation.start_date <= now:
+      reservation.status_game = StatusGame.pending_result
+  elif reservation.status_game == StatusGame.open:
+    if reservation.start_date <= now:
+      reservation.status_game = StatusGame.canceled
+      reservation.closed_at = datetime.now()
+
 owner_bp = Blueprint('owner', __name__)
 @owner_bp.route('/mis_clubes', methods=['GET'])
 def get_clubs():
@@ -475,3 +486,88 @@ def cancel_reservation(club_id = 2, owner_id = 3, court_id = 1, reservation_id =
   existing_reservation.closed_at = datetime.now()
   db.session.commit()
   print(f"Reserva para el {existing_reservation.start_date} cancelada correctamente")
+
+@owner_bp.route('/reservas/<int:id>', methods=['GET'])
+def get_reservation_detail(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
+
+  reservation = Reservation.query.get(id)
+
+  if not reservation:
+    return jsonify({"error": "Reserva no encontrada"}), 404
+
+  before = reservation.status_game
+  update_reservation_status(reservation)
+  
+  if reservation.status_game != before:
+    db.session.commit()
+    
+  players = []
+  for player in reservation.players:
+    players.append({
+      "id": player.user.id,
+      "name": player.user.firstname,
+      "photo": player.user.photo,
+      "team": player.team.value,
+      "is_creator": player.is_creator
+    })
+
+  return jsonify({
+    "id": reservation.id,
+    "club": reservation.court.club.club_name,
+    "photo": reservation.court.club.photo,
+    "date": reservation.start_date.strftime("%d/%m/%Y - %H:%M"),
+    "result": reservation.result,
+    "status": reservation.status_game.value,
+    "players": players,
+    "creator_id": reservation.creator_id,
+    "court_number": reservation.court.number_court,
+    "type": reservation.court.court_type.value,
+    "cover": reservation.court.covered,
+    "wall": reservation.court.wall.value,
+    "surface": reservation.court.surface.value,
+    "duration": reservation.court.club.game_duration,
+  }), 200
+
+@owner_bp.route('/reserva/cancelar/<int:id>', methods=['POST'])
+def cancel_reservation(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "player":
+    return jsonify({"error": "No autorizado"}), 403
+
+  user_id = int(get_jwt_identity())
+
+  reservation = Reservation.query.get(id)
+  if not reservation:
+    return jsonify({"error": "Reserva no encontrada"}), 404
+
+  if reservation.creator_id != user_id:
+    return jsonify({"error": "No eres el creador de la reserva"}), 403
+
+  status_game = reservation.status_game
+
+  if status_game in [StatusGame.finalized, StatusGame.pending_result]:
+    return jsonify({"error": "No se puede cancelar una reserva finalizada o en curso"}), 409
+
+  if status_game == StatusGame.canceled:
+    return jsonify({"error": "La reserva ya estaba cancelada"}), 409
+
+  if datetime.now() + timedelta(hours=3) > reservation.start_date:
+    return jsonify({"error": "Solo se puede cancelar con al menos 3 horas de antelación"}), 400
+
+  reservation.status_game = StatusGame.canceled
+  reservation.closed_at = datetime.now()
+
+  db.session.commit()
+
+  return jsonify({"message": "Reserva cancelada correctamente"}), 200
