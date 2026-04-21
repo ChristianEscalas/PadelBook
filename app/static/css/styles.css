@@ -93,7 +93,8 @@ h1 {
   align-items: center;
 }
 
-#header #botones button {
+#header #botones button,
+#header #contactButton {
   margin: 0px;
   width: 200px;
   border-radius: 20px;
