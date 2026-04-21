@@ -101,3 +101,11 @@ def edit_court_page(club_id, court_id):
 @views_bp.route('/reservas/club/<int:club_id>')
 def reservations_club_page(club_id):
   return render_template('owners/reservations_club.html')
+
+@views_bp.route('/club/<int:club_id>/reserva/<int:id>')
+def reservation_detail_page_owner(club_id ,id):
+  return render_template('owners/reservation_detail.html')
+
+@views_bp.route('/club/<int:club_id>/reserva/<int:id>/cancelar/')
+def cancel_page_owner(club_id, id):
+  return render_template('owners/cancel_reservation.html')
