@@ -12,6 +12,7 @@ async function loadReservation() {
   document.getElementById("club").innerText = data.club;
   document.getElementById("fecha").innerText = data.date;
   document.getElementById("pista").innerText = data.court_number;
+  document.getElementById("photo").src = "/static/" + data.photo;
 }
 
 async function cancelReservation() {
