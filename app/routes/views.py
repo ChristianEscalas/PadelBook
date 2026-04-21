@@ -1,4 +1,12 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
+
+def get_base_template():
+  rol = request.cookies.get("rol")
+
+  if rol == "owner":
+    return "owners/base_owner.html"
+
+  return "players/base_player.html"
 
 views_bp = Blueprint('views', __name__)
 
@@ -48,27 +56,27 @@ def join_reservation_page():
 
 @views_bp.route('/perfil')
 def profile_page():
-  return render_template('users/profile.html')
+  return render_template('users/profile.html', base_template=get_base_template())
 
 @views_bp.route('/editar_perfil')
 def edit_profile_page():
-  return render_template('auth/register.html', edit_mode=True)
+  return render_template('auth/register.html', edit_mode=True, base_template=get_base_template())
 
 @views_bp.route('/ranking')
 def ranking_page():
-  return render_template('users/ranking.html')
+  return render_template('users/ranking.html', base_template=get_base_template())
 
 @views_bp.route('/usuario/<int:id>')
 def user_profile_page(id):
-  return render_template('users/user_profile.html')
+  return render_template('users/user_profile.html', base_template=get_base_template())
 
 @views_bp.route('/seguidores')
 def get_followers():
-  return render_template('/users/followers.html')
+  return render_template('/users/followers.html', base_template=get_base_template())
 
 @views_bp.route('/seguidos')
 def get_following_page():
-  return render_template('/users/followings.html')
+  return render_template('/users/followings.html', base_template=get_base_template())
 
 @views_bp.route('/reserva/confirmar_resultado/<int:id>')
 def confirm_result_view(id):
