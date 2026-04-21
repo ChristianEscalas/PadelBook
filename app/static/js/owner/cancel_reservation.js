@@ -1,9 +1,10 @@
 import { showNotification } from "../main.js";
 
-async function loadReservation() {
-  const id = window.location.pathname.split("/")[3];
+const clubId = window.location.pathname.split("/")[2];
+const id = window.location.pathname.split("/")[4];
 
-  const response = await fetch(`/api/player/reservas/${id}`, {
+async function loadReservation() {
+  const response = await fetch(`/api/owner/reserva/${id}`, {
     headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
   });
 
@@ -16,9 +17,7 @@ async function loadReservation() {
 }
 
 async function cancelReservation() {
-  const id = window.location.pathname.split("/")[3];
-
-  const response = await fetch(`http://192.168.0.100:5000/api/player/reserva/cancelar/${id}`, {
+  const response = await fetch(`http://192.168.0.100:5000/api/owner/reserva/cancelar/${id}`, {
     method: "POST",
     headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
   });
@@ -41,7 +40,7 @@ async function cancelReservation() {
     showNotification(result.message, "success");
 
     setTimeout(() => {
-      window.location.href = "/mis_reservas";
+      window.location.href = `/reservas/club/${clubId}`;
     }, 1000);
   }
 }

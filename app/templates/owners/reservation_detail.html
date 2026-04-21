@@ -1,0 +1,15 @@
+{% extends 'owners/base_owner.html' %}
+
+{% block titleHead %}
+  Detalle de la reserva
+{% endblock %}
+
+{% block script %}
+  <script src="{{url_for('static', filename='js/owner/reservation_detail.js')}}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+  <div id="detalles-reserva">
+    <h1>Detalle de la reserva</h1>
+  </div>
+{% endblock %}

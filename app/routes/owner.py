@@ -487,14 +487,14 @@ def cancel_reservation(club_id = 2, owner_id = 3, court_id = 1, reservation_id =
   db.session.commit()
   print(f"Reserva para el {existing_reservation.start_date} cancelada correctamente")
 
-@owner_bp.route('/reservas/<int:id>', methods=['GET'])
+@owner_bp.route('/reserva/<int:id>', methods=['GET'])
 def get_reservation_detail(id):
   # comprobar si el usuario ha hecho login
   verify_jwt_in_request()
 
   # Comprobar el rol del usuario
   claims = get_jwt()
-  if claims.get("rol") != "player":
+  if claims.get("rol") != "owner":
     return jsonify({"error": "No autorizado"}), 403
 
   reservation = Reservation.query.get(id)
@@ -502,6 +502,10 @@ def get_reservation_detail(id):
   if not reservation:
     return jsonify({"error": "Reserva no encontrada"}), 404
 
+  club = reservation.court.club
+  if club.owner_id != int(get_jwt_identity()):
+    return jsonify({"error": "No autorizado"}), 403
+  
   before = reservation.status_game
   update_reservation_status(reservation)
   
@@ -542,7 +546,7 @@ def cancel_reservation(id):
 
   # Comprobar el rol del usuario
   claims = get_jwt()
-  if claims.get("rol") != "player":
+  if claims.get("rol") != "owner":
     return jsonify({"error": "No autorizado"}), 403
 
   user_id = int(get_jwt_identity())
@@ -551,8 +555,9 @@ def cancel_reservation(id):
   if not reservation:
     return jsonify({"error": "Reserva no encontrada"}), 404
 
-  if reservation.creator_id != user_id:
-    return jsonify({"error": "No eres el creador de la reserva"}), 403
+  club = reservation.court.club
+  if club.owner_id != user_id:
+    return jsonify({"error": "No autorizado"}), 403
 
   status_game = reservation.status_game
 
