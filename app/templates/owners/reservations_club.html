@@ -1,0 +1,46 @@
+{% extends 'owners/base_owner.html' %}
+
+{% block titleHead %}
+  Mis reservas
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/owner/reservations_club.js')}}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+  <div id="mis-reservas">
+    <div id="introClubes">
+      <h1>Mis reservas</h1>
+      <button type="button" id="volverBoton">volver</button>
+    </div>
+
+    <form id="form">
+
+      <div class="campo">
+        <label for="dia">Día:</label>
+        <input type="date" id="dia" name="dia" value="{{ today }}">
+      </div>
+
+      <div class="campo">
+        <label for="hora">Hora:</label>
+        <input type="time" id="hora" name="hora" step="1800">
+      </div>
+
+      <div class="campo">
+        <label for="estado">Estado:</label>
+        <select id="estado" name="estado">
+          <option value="">Todas</option>
+          <option value="open">Abierta</option>
+          <option value="complete">Completa</option>
+          <option value="canceled">Cancelada</option>
+          <option value="pending_result">Pendiente de resultado</option>
+          <option value="finalized">Finalizada</option>
+        </select>
+      </div>
+
+      <button type="submit" id="filtrarboton">Filtrar</button>
+    </form>
+    <div id="tarjetas-reservas"></div>
+  </div>
+{% endblock %}
