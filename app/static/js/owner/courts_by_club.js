@@ -68,7 +68,7 @@ document.addEventListener("click", async (event) => {
     window.location.href = `/club/${id}/editar_pista/${courtId}`;
   }
 });
-s;
+
 document.addEventListener("DOMContentLoaded", () => {
   loadCourts();
   document.getElementById("volverClub").addEventListener("click", () => {

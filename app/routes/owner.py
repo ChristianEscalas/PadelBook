@@ -406,6 +406,14 @@ def get_reservations_club(id):
   
   reservations = query.order_by(Reservation.start_date.desc()).all()
   
+  status_map = {
+      "open": "Abierta",
+      "complete": "Completa",
+      "canceled": "Cancelada",
+      "pending_result": "Pendiente de resultado",
+      "finalized": "Finalizada"
+    }
+  
   result = []
   for reservation in reservations:
     result.append({
@@ -413,7 +421,7 @@ def get_reservations_club(id):
       "number_court": reservation.court.number_court,
       "start_date": reservation.start_date.strftime("%d/%m/%Y %H:%M"),
       "end_date": reservation.end_date.strftime("%d/%m/%Y %H:%M"),
-      "status_game": reservation.status_game.value
+      "status_game": status_map[reservation.status_game.value]
     })
   
   if len(result) == 0:
