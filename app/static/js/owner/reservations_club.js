@@ -74,10 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("click", (event) => {
   if (event.target.classList.contains("detallesBoton")) {
-    window.location.href = `api/owner/reserva/${event.target.dataset.id}`;
+    window.location.href = `/reserva/${event.target.dataset.id}`;
   }
 
   if (event.target.classList.contains("cancelarBoton")) {
-    window.location.href = `api/owner/reserva/cancelar/${event.target.dataset.id}`;
+    window.location.href = `/reserva/cancelar/${event.target.dataset.id}`;
   }
 });
