@@ -10,6 +10,10 @@ from app.models.reservations import Reservation
 from app.enums import CourtType, WallType, SurfaceType, StatusGame
 from datetime import datetime, timedelta
 
+def delete_file_if_exists(path):
+  if path and os.path.exists(path):
+    os.remove(path)
+
 def update_reservation_status(reservation):
   now = datetime.now()
 
@@ -214,7 +218,6 @@ def update_club(id):
   club.club_name = data.get("nombre", club.club_name)
   club.address = data.get("direccion", club.address)
   club.municipality = data.get("municipio", club.municipality)
-  club.game_duration = int(data.get("duracion", club.game_duration))
   
   if photo and photo.filename:
     folder = "images/clubs"
@@ -228,6 +231,13 @@ def update_club(id):
     if not os.path.exists(save_path):
       os.makedirs(save_path)
 
+    if club.photo:
+      old_path = os.path.join('app', 'static', club.photo)
+      try:
+        delete_file_if_exists(old_path)
+      except:
+        print("Error al borrar la fot antigua")
+    
     file_path = os.path.join(save_path, filename)
     photo.save(file_path)
     

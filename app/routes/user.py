@@ -1,14 +1,15 @@
 import os
 import time
-
 from werkzeug.security import generate_password_hash
-
 from app import db
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
-
 from app.models.followers import Follower
 from app.models.users import User
+
+def delete_file_if_exists(path):
+  if path and os.path.exists(path):
+    os.remove(path)
 
 user_bp = Blueprint('user', __name__)
 
@@ -84,7 +85,14 @@ def update_profile():
     
     if not os.path.exists(save_path):
       os.makedirs(save_path)
-
+    
+    if user.photo:
+      old_path = os.path.join('app', 'static', user.photo)
+      try:
+        delete_file_if_exists(old_path)
+      except:
+        print("Error al borrar la fot antigua")
+    
     file_path = os.path.join(save_path, filename)
     photo.save(file_path)
     
