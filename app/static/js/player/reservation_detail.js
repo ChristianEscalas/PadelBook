@@ -96,7 +96,7 @@ async function loadReservation() {
 
   const returnButton = document.getElementById("botonVolver");
   returnButton.addEventListener("click", () => {
-    window.history.back();
+    window.location.href = "/mis_reservas";
   });
 }
 

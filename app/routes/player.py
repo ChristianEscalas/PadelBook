@@ -24,6 +24,67 @@ def update_reservation_status(reservation):
       reservation.status_game = StatusGame.canceled
       reservation.closed_at = datetime.now()
 
+def is_valid_set(a, b):
+  # negativos
+  if a < 0 or b < 0:
+    return False
+
+  # empate solo permitido si es 0-0
+  if a == b:
+    return a == 0
+
+  max_games = max(a, b)
+  min_games = min(a, b)
+
+  # 6-x (x <= 4)
+  if max_games == 6 and min_games <= 4:
+    return True
+
+  # 7-5 o 7-6
+  if max_games == 7 and (min_games == 5 or min_games == 6):
+    return True
+
+  return False
+
+def validate_match(sets_a, sets_b):
+  wins_a = 0
+  wins_b = 0
+  finished = False
+
+  for i in range(3):
+    a = sets_a[i]
+    b = sets_b[i]
+
+    # validar set individual
+    if not is_valid_set(a, b):
+      return False, f"Set {i+1} inválido ({a}-{b})"
+
+    # detectar si ya hay sets jugados
+    if a != 0 or b != 0:
+      if finished:
+        return False, "No puede haber sets después de haber terminado el partido"
+
+      # contar ganador
+      if a > b:
+        wins_a += 1
+      elif b > a:
+        wins_b += 1
+
+      # comprobar si el partido termina aquí
+      if wins_a == 2 or wins_b == 2:
+        finished = True
+
+    else:
+      # set vacío
+      if wins_a == 1 and wins_b == 1:
+        return False, "Debe jugarse el tercer set"
+
+  # al final debe haber ganador
+  if wins_a < 2 and wins_b < 2:
+    return False, "Debe haber un ganador (mínimo 2 sets)"
+
+  return True, None
+
 player_bp = Blueprint('player', __name__)
 
 @player_bp.route('/reservar', methods=['GET'])
@@ -643,6 +704,9 @@ def confirm_result(id):
 
   user_id = int(get_jwt_identity())
   data = request.get_json()
+  
+  if not data:
+    return jsonify({"error": "resultado no enviado"}), 400
 
   sets_a = data.get("sets_a")
   sets_b = data.get("sets_b")
@@ -671,25 +735,12 @@ def confirm_result(id):
   if user_id != creator_id and user_id != team_b_first:
     return jsonify({"error": "No tienes permisos"}), 403
 
-  for i in range(3):
-    if sets_a[i] == sets_b[i] and sets_a[i] != 0:
-      return jsonify({"error": f"Set {i+1} inválido (empate)"}), 400
+  is_valid, error = validate_match(sets_a, sets_b)
+  if not is_valid:
+    return jsonify({"error": error}), 400
 
   wins_a = sum(1 for i in range(3) if sets_a[i] > sets_b[i])
   wins_b = sum(1 for i in range(3) if sets_b[i] > sets_a[i])
-
-  if wins_a < 2 and wins_b < 2:
-    return jsonify({"error": "Debe haber un ganador (mínimo 2 sets)"}), 400
-
-  win_a_2_0 = sets_a[0] > sets_b[0] and sets_a[1] > sets_b[1]
-  win_b_2_0 = sets_b[0] > sets_a[0] and sets_b[1] > sets_a[1]
-
-  if (win_a_2_0 or win_b_2_0) and (sets_a[2] != 0 or sets_b[2] != 0):
-    return jsonify({"error": "El partido terminó en el segundo set, el tercero debe ser 0-0"}), 400
-
-  if not (win_a_2_0 or win_b_2_0):
-    if sets_a[2] == 0 and sets_b[2] == 0:
-      return jsonify({"error": "Debe jugarse el tercer set"}), 400
 
   new_result_str = f"{sets_a[0]}-{sets_b[0]}/{sets_a[1]}-{sets_b[1]}/{sets_a[2]}-{sets_b[2]}"
 
