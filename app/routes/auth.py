@@ -55,6 +55,19 @@ def register():
       photo = db_path
     )
     
+    if new_user.category == "1":
+      new_user.points = 600
+    elif new_user.category == "2":
+      new_user.points = 500
+    elif new_user.category == "3":
+      new_user.points = 400
+    elif new_user.category == "4":
+      new_user.points = 300
+    elif new_user.category == "5":
+      new_user.points = 200
+    elif new_user.category == "6":
+      new_user.points = 0
+    
     db.session.add(new_user)
     db.session.commit()
     return jsonify({"message": "usuario registrado", "user_id": new_user.id}), 201

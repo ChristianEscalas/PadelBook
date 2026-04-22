@@ -111,7 +111,7 @@ def get_ranking():
   verify_jwt_in_request()
   
   category = request.args.get("category")
-  query = User.query.filter(User.rol == "player")
+  query = User.query.filter()
 
   if category:
     query = query.filter(User.category == int(category))
