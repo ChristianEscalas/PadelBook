@@ -23,6 +23,13 @@ async function loadClubs() {
 
     divclubes.innerHTML = "";
     data.forEach((club) => {
+      let active = club.active;
+      if (active) {
+        active = "Sí";
+      } else {
+        active = "No";
+      }
+
       divclubes.innerHTML += `
       <div class="tarjetaClub">
         <h3>${club.club_name}</h3>
@@ -45,7 +52,7 @@ async function loadClubs() {
             <p>${club.open_hour} - ${club.close_hour}</p>
             <p>${club.game_duration} minutos</p>
             <p>${club.municipality}</p>
-            <p>${club.active}</p>
+            <p>${active}</p>
           </div>
         </div>
 

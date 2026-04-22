@@ -25,6 +25,41 @@ async function loadCourts() {
 
     divPistas.innerHTML = "";
     data.forEach((court) => {
+      let type = court.court_type;
+      if (type === "double") {
+        type = "Dobles";
+      } else {
+        type = "Individual";
+      }
+
+      let cover = court.covered;
+      if (cover === true) {
+        cover = "Si";
+      } else {
+        cover = "No";
+      }
+
+      let wall = court.wall;
+      if (wall === "glass") {
+        wall = "Cristal";
+      } else {
+        wall = "Hormigón";
+      }
+
+      let surface = court.surface;
+      if (surface === "grass") {
+        surface = "Césped";
+      } else {
+        surface = "Hormigón";
+      }
+
+      let active = court.active;
+      if (active) {
+        active = "Sí";
+      } else {
+        active = "No";
+      }
+
       divPistas.innerHTML += `
       <div class="tarjetaPista">
         <h3>Pista nº ${court.number_court}</h3>
@@ -32,18 +67,18 @@ async function loadCourts() {
         
           <div class="info">
             <p><strong>Tipo:</strong></p>
-            <p><strong>cubierta:</strong></p>
+            <p><strong>Cubierta:</strong></p>
             <p><strong>Pared:</strong></p>
             <p><strong>Superficie:</strong></p>
             <p><strong>Activa:</strong></p>
           </div>
 
           <div class="datos">
-            <p>${court.court_type}</p>
-            <p>${court.covered}</p>
-            <p>${court.wall}</p>
-            <p>${court.surface}</p>
-            <p>${court.active}</p>
+            <p>${type}</p>
+            <p>${cover}</p>
+            <p>${wall}</p>
+            <p>${surface}</p>
+            <p>${active}</p>
           </div>
 
           <div class="botones">
