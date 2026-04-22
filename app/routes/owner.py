@@ -1,102 +1,465 @@
+import os
+import time
+from flask import Blueprint, jsonify, request
+from flask_jwt_extended import get_jwt, get_jwt_identity, verify_jwt_in_request
 from app import db
 from app.models.clubs import Club
 from app.models.users import User
 from app.models.courts import Court
 from app.models.reservations import Reservation
 from app.enums import CourtType, WallType, SurfaceType, StatusGame
-from datetime import time, datetime, timedelta
+from datetime import datetime, timedelta
 
+def delete_file_if_exists(path):
+  if path and os.path.exists(path):
+    os.remove(path)
+
+def update_reservation_status(reservation):
+  now = datetime.now()
+
+  if reservation.status_game == StatusGame.complete:
+    if reservation.start_date <= now:
+      reservation.status_game = StatusGame.pending_result
+  elif reservation.status_game == StatusGame.open:
+    if reservation.start_date <= now:
+      reservation.status_game = StatusGame.canceled
+      reservation.closed_at = datetime.now()
+
+owner_bp = Blueprint('owner', __name__)
+@owner_bp.route('/mis_clubes', methods=['GET'])
+def get_clubs():
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  # id del usuario
+  user_id = get_jwt_identity()
+  
+  # clubes del usuario
+  clubs = Club.query.filter(Club.owner_id == user_id).order_by(Club.club_name.desc()).all()
+  
+  if not clubs:
+    return jsonify([]), 200
+  
+  result = []
+  for club in clubs:
+    result.append({
+      "id": club.id,
+      "club_name": club.club_name,
+      "address": club.address,
+      "open_hour": club.open_hour.strftime("%H:%M"),
+      "close_hour": club.close_hour.strftime("%H:%M"),
+      "game_duration": club.game_duration,
+      "municipality": club.municipality,
+      "photo": club.photo,
+      "active": club.active
+    })
+    
+  return jsonify(result), 200
+
+@owner_bp.route('/pistas/club/<int:id>', methods=['GET'])
+def get_courts(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+
+  club = Club.query.get(id)
+  if club.active == False:
+    return jsonify({"error": "El club está eliminado"}), 404
+  
+  courts = Court.query.filter(Court.club_id == club.id)
+  if not courts:
+    return jsonify([]), 200
+    
+  result = []
+  for court in courts:
+    result.append({
+      "id": court.id,
+      "number_court": court.number_court,
+      "court_type": court.court_type.value,
+      "covered": court.covered,
+      "wall": court.wall.value,
+      "surface": court.surface.value,
+      "active": court.active,
+    })
+
+  return jsonify(result), 200
+
+@owner_bp.route('/crear_club', methods=['POST'])
 def create_club():
-  new_club = Club(owner_id = 3, club_name = "PruebaCrearClub2", address = "Calle prueba, 2", open_hour = time(10, 0, 0), close_hour = time(21, 0, 0), game_duration = 90, municipality = "Marratxí", photo = "app/static/images/clubs/clubPadel.jpg")
-  existing_club = Club.query.filter_by(club_name = new_club.club_name).first()
-  user = User.query.filter_by(id = new_club.owner_id).first()
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
   
-  if user is None:
-    print("El usuario no existe")
-    return
+  data = request.form
+  photo = request.files.get("photo")
   
-  if user.rol.value != "owner":
-    print("El usuario no es propietario")
-    return
+  required_fields = ["nombre", "direccion", "horaApertura", "horaCierre", "duracion", "municipio", "activo"]
+  if not data or not all(field in data for field in required_fields) or not photo:
+    return jsonify({"error": "Faltan campos obligatorios"}), 400
   
-  if existing_club is None:
+  club_name = Club.query.filter(Club.club_name == data["nombre"]).first()
+  if club_name:
+    return jsonify({"error": "Ya existe un club con este nombre"}), 409
+  
+  try:
+    # miramos en que carpeta se va a guardar la foto del club
+    folder = "images/clubs"
+    extension = photo.filename.split('.')[-1]
+    filename = f"{data['nombre']}_{int(time.time())}.{extension}"
+    save_path = os.path.join('app', 'static', folder)
+      
+    if not os.path.exists(save_path):
+      os.makedirs(save_path)
+
+    file_path = os.path.join(save_path, filename)
+    photo.save(file_path)
+    db_path = f"{folder}/{filename}"
+    
+    owner_id = int(get_jwt_identity())
+    open_hour = datetime.strptime(data["horaApertura"], "%H:%M").time()
+    close_hour = datetime.strptime(data["horaCierre"], "%H:%M").time()
+    
+    new_club = Club(
+      owner_id = owner_id,
+      club_name = data["nombre"],
+      address = data["direccion"],
+      open_hour = open_hour,
+      close_hour = close_hour,
+      game_duration = int(data["duracion"]),
+      municipality = data["municipio"],
+      photo = db_path
+      )
+  
     db.session.add(new_club)
     db.session.commit()
-    print(f"Club {new_club.club_name} creado correctamente")
-  else:
-    print("Ya existe un club con ese nombre.")
+    
+    return jsonify({"message": "Club creado correctamente"}), 201
+  except Exception as ex:
+    db.session.rollback()
+    return jsonify({"error": str(ex)}), 500
 
-def delete_club(club_id = 1, owner_id = 3):
-  existing_club = Club.query.filter_by(id = club_id).first()
+@owner_bp.route('/club/<int:id>', methods=['GET'])
+def get_club(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
   
-  if existing_club is None:
-    print("No existe el club")
-    return
+  club = Club.query.get(id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
   
-  if existing_club.owner_id != owner_id:
-    print("No eres el propietario del club")
-    return
+  return jsonify({
+    "club_name": club.club_name,
+    "address": club.address,
+    "open_hour": club.open_hour.strftime("%H:%M"),
+    "close_hour": club.close_hour.strftime("%H:%M"),
+    "game_duration": club.game_duration,
+    "municipality": club.municipality,
+    "photo": club.photo,
+    "active": club.active,
+  }), 200
+
+@owner_bp.route('/editar_club/<int:id>', methods=['PUT'])
+def update_club(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
   
-  if not existing_club.active:
-    print("El club ya está inactivo")
-    return
+  club = Club.query.get(id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
   
-  existing_club.active = False
+  user_id = int(get_jwt_identity())
+  if club.owner_id != user_id:
+    return jsonify({"error": "No eres el propietario del club"}), 409
+  
+  data = request.form
+  photo = request.files.get("photo")
+  
+  # comprovamos que no existe un club con el mismo nombre
+  if data.get("nombre"):
+    existing_club = Club.query.filter(Club.club_name == data.get("nombre")).first()
+    if existing_club and existing_club.id != club.id:
+      return jsonify({"error": "El club ya existe"}), 409
+
+  if data.get("horaApertura"):
+    club.open_hour = datetime.strptime(data.get("horaApertura"), "%H:%M").time()
+
+  if data.get("horaCierre"):
+    club.close_hour = datetime.strptime(data.get("horaCierre"), "%H:%M").time()
+
+  if data.get("duracion"):
+    club.game_duration = int(data.get("duracion"))
+
+  if data.get("activo") is not None:
+    club.active = data.get("activo") == "true"
+
+  club.club_name = data.get("nombre", club.club_name)
+  club.address = data.get("direccion", club.address)
+  club.municipality = data.get("municipio", club.municipality)
+  
+  if photo and photo.filename:
+    folder = "images/clubs"
+    extension = photo.filename.split('.')[-1]
+    
+    club_name = data.get("nombre", club.club_name)
+    filename = f"{club_name}_{int(time.time())}.{extension}"
+    
+    save_path = os.path.join('app', 'static', folder)
+    
+    if not os.path.exists(save_path):
+      os.makedirs(save_path)
+
+    if club.photo:
+      old_path = os.path.join('app', 'static', club.photo)
+      try:
+        delete_file_if_exists(old_path)
+      except:
+        print("Error al borrar la fot antigua")
+    
+    file_path = os.path.join(save_path, filename)
+    photo.save(file_path)
+    
+    club.photo = f"{folder}/{filename}"
+    
   db.session.commit()
-  print("El club marcado como inactivo")
 
-def create_court():
-  new_court = Court(club_id = 2, number_court = 2, court_type = CourtType.individual, covered = True, wall = WallType.concrete, surface = SurfaceType.concrete)
-  existing_club = Club.query.filter_by(id = new_court.club_id).first()
-  owner_id = 3
+  return jsonify({"message": "Club actualizado"}), 200
+
+@owner_bp.route('/club/<int:id>/crear_pista', methods=['POST'])
+def create_court(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
   
-  if existing_club is None:
-    print("No existe el club")
-    return
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
   
-  if existing_club.owner_id != owner_id:
-    print("No eres el propietario del club")
-    return
+  club = Club.query.get(id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
   
-  if not existing_club.active:
-    print("El club no está activo")
-    return
+  if club.active == False:
+    return jsonify({"error": "El club no está activo"}), 409
   
-  existing_court = Court.query.filter_by(club_id = existing_club.id, number_court = new_court.number_court).first()
-  if existing_court is None:
+  user_id = int(get_jwt_identity())
+  if club.owner_id != user_id:
+    return jsonify({"error": "No eres el propietario del club"}), 403
+  
+  data = request.form
+  
+  required_fields = ["numero", "tipo", "cubierta", "pared", "superficie", "activa"]
+  if not data or not all(field in data for field in required_fields):
+    return jsonify({"error": "Faltan campos obligatorios"}), 400
+  
+  existing_court = Court.query.filter(Court.club_id == club.id, Court.number_court == data["numero"]).first()
+  if existing_court:
+    return jsonify({"error": "El club ya tiene una pista con el mismo número"}), 409
+    
+  try:    
+    new_court = Court(
+      club_id = club.id,
+      number_court = data["numero"],
+      court_type = CourtType(data["tipo"]),
+      covered = data["cubierta"] == "true",
+      wall = WallType(data["pared"]),
+      surface = SurfaceType(data["superficie"]),
+      active = data["activa"] == "true",
+      )
+    
     db.session.add(new_court)
     db.session.commit()
-    print(f"Pista número {new_court.number_court} creada correctamente")
-  else:
-    print(f"El club {existing_club.club_name} ya tiene la pista número {new_court.number_court}, no se puede añadir")
+    
+    return jsonify({"message": "Pista creada correctamente"}), 201
+  except Exception as ex:
+    db.session.rollback()
+    return jsonify({"error": str(ex)}), 500
 
-def delete_court(club_id = 2, owner_id = 3, number_court = 2):
-  existing_club = Club.query.filter_by(id = club_id).first()
+@owner_bp.route('/club/<int:club_id>/pista/<int:court_id>', methods=['GET'])
+def get_court(club_id, court_id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
   
-  if existing_club is None:
-    print("No existe el club")
-    return
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
   
-  if existing_club.owner_id != owner_id:
-    print("No eres el propietario del club")
-    return
+  club = Club.query.get(club_id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
   
-  if not existing_club.active:
-    print("El club no está activo")
-    return
+  user_id = int(get_jwt_identity())
+  if club.owner_id != user_id:
+    return jsonify({"error": "No eres el propietario del club"}), 403
   
-  existing_court = Court.query.filter_by(club_id = club_id, number_court = number_court).first()
-  if existing_court is None:
-    print(f"El club no tiene la pista número {number_court}")
-    return
+  court = Court.query.get(court_id)
+  if not court:
+    return jsonify({"error": "No existe la pista"}), 404
   
-  if not existing_court.active:
-    print("Esta pista ya está inactiva")
-    return
+  existing_court = Court.query.filter(Court.club_id == club.id, Court.id == court.id).first()
+  if not existing_court:
+    return jsonify({"error": "El club no tiene esta pista creada"}), 409
   
-  existing_court.active = False
+  return jsonify({
+    "number_court": court.number_court,
+    "court_type": court.court_type.value,
+    "covered": court.covered,
+    "wall": court.wall.value,
+    "surface": court.surface.value,
+    "active": court.active,
+  }), 200
+
+@owner_bp.route('/club/<int:club_id>/editar_pista/<int:court_id>', methods=['PUT'])
+def update_court(club_id, court_id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  club = Club.query.get(club_id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
+  
+  user_id = int(get_jwt_identity())
+  if club.owner_id != user_id:
+    return jsonify({"error": "No eres el propietario del club"}), 403
+  
+  court = Court.query.get(court_id)
+  if not court:
+    return jsonify({"error": "No existe la pista"}), 404
+  
+  if court.club_id != club.id:
+    return jsonify({"error": "El club no tiene esta pista creada"}), 409
+  
+  data = request.form
+  
+  # comprovamos que no existe una pista con el mismo número
+  if data.get("numero"):
+    existing = Court.query.filter(Court.club_id == club_id, Court.number_court == data.get("numero")).first()
+    if existing and existing.id != court.id:
+      return jsonify({"error": "El club ya tiene este número de pista"}), 409
+    
+  if data.get("activa") is not None:
+    court.active = data.get("activa") == "true"
+    
+  court.number_court = data.get("numero", court.number_court)
+  if data.get("tipo"):
+    court.court_type = CourtType(data["tipo"])
+    
+  if data.get("cubierta"):
+    court.covered = data["cubierta"] == "true"
+      
+  if data.get("pared"):
+    court.wall = WallType(data["pared"])
+    
+  if data.get("superficie"):
+    court.surface = SurfaceType(data["superficie"])
+  
   db.session.commit()
-  print(f"Pista número {number_court} del club {existing_club.club_name} marcada como inactiva")
+  
+  return jsonify({"message": "Pista actualizada"}), 200
+
+@owner_bp.route('/reservas/club/<int:id>', methods=['GET'])
+def get_reservations_club(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+  
+  club = Club.query.get(id)
+  if not club:
+    return jsonify({"error": "No existe el club"}), 404
+  
+  user_id = int(get_jwt_identity())
+  if club.owner_id != user_id:
+    return jsonify({"error": "No eres el propietario del club"}), 403
+  
+  query = Reservation.query.join(Court).filter(Court.club_id == club.id)
+  
+  dia = request.args.get('dia')
+  hora = request.args.get('hora')
+  status = request.args.get('estado')
+
+  if dia and hora:
+    start_datetime = datetime.strptime(f"{dia} {hora}", "%Y-%m-%d %H:%M")
+    query = query.filter(Reservation.start_date == start_datetime)
+  elif dia:
+    day_obj = datetime.strptime(dia, "%Y-%m-%d").date()
+    query = query.filter(db.func.date(Reservation.start_date) == day_obj)
+  elif hora:
+    hour_obj = datetime.strptime(hora, "%H:%M").time()
+    query = query.filter(db.func.time(Reservation.start_date) == hour_obj)
+  
+  if status:
+    try:
+      query = query.filter(Reservation.status_game == StatusGame(status))
+    except:
+      return jsonify({"error": "Estado de la reserva inválido"}), 400
+  
+  reservations = query.order_by(Reservation.start_date.desc()).all()
+  
+  status_map = {
+      "open": "Abierta",
+      "complete": "Completa",
+      "canceled": "Cancelada",
+      "pending_result": "Pendiente de resultado",
+      "finalized": "Finalizada"
+    }
+  
+  updated = False
+  
+  result = []
+  for reservation in reservations:
+    before = reservation.status_game
+    update_reservation_status(reservation)
+    
+    if reservation.status_game != before:
+      updated = True
+    
+    result.append({
+      "id": reservation.id,
+      "number_court": reservation.court.number_court,
+      "start_date": reservation.start_date.strftime("%d/%m/%Y %H:%M"),
+      "end_date": reservation.end_date.strftime("%d/%m/%Y %H:%M"),
+      "status_game": status_map[reservation.status_game.value]
+    })
+  
+  if updated:
+    db.session.commit()
+    
+  if len(result) == 0:
+    return jsonify([]), 200
+  
+  return jsonify(result), 200
 
 def cancel_reservation(club_id = 2, owner_id = 3, court_id = 1, reservation_id = 1):
   existing_club = Club.query.filter_by(id = club_id).first()
@@ -144,3 +507,93 @@ def cancel_reservation(club_id = 2, owner_id = 3, court_id = 1, reservation_id =
   existing_reservation.closed_at = datetime.now()
   db.session.commit()
   print(f"Reserva para el {existing_reservation.start_date} cancelada correctamente")
+
+@owner_bp.route('/reserva/<int:id>', methods=['GET'])
+def get_reservation_detail(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+
+  reservation = Reservation.query.get(id)
+
+  if not reservation:
+    return jsonify({"error": "Reserva no encontrada"}), 404
+
+  club = reservation.court.club
+  if club.owner_id != int(get_jwt_identity()):
+    return jsonify({"error": "No autorizado"}), 403
+  
+  before = reservation.status_game
+  update_reservation_status(reservation)
+  
+  if reservation.status_game != before:
+    db.session.commit()
+    
+  players = []
+  for player in reservation.players:
+    players.append({
+      "id": player.user.id,
+      "name": player.user.firstname,
+      "photo": player.user.photo,
+      "team": player.team.value,
+      "is_creator": player.is_creator
+    })
+
+  return jsonify({
+    "id": reservation.id,
+    "club": reservation.court.club.club_name,
+    "photo": reservation.court.club.photo,
+    "date": reservation.start_date.strftime("%d/%m/%Y - %H:%M"),
+    "result": reservation.result,
+    "status": reservation.status_game.value,
+    "players": players,
+    "creator_id": reservation.creator_id,
+    "court_number": reservation.court.number_court,
+    "type": reservation.court.court_type.value,
+    "cover": reservation.court.covered,
+    "wall": reservation.court.wall.value,
+    "surface": reservation.court.surface.value,
+    "duration": reservation.court.club.game_duration,
+  }), 200
+
+@owner_bp.route('/reserva/cancelar/<int:id>', methods=['POST'])
+def cancel_reservation(id):
+  # comprobar si el usuario ha hecho login
+  verify_jwt_in_request()
+
+  # Comprobar el rol del usuario
+  claims = get_jwt()
+  if claims.get("rol") != "owner":
+    return jsonify({"error": "No autorizado"}), 403
+
+  user_id = int(get_jwt_identity())
+
+  reservation = Reservation.query.get(id)
+  if not reservation:
+    return jsonify({"error": "Reserva no encontrada"}), 404
+
+  club = reservation.court.club
+  if club.owner_id != user_id:
+    return jsonify({"error": "No autorizado"}), 403
+
+  status_game = reservation.status_game
+
+  if status_game in [StatusGame.finalized, StatusGame.pending_result]:
+    return jsonify({"error": "No se puede cancelar una reserva finalizada o en curso"}), 409
+
+  if status_game == StatusGame.canceled:
+    return jsonify({"error": "La reserva ya estaba cancelada"}), 409
+
+  if datetime.now() + timedelta(hours=3) > reservation.start_date:
+    return jsonify({"error": "Solo se puede cancelar con al menos 3 horas de antelación"}), 400
+
+  reservation.status_game = StatusGame.canceled
+  reservation.closed_at = datetime.now()
+
+  db.session.commit()
+
+  return jsonify({"message": "Reserva cancelada correctamente"}), 200

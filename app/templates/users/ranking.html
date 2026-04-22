@@ -1,0 +1,36 @@
+{% extends base_template %}
+
+{% block titleHead %}
+  Ranking
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/user/ranking.js') }}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+  <div id="ranking">
+    <h1>Ranking de jugadores</h1>
+
+    <form id="rankingForm">
+      <div class="campo">
+        <label for="category">Categoría:</label>
+        <select id="category" name="category">
+          <option value="">Todas</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <button type="submit">Ver ranking</button>
+      </div>
+    </form>
+
+    <div id="rankingContainer"></div>
+  </div>
+{% endblock %}

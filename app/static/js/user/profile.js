@@ -1,0 +1,64 @@
+import { showNotification } from "../main.js";
+
+async function loadProfile() {
+  try {
+    const response = await fetch("http://192.168.0.100:5000/api/user/perfil", {
+      headers: { Accpet: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
+    });
+
+    if (!response.ok) {
+      showNotification("Error al cargar perfil", "error");
+      return;
+    }
+
+    const data = await response.json();
+
+    document.getElementById("username").innerText = data.username;
+    document.getElementById("email").innerText = data.email;
+    document.getElementById("mobile").innerText = data.mobile;
+
+    if (data.address.length === 0) {
+      data.address = "-";
+    }
+
+    document.getElementById("address").innerText = data.address;
+    document.getElementById("age").innerText = data.age;
+    document.getElementById("firstname").innerText = data.firstname;
+
+    if (data.lastname.length === 0) {
+      data.lastname = "-";
+    }
+
+    document.getElementById("lastname").innerText = data.lastname;
+    document.getElementById("category").innerText = data.category;
+    document.getElementById("points").innerText = data.points;
+
+    if (data.rol === "player") {
+      document.getElementById("rol").innerText = "Jugador";
+    } else {
+      document.getElementById("rol").innerText = "Propietario";
+    }
+
+    const photo = document.getElementById("photo");
+    photo.src = `/static/${data.photo}`;
+    photo.setAttribute("alt", "Foto de perfil");
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadProfile();
+
+  document.getElementById("editarBtn").addEventListener("click", () => {
+    window.location.href = "/editar_perfil";
+  });
+
+  document.getElementById("seguidoresBtn").addEventListener("click", () => {
+    window.location.href = "/seguidores";
+  });
+
+  document.getElementById("seguidosBtn").addEventListener("click", () => {
+    window.location.href = "/seguidos";
+  });
+});

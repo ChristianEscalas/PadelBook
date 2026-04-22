@@ -1,0 +1,57 @@
+{% extends 'players/base_player.html' %}
+
+{% block titleHead %}
+  Unirse a partido
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/player/join_reservation.js') }}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+  <div id="unirse-partido">
+    <h1>Unirse a partido</h1>
+    
+    <div id="tarjetaConfirmacion">
+      <h3 id="club"></h3>
+    
+      <div class="partido">
+        <div id="fotoClub">
+          <img id="foto" alt="Foto del club">
+        </div>
+        
+        <div id="columnaUnirse">
+          <div class="datos">
+          <p><strong>Fecha: </strong><span id="dia"></span></p>
+          <p><strong>Duración: </strong><span id="duracion"></span></p>
+          <p><strong>Tipo: </strong><span id="tipo"></span></p>
+          </div>
+    
+          <div class="datos">
+            <p><strong>Cubierta: </strong><span id="cubierta"></span></p>
+            <p><strong>Pared: </strong><span id="pared"></span></p>
+            <p><strong>Superficie: </strong><span id="superficie"></span></p>
+          </div>
+    
+          <div class="equipos">
+            <div class="equipo">
+              <h4>Equipo A</h4>
+              <div id="teamA" class="jugadores"></div>
+            </div>
+
+            <div class="equipo">
+              <h4>Equipo B</h4>
+              <div id="teamB" class="jugadores"></div>
+            </div>
+          </div>
+        </div>
+        
+    
+        <div class="botones">
+          <button id="confirmarBoton">Unirse</button>
+          <button id="cancelarBoton">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,16 +1,16 @@
 {% extends 'players/base_player.html' %}
 
 {% block titleHead %}
-Reservar
+  Buscar partido
 {% endblock %}
 
 {%block script %}
-  <script src="{{url_for('static', filename='js/player/reservate.js')}}" type="module"></script>
+  <script src="{{url_for('static', filename='js/player/search_matches.js')}}" type="module"></script>
 {% endblock %}
 
 {% block content %}
   <div id="reservar">
-    <h1>Haz tu reserva</h1>
+    <h1>Partidos disponibles</h1>
     <form id="reservarForm">
 
       <div class="campo">

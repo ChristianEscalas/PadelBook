@@ -1,7 +1,7 @@
 from app import db
 from app.models.users import User
 from app.utils.security import new_password_hash, check_password
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, make_response, request
 from flask_jwt_extended import create_access_token
 import time, os
 
@@ -77,4 +77,6 @@ def login():
     return jsonify({"error": "Datos incorrectos"}), 401
   
   access_token = create_access_token(identity=str(user.id), additional_claims={"rol": user.rol.value})
-  return jsonify({"access_token": access_token}), 200
+  response = make_response(jsonify({"access_token": access_token}), 200)
+  response.set_cookie("rol", user.rol.value)
+  return response

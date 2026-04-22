@@ -1,0 +1,36 @@
+{% extends 'players/base_player.html' %}
+
+{% block titleHead %}
+  Cancelar reserva
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/player/cancel_reservation.js')}}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+  <div id="cancelar-reserva">
+    <h1>Cancelar reserva</h1>
+    <div id="tarjetaCancelar">
+      <h3 id="club"></h3>
+        
+      <div class="info-reserva">
+        <div class="fotoclub">
+          <img id="photo" alt="Foto del club">
+        </div>
+
+        <div class="info">
+          <p>
+            <strong>Fecha: </strong><span id="fecha"></span> &nbsp;
+            <strong>Pista nº: </strong><span id="pista"></span>
+          </p>
+        </div>
+
+        <div class="botones">
+          <button type="button" id="cancelarBoton">Cancelar reserva</button>
+          <button type="button" id="volverBoton">Volver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

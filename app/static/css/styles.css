@@ -21,7 +21,8 @@ main {
 }
 
 #contactButton:hover,
-#reservaButton:hover {
+#reservaButton:hover,
+#logoutButton:hover {
   background-color: #AEEA00;
   color: black;
   transform: translateY(-5px);
@@ -85,14 +86,31 @@ h1 {
   transform: translateY(-5px);
 }
 
-#contactButton {
+#header #botones {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+#header #botones button,
+#header #contactButton {
+  margin: 0px;
+  width: 200px;
   border-radius: 20px;
   border: 1px solid black;
   padding: 10px;
   font-size: 20px;
-  background-color: #305BAB;
+  height: fit-content;
   color: white;
-  width: 200px;
+}
+
+#logoutButton {
+  background-color: #FF6464;
+}
+
+#contactButton {
+  background-color: #305BAB;
 }
 
 #inicio {
@@ -227,7 +245,7 @@ footer div {
   border: 1px solid gray;
 }
 
-#form #botones {
+#login #form #botones {
   display: flex;
   gap: 30px;
   justify-content: center;
@@ -245,7 +263,7 @@ footer div {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-#botones button:hover {
+#login #botones button:hover {
   background-color: #AEEA00;
   color: black;
   transform: translateY(-5px);
@@ -334,7 +352,7 @@ footer div {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-#botones button:hover {
+#registro #botones button:hover {
   background-color: #AEEA00;
   color: black;
   transform: translateY(-5px);
@@ -342,6 +360,9 @@ footer div {
 
 #loginButton {
   background-color: #305BAB;
+}
+#guardar {
+  background-color: #5cf094;
 }
 
 #cancelButton {
@@ -404,13 +425,14 @@ footer div {
   border: 1px solid gray;
   height: 100px;
 }
-#form #botones {
+
+#contacto #form #botones {
   display: flex;
   gap: 30px;
   justify-content: center;
 }
 
-#botones button {
+#contacto #botones button {
   margin-top: 10px;
   margin-bottom: 25px;
   padding: 10px;
@@ -422,7 +444,7 @@ footer div {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-#botones button:hover {
+#contacto #botones button:hover {
   background-color: #AEEA00;
   color: black;
   transform: translateY(-5px);
@@ -434,4 +456,1576 @@ footer div {
 
 #cancelButton {
   background-color: #FF6464;
+}
+
+/* RESERVAR */
+
+#reservar {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#reservar #reservarForm {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+#reservar #reservarForm label{
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+#reservar #reservarForm input, select {
+  background-color: #F2F2F2;
+  padding: 5px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  cursor: pointer;
+  margin-bottom: 0px;
+}
+
+#reservar #reservarForm button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: 80px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#reservar #reservarForm button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#reservar #clubesDisponibles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+#reservar .tarjetaClub{
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 800px;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#reservar .tarjetaClub .infoClub {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 20px;
+}
+
+#reservar .tarjetaClub .infoClub .fotoclub {
+  width: 150px;
+}
+
+#reservar .tarjetaClub .infoClub .fotoclub img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+#reservar .tarjetaClub h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#reservar .tarjetaClub .boton-reserva {
+  text-align: center;
+  width: fit-content;
+  margin-left: auto;
+}
+
+#reservar .tarjetaClub button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#reservar .tarjetaClub button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+/* CONFIRMAR RESERVA */
+
+#confirmar-reserva {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#confirmar-reserva .tarjetaClub{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: fit-content;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#confirmar-reserva .tarjetaClub .infoClub {
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  align-items: center;
+  gap: 10px;
+}
+
+#confirmar-reserva .tarjetaClub .infoClub .fotoclub img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
+  margin-right: 10px;
+}
+
+#confirmar-reserva .tarjetaClub h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#confirmar-reserva .tarjetaClub .boton-reserva {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+  width: fit-content;
+  margin-left: 10px;
+}
+
+#confirmar-reserva .tarjetaClub button {
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#confirmar-reserva .tarjetaClub #confirmarBoton {
+  background-color: #305BAB;
+}
+
+#confirmar-reserva .tarjetaClub #cancelarBoton {
+  background-color: #FF6464;
+}
+
+#confirmar-reserva .tarjetaClub #cancelarBoton:hover, #confirmar-reserva .tarjetaClub #confirmarBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+/* MIS RESERVAS */
+
+#mis-reservas {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mis-reservas .tarjetaClub{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 800px;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#mis-reservas .tarjetaClub .infoClub {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+#mis-reservas .tarjetaClub .infoClub .fotoclub img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+#mis-reservas .tarjetaClub h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#mis-reservas .tarjetaClub .boton-reserva {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+  width: fit-content;
+  margin-left: auto;
+}
+
+#mis-reservas .tarjetaClub button {
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#mis-reservas .tarjetaClub .detallesBoton {
+  background-color: #305BAB;
+}
+
+#mis-reservas .tarjetaClub .cancelarBoton, #mis-reservas .tarjetaClub .salirBoton {
+  background-color: #FF6464;
+}
+
+#mis-reservas .tarjetaClub .cancelarBoton:hover, #mis-reservas .tarjetaClub .detallesBoton:hover, #mis-reservas .tarjetaClub .salirBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+/* DETALLE DE LA RESERVA */
+
+#detalles-reserva {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#detalles-reserva #tarjeta-detalle{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px 25px 9px 25px;
+  width: fit-content;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #foto-club img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+#detalles-reserva #tarjeta-detalle h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#detalles-reserva #tarjeta-detalle #datos {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 20px;
+  align-items: center;
+}
+
+#detalles-reserva #tarjeta-detalle #botones{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #detalle-reserva {
+  text-align: center;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos {
+  grid-column: span 2;
+  margin-top: 15px;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #f9f9f9;
+  padding: 15px;
+  gap: 20px;
+  border-radius: 12px;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas p {
+  margin: 0px;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas .pareja {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas .pareja .jugador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 50px;
+}
+
+#detalles-reserva #tarjeta-detalle #info-reserva #equipos #parejas .pareja .jugador img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+}
+
+#detalles-reserva #tarjeta-detalle button {
+  padding: 10px;
+  width: 150px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  margin: 0px;
+}
+
+#detalles-reserva #tarjeta-detalle #confirmarBoton {
+  background-color: #5cf094;
+}
+
+#detalles-reserva #tarjeta-detalle #botonVolver {
+  background-color: #305BAB;
+}
+
+#detalles-reserva #tarjeta-detalle #botonVolver:hover, #detalles-reserva #tarjeta-detalle #confirmarBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+/* CANCELAR RESERVA */
+
+#cancelar-reserva {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#cancelar-reserva #tarjetaCancelar {
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 600px;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#cancelar-reserva #tarjetaCancelar .info-reserva {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+#cancelar-reserva #tarjetaCancelar .info-reserva .info {
+  display: flex;
+  justify-content: center;
+}
+
+#cancelar-reserva #tarjetaCancelar .info-reserva .info p {
+  margin: 0;
+}
+
+#cancelar-reserva #tarjetaCancelar .info-reserva .fotoclub img {
+  width: 150px;
+  height: 150px;
+}
+
+#cancelar-reserva #tarjetaCancelar h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#cancelar-reserva #tarjetaCancelar .botones {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+#cancelar-reserva #tarjetaCancelar #warning {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#cancelar-reserva #tarjetaCancelar button {
+  padding: 10px;
+  width: 150px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#cancelar-reserva #tarjetaCancelar #volverBoton {
+  background-color: #305BAB;
+}
+
+#cancelar-reserva #tarjetaCancelar #cancelarBoton {
+  background-color: #FF6464;
+}
+
+#cancelar-reserva #tarjetaCancelar #cancelarBoton:hover, #cancelar-reserva #tarjetaCancelar #volverBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+/* UNIRSE A RESERVA */
+
+#unirse-partido {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#unirse-partido #tarjetaConfirmacion {
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: fit-content;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#unirse-partido #tarjetaConfirmacion .partido {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  align-items: center;
+  gap: 30px;
+}
+
+#unirse-partido #tarjetaConfirmacion .partido #columnaUnirse {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  margin-top: 20px;
+  width: 450px;
+  gap: 20px;
+}
+#unirse-partido #tarjetaConfirmacion .partido .datos {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+}
+
+#unirse-partido #tarjetaConfirmacion .partido .datos p {
+  margin: 0px;
+}
+#unirse-partido #tarjetaConfirmacion .partido .equipos {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+#unirse-partido #tarjetaConfirmacion .partido .equipos .equipo p, h4 {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#unirse-partido #tarjetaConfirmacion .partido #fotoClub {
+  width: 150px;
+}
+#unirse-partido #tarjetaConfirmacion .partido #fotoClub img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+#unirse-partido #tarjetaConfirmacion h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#unirse-partido #tarjetaConfirmacion .botones {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  width: fit-content;
+}
+
+#unirse-partido #tarjetaConfirmacion button {
+  padding: 10px;
+  width: 150px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#unirse-partido #tarjetaConfirmacion #confirmarBoton {
+  background-color: #305BAB;
+}
+
+#unirse-partido #tarjetaConfirmacion #cancelarBoton {
+  background-color: #FF6464;
+}
+
+#unirse-partido #tarjetaConfirmacion #cancelarBoton:hover, #unirse-partido #tarjetaConfirmacion #confirmarBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+.jugadores {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.jugador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #000000;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+}
+
+.jugador img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.jugador p {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  width: 80px;
+  background: #2c2c2c;
+  border-radius: 10px;
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+}
+
+.slot:hover {
+  background: #AEEA00;
+  color: black;
+}
+
+.slot.selected {
+  border: 2px solid red;
+}
+
+/* MI PERFIL */
+
+#perfil {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 80vh;
+  box-sizing: border-box;
+}
+
+#perfil #fotoNombre {
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+  align-items: center;
+}
+
+#perfil #fotoNombre img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+#perfil #fotoNombre h1 {
+  margin: 0px;
+}
+
+#perfil .tarjetaPerfil{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 600px;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#perfil .tarjetaPerfil .infoPerfil {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  align-items: center;
+  gap: 10px;
+}
+
+#perfil #fotoNombre img {
+  width: 150px;
+  height: 150px;
+}
+
+#perfil .tarjetaPerfil .botonesPerfil {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+#perfil .tarjetaPerfil button {
+  padding: 10px;
+  width: 150px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  background-color: #305BAB;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#perfil .tarjetaPerfil button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+/* RANKING */
+
+#ranking {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#ranking #rankingForm {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 50px;
+  align-items: center;
+}
+
+#ranking #rankingForm label{
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+#ranking #rankingForm select {
+  background-color: #F2F2F2;
+  padding: 10px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  cursor: pointer;
+  margin-bottom: 0px;
+}
+
+#ranking #rankingForm button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: fit-content;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#ranking #rankingForm button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#ranking #rankingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+#ranking .tarjetaJugador {
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 500px;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#ranking .tarjetaJugador .infoJugador {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+#ranking .tarjetaJugador .infoJugador .fotoJugador {
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+  text-align: center;
+  align-items: center;
+}
+
+#ranking .tarjetaJugador .infoJugador .fotoJugador p {
+  margin: 0px;
+  width: 90px;
+}
+
+#ranking .tarjetaJugador .infoJugador .datosJugador {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+}
+
+#ranking .tarjetaJugador .infoJugador .datosJugador .puntos {
+  display: flex;
+  margin-left: auto;
+}
+
+#ranking .tarjetaJugador .datosJugador .puntos p {
+  margin: 0;
+}
+#ranking .tarjetaJugador h3 {
+  font-size: 22px;
+  margin: 0px;
+}
+#ranking .tarjetaJugador .infoJugador img {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+/* SEGUIDOS Y SEGUIDORES */
+
+#followers {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#followers #seguidosIntro {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+#followers #seguidosIntro h1 {
+  margin: 0px;
+}
+
+#followers button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#followers button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#followers #followersContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+#followers .tarjetaJugador {
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 500px;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#followers .tarjetaJugador .infoJugador {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+#followers .tarjetaJugador .infoJugador .fotoJugador {
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+  text-align: center;
+  align-items: center;
+}
+
+#followers .tarjetaJugador .infoJugador .boton {
+  display: flex;
+  margin-left: auto;
+}
+
+#followers .tarjetaJugador p {
+  margin: 0px;
+}
+
+#followers .tarjetaJugador h3 {
+  font-size: 22px;
+  margin: 0px;
+}
+#followers .tarjetaJugador .infoJugador img {
+  width: 50px;
+  height: 50px;
+}
+
+/* CONFIRMAR RESULTADO */
+
+#confirmarResultado {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 80vh;
+  box-sizing: border-box;
+}
+
+#confirmarResultado #tarjetaResultado {
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: fit-content;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  gap: 20px;
+  align-items: center;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #equiposMarcador {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #equiposMarcador p {
+margin: 0px;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido .set {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #botones {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 5px;
+  margin-top: 21px;
+  margin-left: auto;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #botones button {
+  width: 150px;
+  margin: 0px;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #botones #guardarBoton {
+  background-color: #5cf094;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #botones #cancelBoton {
+  background-color: #FF6464;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido #botones #guardarBoton:hover,
+#confirmarResultado #tarjetaResultado #datosPartido #botones #cancelBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido .set h3 {
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido .set .inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 40px;
+  
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido .set .inputs input {
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid gray;
+}
+
+#confirmarResultado #tarjetaResultado #datosPartido .set .inputs input:focus {
+  background-color: rgb(226, 226, 226);
+  border: 1px solid black;
+  padding: 5px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos {
+  grid-column: span 2;
+  margin-top: 40px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos p {
+  text-align: center;
+  font-size: 20px;
+}
+#confirmarResultado #tarjetaResultado #equipos #parejas {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  text-align: center;
+  margin-top: 30px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas #teamA {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas #teamB {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas p {
+  margin: 0px;
+  font-size: 16px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas .pareja {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas .pareja .jugador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 50px;
+}
+
+#confirmarResultado #tarjetaResultado #equipos #parejas .pareja .jugador img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+}
+
+/* MIS CLUBES */
+
+#mis-clubes {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mis-clubes #introClubes {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+#mis-clubes #introClubes h1 {
+  margin: 0px;
+}
+
+#mis-clubes #tarjetas-clubes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+#mis-clubes .tarjetaClub{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 750px;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#mis-clubes .tarjetaClub .infoClub {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 20px;
+}
+
+#mis-clubes .tarjetaClub .infoClub .fotoclub {
+  width: 150px;
+}
+
+#mis-clubes .tarjetaClub .infoClub .fotoclub img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+#mis-clubes .tarjetaClub h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#mis-clubes .tarjetaClub .botones {
+  margin-top: 10px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+#mis-clubes button {
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#mis-clubes .tarjetaClub button {
+  background-color: #305BAB;
+}
+
+#mis-clubes #introClubes button {
+  background-color: #5cf094;
+}
+
+#mis-clubes button:hover,
+#mis-clubes #introClubes button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+/* MIS PISTAS */
+
+#mis-pistas {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mis-pistas #intropistas {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+#mis-pistas #intropistas h1 {
+  margin: 0px;
+}
+
+#mis-pistas #intropistas #botones {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+#mis-pistas #intropistas #botones button {
+  width: 125px;
+  margin: 0px;
+}
+
+#mis-pistas #intropistas #botones .crearPista {
+  background-color: #5cf094;
+}
+
+#mis-pistas #tarjetas-pistas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+#mis-pistas .tarjetaPista{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 300px;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+}
+
+#mis-pistas .tarjetaPista .infoPista {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+#mis-pistas .tarjetaPista h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#mis-pistas button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#mis-pistas button:hover,
+#mis-pistas #intropistas #botones .crearPista:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+/* CREAR Y EDITAR PISTA */
+
+#crearPista {
+  padding: 50px;
+}
+
+#crearPista #form-contenedor {
+  display: flex;
+  justify-content: center;
+}
+
+#crearPista #form {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  width: fit-content;
+  height: fit-content;
+  background-color: #FFFFFF;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid gray;
+}
+
+#crearPista #form #campos {
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  width: fit-content;
+  height: fit-content;
+  gap: 25px;
+}
+
+#crearPista #form #campos .campo {
+  display: flex;
+  flex-direction: column;
+}
+
+#crearPista #form #campos .campo label {
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+#crearPista #form input,
+#crearPista #form select {
+  box-sizing: border-box;
+  background-color: #F2F2F2;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  width: 100px;
+}
+
+#crearPista #form p,
+#crearPista #form #botones {
+  grid-column: span 4;
+}
+
+#crearPista #form p {
+  margin: 0;
+}
+
+#crearPista #form #botones {
+  margin-top: 20px;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+#crearPista #form #botones button {
+  box-sizing: border-box;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  width: 130px;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#crearPista #botones #crearClubBoton:hover,
+#crearPista #botones #cancelButton:hover,
+#crearPista #botones #guardarBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#crearPista #botones #guardarBoton {
+  background-color: #5cf094;
+}
+
+#crearPista #botones #crearClubBoton {
+  background-color: #305BAB;
+}
+
+#crearPista #botones #cancelButton {
+  background-color: #FF6464;
+}
+
+/* CREAR Y EDITAR CLUB */
+
+#crear_club {
+  padding: 50px;
+}
+
+#crear_club #form-contenedor {
+  display: flex;
+  justify-content: center;
+}
+
+#crear_club #form {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto;
+  gap: 10px;
+  width: fit-content;
+  height: fit-content;
+  background-color: #FFFFFF;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid gray;
+}
+
+#crear_club #form #campos {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  height: fit-content;
+  gap: 25px;
+}
+
+#crear_club #form #campos .campo {
+  display: flex;
+  flex-direction: column;
+}
+
+#crear_club #form #campos .campo label {
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+#crear_club #form input,
+#crear_club #form select {
+  box-sizing: border-box;
+  background-color: #F2F2F2;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  width: 350px;
+}
+
+#crear_club #form #horaApertura,
+#crear_club #form #horaCierre,
+#crear_club #form #activo,
+#crear_club #form #duracion {
+  width: 100px;
+}
+
+#crear_club #form p,
+#crear_club #form #botones {
+  grid-column: span 4;
+}
+
+#crear_club #form p {
+  margin: 0;
+}
+
+#crear_club #form #botones {
+  margin-top: 20px;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+#crear_club #form #botones button {
+  box-sizing: border-box;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  width: 130px;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#crear_club #botones #crearClubBoton:hover,
+#crear_club #botones #cancelButton:hover,
+#crear_club #botones #guardarBoton:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#crear_club #botones #guardarBoton {
+  background-color: #5cf094;
+}
+
+#crear_club #botones #crearClubBoton {
+  background-color: #305BAB;
+}
+
+#crear_club #botones #cancelButton {
+  background-color: #FF6464;
+}
+
+/* RESERVAS DEL CLUB */
+
+#mis-reservas {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mis-reservas #introClubes {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+#mis-reservas #introClubes H1 {
+  margin: 0px;
+}
+
+#mis-reservas #form {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+#mis-reservas #form label{
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#mis-reservas #form input, select {
+  background-color: #F2F2F2;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  cursor: pointer;
+  margin-bottom: 0px;
+}
+
+#mis-reservas #form button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: 80px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#mis-reservas #form button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#mis-reservas #tarjetas-reservas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  margin-top: 20px;
+}
+
+#mis-reservas .tarjetareservation{
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 400px;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+}
+
+#mis-reservas .tarjetareservation .inforeservation {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 20px;
+}
+
+#mis-reservas .tarjetareservation h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#mis-reservas .botones {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 10px;
+}
+#mis-reservas button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#mis-reservas .cancelarBoton {
+  background-color: #FF6464;
+}
+#mis-reservas button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
 }
