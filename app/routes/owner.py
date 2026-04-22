@@ -435,8 +435,16 @@ def get_reservations_club(id):
       "finalized": "Finalizada"
     }
   
+  updated = False
+  
   result = []
   for reservation in reservations:
+    before = reservation.status_game
+    update_reservation_status(reservation)
+    
+    if reservation.status_game != before:
+      updated = True
+    
     result.append({
       "id": reservation.id,
       "number_court": reservation.court.number_court,
@@ -445,6 +453,9 @@ def get_reservations_club(id):
       "status_game": status_map[reservation.status_game.value]
     })
   
+  if updated:
+    db.session.commit()
+    
   if len(result) == 0:
     return jsonify([]), 200
   
