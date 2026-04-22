@@ -516,10 +516,11 @@ footer div {
 }
 
 #reservar .tarjetaClub{
+  box-sizing: border-box;
   background-color: #FFFFFF;
   border-radius: 30px;
   padding: 25px;
-  width: 750px;
+  width: 800px;
   height: fit-content;
   box-shadow: 10px 10px 0px #1E88E5;
   margin-top: 30px;
@@ -527,7 +528,7 @@ footer div {
 
 #reservar .tarjetaClub .infoClub {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: auto auto 1fr auto;
   align-items: center;
   gap: 20px;
 }
@@ -1097,6 +1098,13 @@ footer div {
   align-items: center;
 }
 
+#perfil #fotoNombre img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
 #perfil #fotoNombre h1 {
   margin: 0px;
 }
@@ -1259,6 +1267,8 @@ footer div {
 #ranking .tarjetaJugador .infoJugador img {
   width: 50px;
   height: 50px;
+  border-radius: 10px;
+  border: 1px solid black;
 }
 
 /* SEGUIDOS Y SEGUIDORES */
@@ -1850,6 +1860,7 @@ margin: 0px;
 #crear_club #form #duracion {
   width: 100px;
 }
+
 #crear_club #form p,
 #crear_club #form #botones {
   grid-column: span 4;
@@ -1898,4 +1909,123 @@ margin: 0px;
 
 #crear_club #botones #cancelButton {
   background-color: #FF6464;
+}
+
+/* RESERVAS DEL CLUB */
+
+#mis-reservas {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mis-reservas #introClubes {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+#mis-reservas #introClubes H1 {
+  margin: 0px;
+}
+
+#mis-reservas #form {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+#mis-reservas #form label{
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#mis-reservas #form input, select {
+  background-color: #F2F2F2;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  cursor: pointer;
+  margin-bottom: 0px;
+}
+
+#mis-reservas #form button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: 80px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#mis-reservas #form button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
+
+#mis-reservas #tarjetas-reservas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  margin-top: 20px;
+}
+
+#mis-reservas .tarjetareservation{
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 400px;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+}
+
+#mis-reservas .tarjetareservation .inforeservation {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 20px;
+}
+
+#mis-reservas .tarjetareservation h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#mis-reservas .botones {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 10px;
+}
+#mis-reservas button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#mis-reservas .cancelarBoton {
+  background-color: #FF6464;
+}
+#mis-reservas button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
 }
