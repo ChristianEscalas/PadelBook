@@ -1,7 +1,7 @@
 async function loadReservation() {
   const id = window.location.pathname.split("/").pop();
 
-  const response = await fetch(`http://192.168.0.100:5000/api/player/reservas/${id}`, {
+  const response = await fetch(`/api/player/reservas/${id}`, {
     headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
   });
 

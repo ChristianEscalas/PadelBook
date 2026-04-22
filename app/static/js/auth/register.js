@@ -30,11 +30,11 @@ async function handleForm(form) {
       }
     }
 
-    let url = "http://192.168.0.100:5000/api/auth/registrar";
+    let url = "/api/auth/registrar";
     let method = "POST";
 
     if (isEditMode) {
-      url = "http://192.168.0.100:5000/api/user/perfil";
+      url = "/api/user/perfil";
       method = "PUT";
     }
 
@@ -74,7 +74,7 @@ async function loadProfileIfEdit() {
   if (!isEditMode) return;
 
   try {
-    const response = await fetch("http://192.168.0.100:5000/api/user/perfil", {
+    const response = await fetch("/api/user/perfil", {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 

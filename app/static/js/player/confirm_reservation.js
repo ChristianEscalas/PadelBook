@@ -37,7 +37,7 @@ async function loadPreview() {
   }
 
   // llamada al backend
-  const response = await fetch(`http://192.168.0.100:5000/api/player/reservar/preview?${params.toString()}`, {
+  const response = await fetch(`/api/player/reservar/preview?${params.toString()}`, {
     headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
   });
 

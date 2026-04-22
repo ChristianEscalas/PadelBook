@@ -2,7 +2,7 @@ import { showNotification } from "../main.js";
 
 async function loadClubs() {
   try {
-    const response = await fetch("http://192.168.0.100:5000/api/owner/mis_clubes", {
+    const response = await fetch("/api/owner/mis_clubes", {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 

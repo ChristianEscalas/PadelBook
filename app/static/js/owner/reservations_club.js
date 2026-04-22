@@ -8,7 +8,7 @@ async function load_reservations(clubId) {
   const searchParams = new URLSearchParams(formData);
 
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/owner/reservas/club/${clubId}?${searchParams.toString()}`, {
+    const response = await fetch(`/api/owner/reservas/club/${clubId}?${searchParams.toString()}`, {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 

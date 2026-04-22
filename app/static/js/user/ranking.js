@@ -2,7 +2,7 @@ import { showNotification } from "../main.js";
 
 async function loadRanking(params = "") {
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/user/ranking${params}`, {
+    const response = await fetch(`/api/user/ranking${params}`, {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 

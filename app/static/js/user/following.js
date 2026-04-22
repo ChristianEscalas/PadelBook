@@ -2,7 +2,7 @@ import { showNotification } from "../main.js";
 
 async function load_following() {
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/user/seguidos`, {
+    const response = await fetch(`/api/user/seguidos`, {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 
@@ -56,7 +56,7 @@ document.addEventListener("click", async (event) => {
   if (event.target.classList.contains("dejarSeguirBoton")) {
     const id = event.target.dataset.id;
     try {
-      const response = await fetch(`http://192.168.0.100:5000/api/user/usuario/dejar_de_seguir/${id}`, {
+      const response = await fetch(`/api/user/usuario/dejar_de_seguir/${id}`, {
         method: "DELETE",
         headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
       });
