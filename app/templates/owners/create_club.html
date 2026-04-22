@@ -19,52 +19,53 @@
     <div id="form-contenedor">
       <form id="form" enctype="multipart/form-data">
 
-        <div class="campo">
-          <label for="nombre">Nombre del club *</label>
-          <input type="text" id="nombre" name="nombre" required>
-        </div>
-        
-        <div class="campo">
-          <label for="direccion">Dirección *</label>
-          <input type="text" id="direccion" name="direccion" required>
-        </div>
-        
-        <div class="campo">
-          <label for="horaApertura">Hora de apertura *</label>
-          <input type="time" id="horaApertura" name="horaApertura" required>
-        </div>
+        <div id="campos">
+          <div class="campo">
+            <label for="nombre">Nombre del club *</label>
+            <input type="text" id="nombre" name="nombre" required>
+          </div>
+          
+          <div class="campo">
+            <label for="direccion">Dirección *</label>
+            <input type="text" id="direccion" name="direccion" required>
+          </div>
+          
+          <div class="campo">
+            <label for="municipio">Municipio *</label>
+            <input type="text" id="municipio" name="municipio" required>
+          </div>
 
-        <div class="campo">
-          <label for="horaCierre">Hora de cierre *</label>
-          <input type="time" id="horaCierre" name="horaCierre" required>
-        </div>
+          <div class="campo">
+            <label for="photo">Foto del club {% if not edit_mode %}*{% endif %}</label>
+            <input type="file" id="photo" name="photo" accept="image/*" {% if not edit_mode %}required{% endif %}>
+          </div>
 
-        <div class="campo">
-          <label for="duracion">Duración de los partidos *</label>
-          <select id="duracion" name="duracion">
-            <option value="60">60</option>
-            <option value="90">90</option>
-          </select>
-        </div>
+          <div class="campo">
+            <label for="activo">Activo *</label>
+            <select id="activo" name="activo">
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
+          </div>
 
-        <div class="campo">
-          <label for="municipio">Municipio *</label>
-          <input type="text" id="municipio" name="municipio" required>
+          <div class="campo">
+            <label for="horaApertura">Hora de apertura *</label>
+            <input type="time" id="horaApertura" name="horaApertura" required>
+          </div>
+  
+          <div class="campo">
+            <label for="horaCierre">Hora de cierre *</label>
+            <input type="time" id="horaCierre" name="horaCierre" required>
+          </div>
+  
+          <div class="campo">
+            <label for="duracion">Duración de los partidos *</label>
+            <select id="duracion" name="duracion">
+              <option value="60">60</option>
+              <option value="90">90</option>
+            </select>
+          </div>
         </div>
-        
-        <div class="campo">
-          <label for="activo">Activo *</label>
-          <select id="activo" name="activo">
-            <option value="true">Sí</option>
-            <option value="false">No</option>
-          </select>
-        </div>
-        
-        <div class="campo">
-          <label for="photo">Foto del club {% if not edit_mode %}*{% endif %}</label>
-          <input type="file" id="photo" name="photo" accept="image/*" {% if not edit_mode %}required{% endif %}>
-        </div>
-
         <p>Todos los campos marcados con * son obligatorios</p>
         
         <div id="botones">
