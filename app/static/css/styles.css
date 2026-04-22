@@ -533,7 +533,7 @@ footer div {
 }
 
 #reservar .tarjetaClub .infoClub .fotoclub {
-  width: fit-content;
+  width: 150px;
 }
 
 #reservar .tarjetaClub .infoClub .fotoclub img {
@@ -980,7 +980,7 @@ footer div {
 }
 
 #unirse-partido #tarjetaConfirmacion .partido #fotoClub {
-  width: fit-content;
+  width: 150px;
 }
 #unirse-partido #tarjetaConfirmacion .partido #fotoClub img {
   width: 150px;
@@ -1507,4 +1507,101 @@ margin: 0px;
   width: 30px;
   height: 30px;
   object-fit: cover;
+}
+
+/* MIS CLUBES */
+
+#mis-clubes {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mis-clubes #introClubes {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+#mis-clubes #introClubes h1 {
+  margin: 0px;
+}
+
+#mis-clubes #tarjetas-clubes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+#mis-clubes .tarjetaClub{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 750px;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+  margin-top: 30px;
+}
+
+#mis-clubes .tarjetaClub .infoClub {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 20px;
+}
+
+#mis-clubes .tarjetaClub .infoClub .fotoclub {
+  width: 150px;
+}
+
+#mis-clubes .tarjetaClub .infoClub .fotoclub img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+#mis-clubes .tarjetaClub h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#mis-clubes .tarjetaClub .botones {
+  margin-top: 10px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+#mis-clubes button {
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#mis-clubes .tarjetaClub button {
+  background-color: #305BAB;
+}
+
+#mis-clubes #introClubes button {
+  background-color: #5cf094;
+}
+
+#mis-clubes button:hover,
+#mis-clubes #introClubes button:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
 }

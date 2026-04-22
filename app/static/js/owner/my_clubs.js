@@ -47,12 +47,12 @@ async function loadClubs() {
             <p>${club.municipality}</p>
             <p>${club.active}</p>
           </div>
+        </div>
 
-          <div class="botones">
-            <button type="button" class="pistasBoton" data-id="${club.id}">Pistas</button>
-            <button type="button" class="editarclubBoton" data-id="${club.id}">Editar club</button>
-            <button type="button" class="reservasBoton" data-id="${club.id}">Reservas</button>
-          </div>
+        <div class="botones">
+          <button type="button" class="pistasBoton" data-id="${club.id}">Pistas</button>
+          <button type="button" class="editarclubBoton" data-id="${club.id}">Editar club</button>
+          <button type="button" class="reservasBoton" data-id="${club.id}">Reservas</button>
         </div>
       </div>`;
     });
