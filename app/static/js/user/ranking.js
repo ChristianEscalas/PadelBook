@@ -23,10 +23,12 @@ async function loadRanking(params = "") {
 
     container.innerHTML = "";
 
-    data.forEach((user) => {
+    data.forEach((user, i) => {
+      let ranking = i + 1;
       container.innerHTML += `
         <div class="tarjetaJugador">
           <div class="infoJugador">
+            <p><strong>${ranking}</strong></p>
             <div class="fotoJugador">
               <img src="/static/${user.photo}" data-id="${user.id}" class="clickableUser">
               <p>Categoría: ${user.category}a</p>

@@ -524,36 +524,28 @@ def search_matches():
   wall = request.args.get('pared')
   surface = request.args.get('superficie')
 
-  if dia and hora:
-    start = datetime.strptime(f"{dia} {hora}", "%Y-%m-%d %H:%M")
-
-    if start < datetime.now():
-      return jsonify({"error": "No se puede buscar partidos en una fecha pasada."}), 400
-  else:
-    return jsonify({"error": "Faltan día y hora"}), 400
-
-  if not duration:
-    duration = 60
-  else:
-    duration = int(duration)
-
-  end = start + timedelta(minutes=duration)
-
-  if end.date() != start.date():
-    return jsonify({"error": "La reserva no puede superar la medianoche."}), 400
-
+  now = datetime.now()
   query = Reservation.query.join(Court).join(Club)
-
-  query = query.filter(Reservation.status_game == StatusGame.open, Reservation.creator_id != user_id)
-  subquery = db.session.query(ReservationPlayer.reservation_id).filter(ReservationPlayer.user_id == user_id)
   
+  query = query.filter(Reservation.status_game == StatusGame.open, Reservation.creator_id != user_id, Reservation.start_date >= now)
+  subquery = db.session.query(ReservationPlayer.reservation_id).filter(ReservationPlayer.user_id == user_id)
   query = query.filter(~Reservation.id.in_(subquery))
   
+  if dia and hora:
+    start = datetime.strptime(f"{dia} {hora}", "%Y-%m-%d %H:%M")
+    query = query.filter(Reservation.start_date == start)
+  elif dia:
+    day_obj = datetime.strptime(dia, "%Y-%m-%d").date()
+    query = query.filter(db.func.date(Reservation.start_date) == day_obj)
+  elif hora:
+    hour_obj = datetime.strptime(hora, "%H:%M").time()
+    query = query.filter(db.func.time(Reservation.start_date) == hour_obj)
+
   if municipality:
     query = query.filter(Club.municipality == municipality)
 
   if duration:
-    query = query.filter(Club.game_duration == duration)
+    query = query.filter(Club.game_duration == int(duration))
 
   if court_type:
     query = query.filter(Court.court_type == CourtType(court_type))
@@ -567,8 +559,7 @@ def search_matches():
   if surface:
     query = query.filter(Court.surface == SurfaceType(surface))
 
-  query = query.filter(Reservation.start_date == start, Reservation.end_date == end)
-  query = query.order_by(Club.club_name)
+  query = query.order_by(Reservation.start_date.asc())
   reservations = query.all()
 
   result = []
