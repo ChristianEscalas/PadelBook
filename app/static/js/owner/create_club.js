@@ -4,7 +4,7 @@ const pathParts = window.location.pathname.split("/");
 const isEditMode = window.location.pathname.includes("/editar_club");
 const clubId = isEditMode ? pathParts[pathParts.length - 1] : null;
 
-const API = "http://192.168.0.100:5000/api/owner";
+const API = "/api/owner";
 const token = localStorage.getItem("access_token");
 
 async function handleForm(form) {

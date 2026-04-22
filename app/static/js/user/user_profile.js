@@ -6,7 +6,7 @@ let isFollowing = false;
 
 async function loadUserProfile() {
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/user/usuario/${userId}`, {
+    const response = await fetch(`/api/user/usuario/${userId}`, {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 
@@ -40,7 +40,7 @@ async function loadUserProfile() {
 
 async function checkFollowStatus() {
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/user/usuario/es_seguido/${userId}`, {
+    const response = await fetch(`/api/user/usuario/es_seguido/${userId}`, {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 
@@ -65,7 +65,7 @@ function updateFollowButton() {
 
 async function toggleFollow() {
   try {
-    const url = isFollowing ? `http://192.168.0.100:5000/api/user/usuario/dejar_de_seguir/${userId}` : `http://192.168.0.100:5000/api/user/usuario/seguir/${userId}`;
+    const url = isFollowing ? `/api/user/usuario/dejar_de_seguir/${userId}` : `/api/user/usuario/seguir/${userId}`;
 
     const method = isFollowing ? "DELETE" : "POST";
 

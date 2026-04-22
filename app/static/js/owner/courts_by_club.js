@@ -4,7 +4,7 @@ const id = window.location.pathname.split("/")[3];
 
 async function loadCourts() {
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/owner/pistas/club/${id}`, {
+    const response = await fetch(`/api/owner/pistas/club/${id}`, {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 
