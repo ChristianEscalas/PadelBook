@@ -15,50 +15,55 @@
 {% block content %}
   <div id="crearPista">
     <h1>{% if edit_mode %}Editar pista{% else %}Crear pista{% endif %}</h1>
-    <form id="form">
 
-      <div class="campo">
-        <label for="numero">Número de pista:</label>
-        <input type="number" id="numero" name="numero" required>
-      </div>
-
-      <div class="campo">
-        <label for="tipo">Tipo:</label>
-        <select id="tipo" name="tipo" required></select>
-      </div>
-
-      <div class="campo">
-        <label for="cubierta">Cubierta:</label>
-        <select id="cubierta" name="cubierta" required></select>
-      </div>
-
-      <div class="campo">
-        <label for="pared">Pared:</label>
-        <select id="pared" name="pared" required></select>
-      </div>
-
-      <div class="campo">
-        <label for="superficie">Superficie:</label>
-        <select id="superficie" name="superficie" required></select>
-      </div>
-
-      <div class="campo">
-        <label for="activa">Activa:</label>
-        <select id="activa" name="activa" required>
-          <option value="true">Sí</option>
-          <option value="false">No</option>
-        </select>
-      </div>
-      
-      <div id="botones">
-        {% if not edit_mode %}
-          <button type="submit" id="crearClubBoton">Crear pista</button>
-        {% else %}
-          <button type="submit" id="guardarBoton">Guardar cambios</button>
-        {% endif %}
-        <button type="button" id="cancelButton">Cancelar</button>
-      </div>
-    </form>
+    <div id="form-contenedor">
+      <form id="form">
+        
+        <div id="campos">
+          <div class="campo">
+            <label for="numero">Número de pista:</label>
+            <input type="number" id="numero" name="numero" required>
+          </div>
+    
+          <div class="campo">
+            <label for="tipo">Tipo:</label>
+            <select id="tipo" name="tipo" required></select>
+          </div>
+    
+          <div class="campo">
+            <label for="cubierta">Cubierta:</label>
+            <select id="cubierta" name="cubierta" required></select>
+          </div>
+    
+          <div class="campo">
+            <label for="pared">Pared:</label>
+            <select id="pared" name="pared" required></select>
+          </div>
+    
+          <div class="campo">
+            <label for="superficie">Superficie:</label>
+            <select id="superficie" name="superficie" required></select>
+          </div>
+    
+          <div class="campo">
+            <label for="activa">Activa:</label>
+            <select id="activa" name="activa" required>
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+        </div>
+        
+        <div id="botones">
+          {% if not edit_mode %}
+            <button type="submit" id="crearClubBoton">Crear pista</button>
+          {% else %}
+            <button type="submit" id="guardarBoton">Guardar cambios</button>
+          {% endif %}
+          <button type="button" id="cancelButton">Cancelar</button>
+        </div>
+      </form>
+    </div>
 
     <div id="clubesDisponibles"></div>
   </div>
