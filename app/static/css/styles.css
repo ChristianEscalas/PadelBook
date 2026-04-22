@@ -1605,3 +1605,86 @@ margin: 0px;
   color: black;
   transform: translateY(-5px);
 }
+
+/* MIS PISTAS */
+
+#mis-pistas {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mis-pistas #intropistas {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+#mis-pistas #intropistas h1 {
+  margin: 0px;
+}
+
+#mis-pistas #intropistas #botones {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+#mis-pistas #intropistas #botones button {
+  width: 125px;
+  margin: 0px;
+}
+
+#mis-pistas #intropistas #botones .crearPista {
+  background-color: #5cf094;
+}
+
+#mis-pistas #tarjetas-pistas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+#mis-pistas .tarjetaPista{
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 25px;
+  width: 300px;
+  height: fit-content;
+  box-shadow: 10px 10px 0px #1E88E5;
+}
+
+#mis-pistas .tarjetaPista .infoPista {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+#mis-pistas .tarjetaPista h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#mis-pistas button {
+  background-color: #305BAB;
+  padding: 10px;
+  width: 100px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#mis-pistas button:hover,
+#mis-pistas #intropistas #botones .crearPista:hover {
+  background-color: #AEEA00;
+  color: black;
+  transform: translateY(-5px);
+}
