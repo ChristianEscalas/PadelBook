@@ -2,7 +2,7 @@ import { showNotification } from "../main.js";
 
 async function load_followers() {
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/user/seguidores`, {
+    const response = await fetch(`/api/user/seguidores`, {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 

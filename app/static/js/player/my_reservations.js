@@ -2,7 +2,7 @@ import { showNotification } from "../main.js";
 
 async function loadReservations() {
   try {
-    const response = await fetch("http://192.168.0.100:5000/api/player/mis_reservas", {
+    const response = await fetch("/api/player/mis_reservas", {
       headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 

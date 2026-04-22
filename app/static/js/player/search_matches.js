@@ -10,7 +10,7 @@ async function sendForm(form) {
     const searchParams = new URLSearchParams(formData);
 
     try {
-      const response = await fetch(`http://192.168.0.100:5000/api/player/buscar_partidos?${searchParams.toString()}`, {
+      const response = await fetch(`/api/player/buscar_partidos?${searchParams.toString()}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
           Accept: "application/json",

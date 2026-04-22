@@ -2,7 +2,7 @@ import { showNotification } from "../main.js";
 
 async function loadProfile() {
   try {
-    const response = await fetch("http://192.168.0.100:5000/api/user/perfil", {
+    const response = await fetch("/api/user/perfil", {
       headers: { Accpet: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
     });
 

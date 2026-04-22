@@ -5,7 +5,7 @@ const token = localStorage.getItem("access_token");
 
 async function loadResult() {
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/player/reservas/resultado/${reservationId}`, {
+    const response = await fetch(`/api/player/reservas/resultado/${reservationId}`, {
       headers: { Accept: "application/json", Authorization: "Bearer " + token },
     });
 
@@ -40,7 +40,7 @@ async function loadResult() {
 
 async function loadReservation() {
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/player/reservas/${reservationId}`, {
+    const response = await fetch(`/api/player/reservas/${reservationId}`, {
       headers: {
         Accept: "application/json",
         Authorization: "Bearer " + token,
@@ -89,7 +89,7 @@ async function submitResult(event) {
   const sets_b = [parseInt(document.getElementById("b1").value) || 0, parseInt(document.getElementById("b2").value) || 0, parseInt(document.getElementById("b3").value) || 0];
 
   try {
-    const response = await fetch(`http://192.168.0.100:5000/api/player/reservas/confirmar_resultado/${reservationId}`, {
+    const response = await fetch(`/api/player/reservas/confirmar_resultado/${reservationId}`, {
       method: "POST",
       headers: { Accept: "application/json", "Content-Type": "application/json", Authorization: "Bearer " + token },
       body: JSON.stringify({ sets_a, sets_b }),

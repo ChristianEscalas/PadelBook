@@ -18,7 +18,7 @@ async function loadReservation() {
 async function cancelReservation() {
   const id = window.location.pathname.split("/")[3];
 
-  const response = await fetch(`http://192.168.0.100:5000/api/player/reserva/cancelar/${id}`, {
+  const response = await fetch(`/api/player/reserva/cancelar/${id}`, {
     method: "POST",
     headers: { Accept: "application/json", Authorization: "Bearer " + localStorage.getItem("access_token") },
   });
