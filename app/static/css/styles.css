@@ -2029,3 +2029,248 @@ margin: 0px;
   color: black;
   transform: translateY(-5px);
 }
+
+/* ====== 1920 x 1080 ====== */
+@media (max-width: 1920px) {
+
+  #nav nav ul {
+    gap: 50px;
+  }
+
+  #header {
+    gap: 50px;
+  }
+
+  .columna h1 {
+    font-size: 60px;
+    margin-top: 100px;
+  }
+
+  #tarjetas {
+    gap: 50px;
+  }
+
+  footer div {
+    gap: 100px;
+  }
+}
+
+/* ========= TABLET ======== */
+@media (max-width: 1024px) {
+
+  h1 {
+    font-size: 40px;
+  }
+
+  #header {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  #nav nav ul {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  #header #botones {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #inicio {
+    flex-direction: column;
+  }
+
+  .columna h1 {
+    font-size: 50px;
+    margin-top: 50px;
+  }
+
+  #tarjetas {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  footer div {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Formularios */
+  #registro #form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #crearPista #form #campos {
+    grid-template-columns: repeat(3, auto);
+  }
+
+  #crear_club #form #campos {
+    grid-template-columns: repeat(2, auto);
+  }
+
+  /* Tarjetas grandes */
+  #reservar .tarjetaClub,
+  #mis-reservas .tarjetaClub,
+  #mis-clubes .tarjetaClub {
+    width: 90%;
+  }
+
+  #mis-reservas #tarjetas-reservas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #mis-pistas #tarjetas-pistas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/* ========= MÓVIL ========= */
+@media (max-width: 768px) {
+
+  h1 {
+    font-size: 30px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  #header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  #logoImg {
+    flex-direction: column;
+  }
+
+  #logoImg img {
+    width: 70px;
+    height: 70px;
+  }
+
+  #nav nav ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  #header #botones button,
+  #header #contactButton {
+    width: 100%;
+  }
+
+  .columna h1 {
+    font-size: 35px;
+    margin-top: 30px;
+  }
+
+  .columna button {
+    width: 100%;
+  }
+
+  /* Formularios */
+  #registro #form {
+    grid-template-columns: 1fr;
+  }
+
+  #crearPista #form #campos {
+    grid-template-columns: repeat(2, auto);
+  }
+
+  #crear_club #form #campos {
+    grid-template-columns: 1fr;
+  }
+
+  #contacto #form-contenedor {
+    flex-direction: column;
+  }
+
+  /* Tarjetas */
+  .tarjeta {
+    width: 90%;
+  }
+
+  #reservar .tarjetaClub,
+  #mis-reservas .tarjetaClub,
+  #mis-clubes .tarjetaClub {
+    width: 95%;
+  }
+
+  #mis-reservas #tarjetas-reservas {
+    grid-template-columns: 1fr;
+  }
+
+  #mis-pistas #tarjetas-pistas {
+    grid-template-columns: 1fr;
+  }
+
+  #ranking .tarjetaJugador,
+  #followers .tarjetaJugador {
+    width: 90%;
+  }
+
+  #perfil .tarjetaPerfil {
+    width: 90%;
+  }
+
+  #reservar .tarjetaClub .infoClub,
+  #confirmar-reserva .infoClub,
+  #mis-reservas .infoClub {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  #detalles-reserva #tarjeta-detalle #info-reserva {
+    flex-direction: column;
+  }
+
+  #unirse-partido #tarjetaConfirmacion .partido {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ===== MÓVIL PEQUEÑO ===== */
+@media (max-width: 480px) {
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .columna h1 {
+    font-size: 28px;
+  }
+
+  #logoImg h5 {
+    font-size: 16px;
+  }
+
+  #nav nav ul li a {
+    font-size: 18px;
+  }
+
+  button {
+    font-size: 16px;
+  }
+
+  #reservar #reservarForm {
+    flex-direction: column;
+  }
+
+  #ranking #rankingForm {
+    flex-direction: column;
+  }
+
+  #followers #seguidosIntro {
+    flex-direction: column;
+    text-align: center;
+  }
+}
